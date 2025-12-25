@@ -124,8 +124,21 @@ public class RockPaperScissorGame extends JFrame {
         return panel;
 
 
+    }
+
+    private JPanel createGamePanel(){
+
+        JPanel panel = new JPanel(new BorderLayout(10, 10));
+        panel.setBackground(new Color(59, 130, 246));
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        //Top panel player information
+
+        JPanel topPanel = new JPanel();
+
 
     }
+
 
 
 
