@@ -1,5 +1,6 @@
 package Main;
 import javax.swing.*;
+import java.lang.foreign.PaddingLayout;
 import java.util.HashMap;
 import java.awt.*;
 import java.awt.event.*;
@@ -87,7 +88,18 @@ public class RockPaperScissorGame extends JFrame {
         formPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
 
         JLabel playersLabel = new JLabel("Number of Players");
-        playersLabel.setFont(new Font("Arial", Font.BOLD, 26));
+        playersLabel.setFont(new Font("Arial", Font.BOLD, 16));
+
+        playersField = new JTextField(10);
+        playersField.setFont(new Font("Arial", Font.PLAIN, 16));
+        playersField.setMaximumSize(new Dimension(400, 40));
+
+        JLabel triesLabel = new JLabel("Tries per Player");
+        triesLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        triesField = new JTextField(10);
+        triesField.setFont(new Font("Arial", Font.PLAIN, 18));
+
+
 
 
 
