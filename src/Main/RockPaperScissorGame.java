@@ -1,4 +1,5 @@
 package Main;
+import javax.naming.ldap.StartTlsRequest;
 import javax.swing.*;
 import java.lang.foreign.PaddingLayout;
 import java.util.HashMap;
@@ -98,11 +99,29 @@ public class RockPaperScissorGame extends JFrame {
         triesLabel.setFont(new Font("Arial", Font.BOLD, 16));
         triesField = new JTextField(10);
         triesField.setFont(new Font("Arial", Font.PLAIN, 18));
+        triesField.setMaximumSize(new Dimension(400, 40));
+
+        JButton startButton = new JButton("Start Tournament");
+        startButton.setFont(new Font("Arial", Font.BOLD, 18));
+        startButton.setBackground(new Color(147, 51, 234));
+        startButton.setForeground(Color.WHITE);
+        startButton.setFocusPainted(false);
+        startButton.setMaximumSize(new Dimension(400, 50));
+        startButton.addActionListener(e -> startGame());
 
 
+        formPanel.add(playersLabel);
+        formPanel.add(Box.createVerticalStrut(10));
+        formPanel.add(playersField);
+        formPanel.add(Box.createVerticalStrut(20));
+        formPanel.add(triesLabel);
+        formPanel.add(Box.createVerticalStrut(10));
+        formPanel.add(triesField);
+        formPanel.add(Box.createVerticalStrut(30));
+        formPanel.add(startButton);
 
-
-
+        panel.add(formPanel);
+        return panel;
 
 
 
