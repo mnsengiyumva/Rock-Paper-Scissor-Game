@@ -1,6 +1,7 @@
 package Main;
 import javax.naming.ldap.StartTlsRequest;
 import javax.swing.*;
+import javax.swing.plaf.ComponentInputMapUIResource;
 import java.lang.foreign.PaddingLayout;
 import java.util.HashMap;
 import java.awt.*;
@@ -135,6 +136,23 @@ public class RockPaperScissorGame extends JFrame {
         //Top panel player information
 
         JPanel topPanel = new JPanel();
+        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
+        topPanel.setBackground(Color.WHITE);
+        topPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        playerLabel = new JLabel("Player's Turn");
+        playerLabel.setFont(new Font("Arial", Font.BOLD, 28));
+        playerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        triesLabel = new JLabel("Tries remaining: 0");
+        triesLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+        triesLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        topPanel.add(playerLabel);
+        topPanel.add(Box.createVerticalStrut(10));
+        topPanel.add(triesLabel);
+
+
 
 
     }
