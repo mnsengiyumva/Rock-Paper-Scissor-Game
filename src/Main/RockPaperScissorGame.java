@@ -217,6 +217,7 @@ public class RockPaperScissorGame extends JFrame {
         button.setForeground(Color.WHITE);
         button.setFocusPainted(false);
         button.setBorder(BorderFactory.createEmptyBorder(30, 10, 30, 10));
+        return button;
 
     }
 
@@ -228,6 +229,89 @@ public class RockPaperScissorGame extends JFrame {
         panel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
 
 
+        JLabel titleLabel = new JLabel("Tournament complete");
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 32));
+        titleLabel.setForeground(Color.WHITE);
+        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        winnerLabel = new JLabel("Winner");
+        winnerLabel.setFont(new Font("Arial", Font.BOLD, 30));
+        winnerLabel.setForeground(Color.WHITE);
+        winnerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        panel.add(Box.createVerticalStrut(30));
+        panel.add(titleLabel);
+        panel.add(Box.createVerticalStrut(30));
+        panel.add(winnerLabel);
+        panel.add(Box.createVerticalStrut(40));
+
+        JPanel scoresPanel = new JPanel(new BorderLayout());
+        scoresPanel.setBackground(Color.WHITE);
+        scoresPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        JLabel finalScoresLabel = new JLabel("Final Scores");
+        finalScoresLabel.setFont(new Font("Arial", Font.BOLD, 20));
+
+        finalScoresArea = new JTextArea(10, 40);
+        finalScoresArea.setFont(new Font("Monospaced", Font.PLAIN, 16));
+        finalScoresArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(finalScoresArea);
+
+        scoresPanel.add(finalScoresLabel, BorderLayout.NORTH);
+        scoresPanel.add(scrollPane, BorderLayout.CENTER);
+
+        JButton playAgainButton = new JButton("Play Again");
+        playAgainButton.setFont(new Font("Arial", Font.BOLD, 18));
+        playAgainButton.setBackground(new Color(147, 51, 234));
+        playAgainButton.setForeground(Color.WHITE);
+        playAgainButton.setFocusPainted(false);
+        playAgainButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        playAgainButton.setMaximumSize(new Dimension(300, 50));
+        playAgainButton.addActionListener(e -> resetGame());
+
+        panel.add(scoresPanel);
+        panel.add(Box.createVerticalStrut(20));
+        panel.add(playAgainButton);
+
+        return panel;
+
+    }
+
+    private void startGame(){
+
+        try{
+            numPlayers = Integer.parseInt(playersField.getText());
+            triesPerPlayer = Integer.parseInt(triesField.getText());
+
+            if(numPlayers <= 0 || triesPerPlayer <= 0){
+                JOptionPane.showMessageDialog(this, "Please enter positive numbers!",
+                        "Invalid Input",
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            players = new ArrayList<>();
+            scores = new HashMap<>();
+
+            for(int i = 1; i <= numPlayers; i++){
+                String playerName = "Player "+ i;
+                players.add(playerName);
+                scores.put(playerName, 0);
+            }
+
+            currentPlayerIndex = 0;
+            currentTries = triesPerPlayer;
+
+            updateGamePanel();
+            cardLayout.show(mainPanel, "game");
+
+        } catch (NumberFormatException e){
+            JOptionPane.showMessageDialog(this,
+                    "Please enter a valid numbers!",
+                    "Invalid Input",
+                    JOptionPane.ERROR_MESSAGE);
+
+        }
     }
 
 
