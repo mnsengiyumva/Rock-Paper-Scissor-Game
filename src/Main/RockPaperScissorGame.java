@@ -1,9 +1,11 @@
 package Main;
 import javax.naming.ldap.StartTlsRequest;
 import javax.swing.*;
+import javax.swing.Timer;
 import javax.swing.plaf.ComponentInputMapUIResource;
 import javax.swing.plaf.FontUIResource;
 import java.lang.foreign.PaddingLayout;
+import java.sql.Array;
 import java.util.HashMap;
 import java.awt.*;
 import java.awt.event.*;
@@ -33,6 +35,8 @@ public class RockPaperScissorGame extends JFrame {
     private JLabel triesLabel;
     private JLabel resultLabel;
     private JTextArea scoreboardArea;
+
+    private JButton rockButton, paperButton, scissorsButton;
 
     //Winner panel components
 
@@ -159,7 +163,7 @@ public class RockPaperScissorGame extends JFrame {
         centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
 
-        rockButton = createChoiceButtoon("Rock");
+        rockButton = createChoiceButton("Rock");
         paperButton = createChoiceButton("Paper");
         scissorsButton = createChoiceButton("Scissors");
 
@@ -312,6 +316,160 @@ public class RockPaperScissorGame extends JFrame {
                     JOptionPane.ERROR_MESSAGE);
 
         }
+    }
+
+    public void playRound(String playerChoice){
+        String[] choices = {"Rock", "Paper", "Scissors"};
+        String computerChoice = choices[new Random().nextInt(3)];
+
+        String result = determineWinner(playerChoice, computerChoice);
+        String currentPlayer = players.get(currentPlayerIndex);
+
+        if(result.equals("player")){
+            scores.put(currentPlayer, scores.get(currentPlayer)+1);
+            resultLabel.setText("You chose "+playerChoice+ " | Computer chose "+ computerChoice+" | You win!");
+            resultLabel.setBackground(new Color(187, 247, 208));
+
+        } else if(result.equals("computer")){
+            resultLabel.setText("You chose "+playerChoice+ " | Computer chose "+ computerChoice+" | Computer won!");
+            resultLabel.setBackground(new Color(254, 202, 202));
+
+        } else{
+
+            resultLabel.setText("You chose "+playerChoice+ " | Computer chose "+ computerChoice+" | it is a tie!");
+            resultLabel.setBackground(new Color(254, 249, 195));
+
+        }
+
+        currentTries--;
+
+        if(currentTries == 0){
+            disableButton();
+
+            Timer timer = new Timer(2000, e ->{
+                currentPlayerIndex++;
+
+                if(currentPlayerIndex >= players.size()){
+                    showWinner();
+                }
+                else{
+
+                    currentTries = triesPerPlayer;
+                    resultLabel.setText(" ");
+                    resultLabel.setBackground(Color.WHITE);
+                    enableButtons();
+                    updateGamePanel();
+                }
+            });
+
+            timer.setRepeats(false);
+            timer.start();
+        } else{
+            updateGamePanel();
+        }
+    }
+
+    private String determineWinner(String player, String computer){
+        if(players.equals(computer)) return "tie";
+
+        if((player.equals("Rock") && computer.equals("Scissors")) ||
+                (player.equals("Paper") && computer.equals("Rock")) ||
+                (player.equals("Scissors") && computer.equals("Paper"))) {
+
+            return player;
+        }
+        return computer;
+    }
+
+    private void updateGamePanel(){
+        String currentPlayer = players.get(currentPlayerIndex);
+
+        playerLabel.setText(currentPlayer + "'s Turn");
+        triesLabel.setText("Tries remaining: "+currentTries);
+
+        StringBuilder sb = new StringBuilder();
+
+        for(int i = 0; i < players.size(); i++){
+            String player = players.get(i);
+
+            sb.append(player);
+            if(i == currentPlayerIndex){
+                sb.append(" <|");
+            }
+            sb.append(": ").append(scores.get(player)).append(" points\n");
+
+        }
+
+        scoreboardArea.setText(sb.toString());
+
+    }
+
+    private void showWinner(){
+        int maxScore = Collections.max(scores.values());
+
+        ArrayList<String> winners = new ArrayList<>();
+
+        for(Map.Entry<String, Integer> entry : scores.entrySet()){
+            if(entry.getValue() == maxScore){
+                winners.add(entry.getKey());
+            }
+        }
+
+        if(winners.size() == 1){
+            winnerLabel.setText(winners.get(0) + "Wins!");
+        } else{
+            winnerLabel.setText(String.join("& ", winners) + "Tie! ");
+
+        }
+
+        //Sort the scores in descending order;
+
+        ArrayList<Map.Entry<String, Integer>> sortedScores = new ArrayList<>(scores.entrySet());
+        sortedScores.sort((a, b) -> b.getValue().compareTo(a.getValue()));
+
+        StringBuilder sb = new StringBuilder();
+        String[] medals = {"Gold", "Silver", "Bronze"};
+
+        for(int i = 0; i< sortedScores.size(); i++){
+            Map.Entry<String, Integer> entry = sortedScores.get(i);
+
+            if(i<3){
+                sb.append(medals[i]).append(" ");
+
+            }
+
+            sb.append(entry.getKey()).append(": ").append(entry.getValue()).append(" points\n");
+        }
+
+        finalScoresArea.setText(sb.toString());
+
+        cardLayout.show(mainPanel, "winner");
+
+    }
+
+    private void disableButton(){
+        rockButton.setEnabled(false);
+        paperButton.setEnabled(false);
+        scissorsButton.setEnabled(false);
+    }
+
+    private void enableButtons(){
+
+        rockButton.setEnabled(true);
+        paperButton.setEnabled(true);
+        scissorsButton.setEnabled(true);
+
+
+    }
+
+    private void resetGame(){
+        playersField.setText("");
+        triesField.setText("");
+        resultLabel.setText(" ");
+        resultLabel.setBackground(Color.WHITE);
+        enableButtons();
+
+        cardLayout.show(mainPanel, "setup");
     }
 
 
