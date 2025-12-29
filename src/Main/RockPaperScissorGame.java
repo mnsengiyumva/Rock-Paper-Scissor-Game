@@ -2,6 +2,7 @@ package Main;
 import javax.naming.ldap.StartTlsRequest;
 import javax.swing.*;
 import javax.swing.plaf.ComponentInputMapUIResource;
+import javax.swing.plaf.FontUIResource;
 import java.lang.foreign.PaddingLayout;
 import java.util.HashMap;
 import java.awt.*;
@@ -153,6 +154,78 @@ public class RockPaperScissorGame extends JFrame {
         topPanel.add(triesLabel);
 
 
+        JPanel centerPanel = new JPanel(new GridLayout(1, 3, 15, 0));
+        centerPanel.setBackground(Color.WHITE);
+        centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+
+        rockButton = createChoiceButtoon("Rock");
+        paperButton = createChoiceButton("Paper");
+        scissorsButton = createChoiceButton("Scissors");
+
+        rockButton.addActionListener(e -> playRound("Rock"));
+        paperButton.addActionListener(e -> playRound("Paper"));
+        scissorsButton.addActionListener(e -> playRound("Scissors"));
+
+        centerPanel.add(rockButton);
+        centerPanel.add(paperButton);
+        centerPanel.add(scissorsButton);
+
+        resultLabel = new JLabel(" ");
+        resultLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        resultLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        resultLabel.setOpaque(true);
+
+        resultLabel.setBackground(Color.WHITE);
+        resultLabel.setPreferredSize(new Dimension(0, 100));
+
+
+        JPanel bottomPanel = new JPanel(new BorderLayout());
+        bottomPanel.setBackground(Color.WHITE);
+        bottomPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 20, 20));
+
+        JLabel scoreLabel = new JLabel("ScoreBoard");
+        scoreLabel.setFont(new Font("Arial", Font.BOLD, 14));
+
+        scoreboardArea = new JTextArea(8, 40);
+        scoreboardArea.setFont(new Font("Monospaced", Font.PLAIN, 14));
+        scoreboardArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(scoreboardArea);
+
+        bottomPanel.add(scoreLabel, BorderLayout.NORTH);
+        bottomPanel.add(scrollPane, BorderLayout.CENTER);
+
+        panel.add(topPanel, BorderLayout.NORTH);
+        panel.add(centerPanel, BorderLayout.CENTER);
+        panel.add(resultLabel, BorderLayout.SOUTH);
+
+
+        JPanel mainGamePanel = new JPanel(new BorderLayout());
+        mainGamePanel.add(panel, BorderLayout.CENTER);
+        mainGamePanel.add(bottomPanel, BorderLayout.SOUTH);
+
+        return mainGamePanel;
+
+
+
+    }
+
+    private JButton createChoiceButton(String text){
+        JButton button = new JButton("<html><center>"+ text+ "</center></html>");
+        button.setFont(new Font("Arial", Font.BOLD, 18));
+        button.setBackground(new Color(99, 102, 241));
+        button.setForeground(Color.WHITE);
+        button.setFocusPainted(false);
+        button.setBorder(BorderFactory.createEmptyBorder(30, 10, 30, 10));
+
+    }
+
+    private JPanel createWinnerPanel(){
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(new Color(251, 146, 60));
+        panel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
 
 
     }
