@@ -10,6 +10,25 @@ import java.util.HashMap;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import javax.swing.border.AbstractBorder;
+import javax.swing.*;
+import javax.swing.border.AbstractBorder;
+import java.awt.*;
+
+class RoundedBorder extends AbstractBorder {
+    private int radius;
+
+    RoundedBorder(int radius) {
+        this.radius = radius;
+    }
+
+    @Override
+    public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+        Graphics2D g2 = (Graphics2D) g;
+        g2.drawRoundRect(x, y, width - 1, height - 1, radius, radius);
+    }
+}
+
 
 public class RockPaperScissorGame extends JFrame {
 
@@ -37,6 +56,7 @@ public class RockPaperScissorGame extends JFrame {
     private JTextArea scoreboardArea;
 
     private JButton rockButton, paperButton, scissorsButton;
+    private
 
     //Winner panel components
 
@@ -71,6 +91,7 @@ public class RockPaperScissorGame extends JFrame {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBackground(new Color(147, 51, 234));
         panel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
+
 
 
         JLabel titleLabel = new JLabel("Rock Paper Scissor");
@@ -266,8 +287,8 @@ public class RockPaperScissorGame extends JFrame {
 
         JButton playAgainButton = new JButton("Play Again");
         playAgainButton.setFont(new Font("Arial", Font.BOLD, 18));
-        playAgainButton.setBackground(new Color(147, 51, 234));
-        playAgainButton.setForeground(Color.WHITE);
+        playAgainButton.setBackground(new Color(185, 51, 234, 57));
+        playAgainButton.setForeground(Color.BLACK);
         playAgainButton.setFocusPainted(false);
         playAgainButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         playAgainButton.setMaximumSize(new Dimension(300, 50));
@@ -325,12 +346,12 @@ public class RockPaperScissorGame extends JFrame {
         String result = determineWinner(playerChoice, computerChoice);
         String currentPlayer = players.get(currentPlayerIndex);
 
-        if(result.equals("player")){
+        if(result.equals(currentPlayer)){
             scores.put(currentPlayer, scores.get(currentPlayer)+1);
             resultLabel.setText("You chose "+playerChoice+ " | Computer chose "+ computerChoice+" | You win!");
             resultLabel.setBackground(new Color(187, 247, 208));
 
-        } else if(result.equals("computer")){
+        } else if(result.equals(computerChoice)){
             resultLabel.setText("You chose "+playerChoice+ " | Computer chose "+ computerChoice+" | Computer won!");
             resultLabel.setBackground(new Color(254, 202, 202));
 
