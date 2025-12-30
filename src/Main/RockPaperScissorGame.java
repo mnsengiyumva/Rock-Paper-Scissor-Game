@@ -48,7 +48,7 @@ public class RockPaperScissorGame extends JFrame {
      */
 
     public RockPaperScissorGame(){
-        setTitle("Rock Paper Scissor Tournament");
+        setTitle("Rock Paper Scissor Game");
         setSize(600, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -75,10 +75,10 @@ public class RockPaperScissorGame extends JFrame {
 
         JLabel titleLabel = new JLabel("Rock Paper Scissor");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 36));
-        titleLabel.setForeground(Color.WHITE);
+        titleLabel.setForeground(Color.BLACK);
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JLabel subtitleLabel = new JLabel("Tournament Mode");
+        JLabel subtitleLabel = new JLabel("Game Mode");
         subtitleLabel.setFont(new Font("Arial", Font.PLAIN, 18));
         subtitleLabel.setForeground(Color.WHITE);
         subtitleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -109,8 +109,8 @@ public class RockPaperScissorGame extends JFrame {
 
         JButton startButton = new JButton("Start Tournament");
         startButton.setFont(new Font("Arial", Font.BOLD, 18));
-        startButton.setBackground(new Color(147, 51, 234));
-        startButton.setForeground(Color.WHITE);
+        startButton.setBackground(Color.BLACK);
+        startButton.setForeground(Color.BLACK);
         startButton.setFocusPainted(false);
         startButton.setMaximumSize(new Dimension(400, 50));
         startButton.addActionListener(e -> startGame());
@@ -218,7 +218,7 @@ public class RockPaperScissorGame extends JFrame {
         JButton button = new JButton("<html><center>"+ text+ "</center></html>");
         button.setFont(new Font("Arial", Font.BOLD, 18));
         button.setBackground(new Color(99, 102, 241));
-        button.setForeground(Color.WHITE);
+        button.setForeground(Color.black);
         button.setFocusPainted(false);
         button.setBorder(BorderFactory.createEmptyBorder(30, 10, 30, 10));
         return button;
@@ -370,7 +370,7 @@ public class RockPaperScissorGame extends JFrame {
     }
 
     private String determineWinner(String player, String computer){
-        if(players.equals(computer)) return "tie";
+        if(player.equals(computer)) return "tie";
 
         if((player.equals("Rock") && computer.equals("Scissors")) ||
                 (player.equals("Paper") && computer.equals("Rock")) ||
