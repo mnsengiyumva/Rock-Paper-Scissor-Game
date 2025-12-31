@@ -54,6 +54,7 @@ public class RockPaperScissorGame extends JFrame {
     private JLabel triesLabel;
     private JLabel resultLabel;
     private JTextArea scoreboardArea;
+    private JLabel wish;
 
     private JButton rockButton, paperButton, scissorsButton;
 
@@ -95,10 +96,10 @@ public class RockPaperScissorGame extends JFrame {
 
         JLabel titleLabel = new JLabel("Rock Paper Scissor");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 36));
-        titleLabel.setForeground(Color.BLACK);
+        titleLabel.setForeground(Color.WHITE);
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JLabel subtitleLabel = new JLabel("Game Mode");
+        JLabel subtitleLabel = new JLabel("Game Mode 🚀");
         subtitleLabel.setFont(new Font("Arial", Font.PLAIN, 18));
         subtitleLabel.setForeground(Color.WHITE);
         subtitleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -108,11 +109,15 @@ public class RockPaperScissorGame extends JFrame {
         panel.add(Box.createVerticalStrut(10));
         panel.add(subtitleLabel);
         panel.add(Box.createVerticalStrut(50));
+        panel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
 
         JPanel formPanel = new JPanel();
         formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
         formPanel.setBackground(Color.WHITE);
-        formPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
+        formPanel.setBorder(BorderFactory.createEmptyBorder(30, 50, 30, 50));
+        formPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
 
         JLabel playersLabel = new JLabel("Number of Players");
         playersLabel.setFont(new Font("Arial", Font.BOLD, 16));
@@ -129,7 +134,7 @@ public class RockPaperScissorGame extends JFrame {
         triesField.setMaximumSize(new Dimension(400, 40));
         triesField.setBorder(new RoundedBorder(20));
 
-        JButton startButton = new JButton("Start Tournament");
+        JButton startButton = new JButton("Start TournamentTournament 🏁");
         startButton.setFont(new Font("Arial", Font.BOLD, 18));
         startButton.setBackground(Color.BLACK);
         startButton.setForeground(Color.BLACK);
@@ -137,6 +142,11 @@ public class RockPaperScissorGame extends JFrame {
         startButton.setMaximumSize(new Dimension(400, 50));
         startButton.addActionListener(e -> startGame());
         startButton.setBorder(new RoundedBorder(20));
+
+        JLabel wish = new JLabel("Good Luck");
+        wish.setFont(new Font("Arial", Font.BOLD, 16));
+
+
 
 
         formPanel.add(playersLabel);
@@ -193,7 +203,7 @@ public class RockPaperScissorGame extends JFrame {
 
         rockButton.addActionListener(e -> playRound("Rock"));
         paperButton.addActionListener(e -> playRound("Paper"));
-        scissorsButton.addActionListener(e -> playRound("Scissors"));
+        scissorsButton.addActionListener(e -> playRound("Scissors✂"));
 
         centerPanel.add(rockButton);
         centerPanel.add(paperButton);
@@ -262,7 +272,7 @@ public class RockPaperScissorGame extends JFrame {
         titleLabel.setForeground(Color.WHITE);
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        winnerLabel = new JLabel("Winner");
+        winnerLabel = new JLabel("🏆Winner🏆");
         winnerLabel.setFont(new Font("Arial", Font.BOLD, 30));
         winnerLabel.setForeground(Color.WHITE);
         winnerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -351,16 +361,16 @@ public class RockPaperScissorGame extends JFrame {
 
         if(result.equals("player")){
             scores.put(currentPlayer, scores.get(currentPlayer)+1);
-            resultLabel.setText("You chose "+playerChoice+ " | Computer chose "+ computerChoice+" | You win!");
+            resultLabel.setText("You chose "+playerChoice+ " | Computer chose "+ computerChoice+" | You win!🙌");
             resultLabel.setBackground(new Color(187, 247, 208));
 
         } else if(result.equals("computer")){
-            resultLabel.setText("You chose "+playerChoice+ " | Computer chose "+ computerChoice+" | Computer won!");
+            resultLabel.setText("You chose "+playerChoice+ " | Computer chose "+ computerChoice+" | Computer won😔!");
             resultLabel.setBackground(new Color(254, 202, 202));
 
         } else{
 
-            resultLabel.setText("You chose "+playerChoice+ " | Computer chose "+ computerChoice+" | it is a tie!");
+            resultLabel.setText("You chose "+playerChoice+ " | Computer chose "+ computerChoice+" | it is a tie😰!");
             resultLabel.setBackground(new Color(254, 249, 195));
 
         }
@@ -396,9 +406,9 @@ public class RockPaperScissorGame extends JFrame {
     private String determineWinner(String player, String computer){
         if(player.equals(computer)) return "tie";
 
-        else if((player.equals("Rock") && computer.equals("Scissors")) ||
+        if((player.equals("Rock") && computer.equals("Scissors")) ||
                 (player.equals("Paper") && computer.equals("Rock")) ||
-                (player.equals("Scissors") && computer.equals("Paper"))) {
+                (player.equals("Scissors✂") && computer.equals("Paper"))) {
 
             return "player";
         }
@@ -440,7 +450,7 @@ public class RockPaperScissorGame extends JFrame {
         }
 
         if(winners.size() == 1){
-            winnerLabel.setText(winners.get(0) + "Wins!");
+            winnerLabel.setText(winners.getFirst() + " Wins!");
         } else{
             winnerLabel.setText(String.join("& ", winners) + "Tie!");
 
@@ -452,7 +462,7 @@ public class RockPaperScissorGame extends JFrame {
         sortedScores.sort((a, b) -> b.getValue().compareTo(a.getValue()));
 
         StringBuilder sb = new StringBuilder();
-        String[] medals = {"Gold", "Silver", "Bronze"};
+        String[] medals = {"🥇", "🥈", "🥉"};
 
         for(int i = 0; i< sortedScores.size(); i++){
             Map.Entry<String, Integer> entry = sortedScores.get(i);
