@@ -380,27 +380,32 @@ public class RockPaperScissorGame extends JFrame {
         if(currentTries == 0){
             disableButton();
 
-            Timer timer = new Timer(2000, e ->{
-                currentPlayerIndex++;
-
-                if(currentPlayerIndex >= players.size()){
-                    showWinner();
-                }
-                else{
-
-                    currentTries = triesPerPlayer;
-                    resultLabel.setText(" ");
-                    resultLabel.setBackground(Color.WHITE);
-                    enableButtons();
-                    updateGamePanel();
-                }
-            });
-
-            timer.setRepeats(false);
+            Timer timer = getTimer();
             timer.start();
         } else{
             updateGamePanel();
         }
+    }
+
+    private Timer getTimer() {
+        Timer timer = new Timer(2000, e ->{
+            currentPlayerIndex++;
+
+            if(currentPlayerIndex >= players.size()){
+                showWinner();
+            }
+            else{
+
+                currentTries = triesPerPlayer;
+                resultLabel.setText(" ");
+                resultLabel.setBackground(Color.WHITE);
+                enableButtons();
+                updateGamePanel();
+            }
+        });
+
+        timer.setRepeats(false);
+        return timer;
     }
 
     private String determineWinner(String player, String computer){
