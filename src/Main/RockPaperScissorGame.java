@@ -162,7 +162,6 @@ public class RockPaperScissorGame extends JFrame {
         panel.add(formPanel);
         return panel;
 
-
     }
 
     private JPanel createGamePanel(){
@@ -263,11 +262,11 @@ public class RockPaperScissorGame extends JFrame {
 
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(new Color(251, 146, 60));
+        panel.setBackground(new Color(21, 150, 230, 105));
         panel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
 
 
-        JLabel titleLabel = new JLabel("Tournament complete");
+        JLabel titleLabel = new JLabel("Game is complete. congratulations to the winners");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 32));
         titleLabel.setForeground(Color.WHITE);
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -380,32 +379,27 @@ public class RockPaperScissorGame extends JFrame {
         if(currentTries == 0){
             disableButton();
 
-            Timer timer = getTimer();
+            Timer timer = new Timer(2000, e ->{
+                currentPlayerIndex++;
+
+                if(currentPlayerIndex >= players.size()){
+                    showWinner();
+                }
+                else{
+
+                    currentTries = triesPerPlayer;
+                    resultLabel.setText(" ");
+                    resultLabel.setBackground(Color.WHITE);
+                    enableButtons();
+                    updateGamePanel();
+                }
+            });
+
+            timer.setRepeats(false);
             timer.start();
         } else{
             updateGamePanel();
         }
-    }
-
-    private Timer getTimer() {
-        Timer timer = new Timer(2000, e ->{
-            currentPlayerIndex++;
-
-            if(currentPlayerIndex >= players.size()){
-                showWinner();
-            }
-            else{
-
-                currentTries = triesPerPlayer;
-                resultLabel.setText(" ");
-                resultLabel.setBackground(Color.WHITE);
-                enableButtons();
-                updateGamePanel();
-            }
-        });
-
-        timer.setRepeats(false);
-        return timer;
     }
 
     private String determineWinner(String player, String computer){
