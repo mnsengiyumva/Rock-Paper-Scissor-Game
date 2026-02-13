@@ -1,19 +1,10 @@
 package Main;
-import javax.naming.ldap.StartTlsRequest;
 import javax.swing.*;
 import javax.swing.Timer;
-import javax.swing.plaf.ComponentInputMapUIResource;
-import javax.swing.plaf.FontUIResource;
-import java.lang.foreign.PaddingLayout;
-import java.sql.Array;
 import java.util.HashMap;
 import java.awt.*;
-import java.awt.event.*;
 import java.util.*;
 import javax.swing.border.AbstractBorder;
-import javax.swing.*;
-import javax.swing.border.AbstractBorder;
-import java.awt.*;
 
 class RoundedBorder extends AbstractBorder {
     private int radius;
@@ -89,7 +80,6 @@ public class RockPaperScissorGame extends JFrame {
 
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(new Color(147, 51, 234));
         panel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
 
 
