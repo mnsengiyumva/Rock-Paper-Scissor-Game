@@ -80,13 +80,14 @@ public class RockPaperScissorGame extends JFrame {
 
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(new Color(100, 231, 234));
         panel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
 
 
 
         JLabel titleLabel = new JLabel("Rock Paper Scissor Game");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 36));
-        titleLabel.setForeground(Color.WHITE);
+        titleLabel.setForeground(Color.BLACK);
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel subtitleLabel = new JLabel("Game Mode");
