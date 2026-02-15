@@ -297,7 +297,7 @@ public class RockPaperScissorGame extends JFrame {
         JPanel mainGamePanel = new JPanel(new BorderLayout());
         mainGamePanel.add(panel, BorderLayout.CENTER);
         mainGamePanel.add(bottomPanel, BorderLayout.SOUTH);
-        mainGamePanel.setOpaque(false);
+        mainGamePanel.setOpaque(true);
 
         return mainGamePanel;
 
@@ -333,7 +333,6 @@ public class RockPaperScissorGame extends JFrame {
         winnerLabel = new JLabel("🏆Winner🏆");
         winnerLabel.setFont(new Font("Arial", Font.BOLD, 30));
         winnerLabel.setForeground(Color.WHITE);
-        winnerLabel.setBackground(new Color(255,255,255,100));
         winnerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         panel.add(Box.createVerticalStrut(30));
@@ -354,12 +353,12 @@ public class RockPaperScissorGame extends JFrame {
         finalScoresArea = new JTextArea(10, 40);
         finalScoresArea.setFont(new Font("Monospaced", Font.PLAIN, 16));
 
-
         finalScoresArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(finalScoresArea);
 
         scoresPanel.add(finalScoresLabel, BorderLayout.NORTH);
         scoresPanel.add(scrollPane, BorderLayout.CENTER);
+
 
         JButton playAgainButton = new JButton("Play Again");
         playAgainButton.setFont(new Font("Arial", Font.BOLD, 18));
@@ -505,7 +504,7 @@ public class RockPaperScissorGame extends JFrame {
 
             sb.append(player);
             if(i == currentPlayerIndex){
-                sb.append(" <|");
+                sb.append(" ");
             }
             sb.append(": ").append(scores.get(player)).append(" points\n");
 
@@ -582,12 +581,6 @@ public class RockPaperScissorGame extends JFrame {
 
         cardLayout.show(mainPanel, "setup");
     }
-
-
-
-
-
-
 
 
 }
