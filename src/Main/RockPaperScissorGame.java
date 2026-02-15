@@ -136,13 +136,14 @@ public class RockPaperScissorGame extends JFrame {
 
         JPanel formPanel = new JPanel();
         formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
-        formPanel.setBackground(new Color(255,255,255,100));
+        formPanel.setBackground(new Color(255,255,255,50));
         formPanel.setBorder(BorderFactory.createEmptyBorder(30, 50, 30, 50));
         formPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 
         JLabel playersLabel = new JLabel("Number of Players");
         playersLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        playersLabel.setForeground(Color.white);
         playersLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         playersField = new JTextField(10);
@@ -153,6 +154,7 @@ public class RockPaperScissorGame extends JFrame {
 
         JLabel triesLabel = new JLabel("Tries per Player");
         triesLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        triesLabel.setForeground(Color.white);
         triesLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         triesField = new JTextField(10);
         triesField.setFont(new Font("Arial", Font.PLAIN, 18));
@@ -161,8 +163,7 @@ public class RockPaperScissorGame extends JFrame {
 
         JButton startButton = new JButton("Start TournamentTournament");
         startButton.setFont(new Font("Arial", Font.BOLD, 20));
-        startButton.setBackground(Color.BLACK);
-        startButton.setForeground(Color.white);
+        startButton.setForeground(Color.WHITE);
         startButton.setFocusPainted(false);
         startButton.setMaximumSize(new Dimension(400, 50));
         startButton.addActionListener(e -> startGame());
@@ -170,8 +171,6 @@ public class RockPaperScissorGame extends JFrame {
 
         JLabel wish = new JLabel("Good Luck");
         wish.setFont(new Font("Arial", Font.BOLD, 16));
-
-
 
 
         formPanel.add(playersLabel);
@@ -208,11 +207,13 @@ public class RockPaperScissorGame extends JFrame {
         playerLabel = new JLabel("Player's Turn");
         playerLabel.setFont(new Font("Arial", Font.BOLD, 28));
         playerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        playerLabel.setForeground(Color.white);
 
 
         triesLabel = new JLabel("Tries remaining: 0");
         triesLabel.setFont(new Font("Arial", Font.PLAIN, 18));
         triesLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        triesLabel.setForeground(Color.white);
 
         topPanel.add(playerLabel);
         topPanel.add(Box.createVerticalStrut(10));
@@ -229,6 +230,32 @@ public class RockPaperScissorGame extends JFrame {
         paperButton = createChoiceButton("Paper");
         scissorsButton = createChoiceButton("Scissors");
 
+
+        rockButton.setMaximumSize(new Dimension(10, 1));
+        rockButton.setFont(new Font("Arial", Font.BOLD, 20));
+        rockButton.setForeground(Color.WHITE);
+        rockButton.setFocusPainted(false);
+        rockButton.addActionListener(e -> createChoiceButton("Rock"));
+        rockButton.setBorder(new RoundedBorder(80));
+
+        paperButton.setMaximumSize(new Dimension(10, 1));
+        paperButton.setFont(new Font("Arial", Font.BOLD, 20));
+        paperButton.setForeground(Color.WHITE);
+        paperButton.setFocusPainted(false);
+        paperButton.addActionListener(e -> createChoiceButton("Rock"));
+        paperButton.setBorder(new RoundedBorder(80));
+
+        scissorsButton.setMaximumSize(new Dimension(10, 1));
+        scissorsButton.setFont(new Font("Arial", Font.BOLD, 20));
+        scissorsButton.setForeground(Color.WHITE);
+        scissorsButton.setFocusPainted(false);
+        scissorsButton.addActionListener(e -> createChoiceButton("Rock"));
+        scissorsButton.setBorder(new RoundedBorder(80));
+
+        rockButton.setForeground(Color.WHITE);
+        paperButton.setForeground(Color.WHITE);
+        scissorsButton.setForeground(Color.WHITE);
+
         rockButton.addActionListener(e -> playRound("Rock"));
         paperButton.addActionListener(e -> playRound("Paper"));
         scissorsButton.addActionListener(e -> playRound("Scissors✂"));
@@ -243,6 +270,7 @@ public class RockPaperScissorGame extends JFrame {
         resultLabel.setOpaque(true);
 
         resultLabel.setBackground(Color.WHITE);
+
         resultLabel.setPreferredSize(new Dimension(0, 100));
 
 
