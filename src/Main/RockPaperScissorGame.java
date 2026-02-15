@@ -221,7 +221,6 @@ public class RockPaperScissorGame extends JFrame {
 
 
         JPanel centerPanel = new JPanel(new GridLayout(1, 3, 15, 0));
-        //centerPanel.setBackground(Color.WHITE);
         centerPanel.setOpaque(false);
         centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
@@ -269,7 +268,7 @@ public class RockPaperScissorGame extends JFrame {
         resultLabel.setHorizontalAlignment(SwingConstants.CENTER);
         resultLabel.setOpaque(true);
 
-        resultLabel.setBackground(Color.WHITE);
+        resultLabel.setBackground(new Color(255, 255, 255, 100));
 
         resultLabel.setPreferredSize(new Dimension(0, 100));
 
@@ -334,6 +333,7 @@ public class RockPaperScissorGame extends JFrame {
         winnerLabel = new JLabel("🏆Winner🏆");
         winnerLabel.setFont(new Font("Arial", Font.BOLD, 30));
         winnerLabel.setForeground(Color.WHITE);
+        winnerLabel.setBackground(new Color(255,255,255,100));
         winnerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         panel.add(Box.createVerticalStrut(30));
@@ -343,8 +343,9 @@ public class RockPaperScissorGame extends JFrame {
         panel.add(Box.createVerticalStrut(40));
 
         JPanel scoresPanel = new JPanel(new BorderLayout());
-        //scoresPanel.setBackground(Color.WHITE);
-        scoresPanel.setOpaque(false);
+        scoresPanel.setBackground(new Color(255,255,255,100));
+        scoresPanel.setOpaque(true);
+        scoresPanel.setBorder(new RoundedBorder(20));
         scoresPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         JLabel finalScoresLabel = new JLabel("Final Scores");
@@ -352,6 +353,8 @@ public class RockPaperScissorGame extends JFrame {
 
         finalScoresArea = new JTextArea(10, 40);
         finalScoresArea.setFont(new Font("Monospaced", Font.PLAIN, 16));
+
+
         finalScoresArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(finalScoresArea);
 
