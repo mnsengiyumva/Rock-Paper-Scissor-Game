@@ -302,13 +302,19 @@ public class RockPaperScissorGame extends JFrame {
         quitButton.setFont(new Font("Arial", Font.BOLD, 18));
         quitButton.setBackground(new Color(132, 131, 34, 100));
         quitButton.setForeground(Color.BLACK);
-
-
-
+        quitButton.setFocusPainted(false);
+        quitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        quitButton.setMaximumSize(new Dimension(300, 50));
+        quitButton.addActionListener(e -> {
+            System.exit(0);
+        });
 
         panel.add(scoresPanel);
-        panel.add(Box.createVerticalStrut(20));
+        panel.add(Box.createVerticalStrut(10));
         panel.add(playAgainButton);
+        panel.add(quitButton);
+        panel.add(Box.createVerticalStrut(10));
+        panel.add(Box.createHorizontalStrut(5));
 
         return panel;
 
@@ -504,6 +510,8 @@ public class RockPaperScissorGame extends JFrame {
 
         cardLayout.show(mainPanel, "setup");
     }
+
+
 
 
 
