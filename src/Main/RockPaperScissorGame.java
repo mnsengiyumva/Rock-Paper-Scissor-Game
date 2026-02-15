@@ -298,6 +298,14 @@ public class RockPaperScissorGame extends JFrame {
         playAgainButton.setMaximumSize(new Dimension(300, 50));
         playAgainButton.addActionListener(e -> resetGame());
 
+        JButton quitButton = new JButton("End Game");
+        quitButton.setFont(new Font("Arial", Font.BOLD, 18));
+        quitButton.setBackground(new Color(132, 131, 34, 100));
+        quitButton.setForeground(Color.BLACK);
+
+
+
+
         panel.add(scoresPanel);
         panel.add(Box.createVerticalStrut(20));
         panel.add(playAgainButton);
@@ -361,7 +369,7 @@ public class RockPaperScissorGame extends JFrame {
 
         } else{
 
-            resultLabel.setText("You chose "+playerChoice+ " | Computer chose "+ computerChoice+" | it is a tie😰!");
+            resultLabel.setText("You chose "+playerChoice+ " and the Computer chose "+ computerChoice+". It is a tie😰!");
             resultLabel.setBackground(new Color(254, 249, 195));
 
         }
@@ -399,7 +407,7 @@ public class RockPaperScissorGame extends JFrame {
 
         if((player.equals("Rock") && computer.equals("Scissors")) ||
                 (player.equals("Paper") && computer.equals("Rock")) ||
-                (player.equals("Scissors✂") && computer.equals("Paper"))) {
+                (player.equals("Scissors") && computer.equals("Paper"))) {
 
             return "player";
         }
