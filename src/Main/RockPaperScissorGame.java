@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.awt.*;
 import java.util.*;
 import javax.swing.border.AbstractBorder;
+import javax.swing.border.Border;
 
 class RoundedBorder extends AbstractBorder {
     private int radius;
@@ -19,6 +20,36 @@ class RoundedBorder extends AbstractBorder {
         g2.drawRoundRect(x, y, width - 1, height - 1, radius, radius);
     }
 }
+
+class ImagePanel extends JPanel{
+
+    private Image backgroundImage;
+
+    ImagePanel(String imagePath){
+
+        try{
+            ImageIcon icon = new ImageIcon(Objects.requireNonNull(getClass().getResource(imagePath)));
+            backgroundImage = icon.getImage();
+        } catch (Exception e){
+            System.out.println("Background image not found: "+imagePath);
+        }
+        setOpaque(false);
+    }
+
+    public boolean isOpaque(){
+        return false;
+    }
+
+    protected void paintComponent(Graphics g){
+        super.paintComponent(g);
+
+        if(backgroundImage != null){
+            g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
+        }
+    }
+}
+
+
 
 
 public class RockPaperScissorGame extends JFrame {
@@ -78,9 +109,8 @@ public class RockPaperScissorGame extends JFrame {
 
     private JPanel createSetupPanel(){
 
-        JPanel panel = new JPanel();
+        JPanel panel = new ImagePanel("background.jpg");
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(new Color(100, 231, 234));
         panel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
 
 
@@ -106,7 +136,7 @@ public class RockPaperScissorGame extends JFrame {
 
         JPanel formPanel = new JPanel();
         formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
-        formPanel.setBackground(Color.WHITE);
+        formPanel.setBackground(new Color(255,255,255,180));
         formPanel.setBorder(BorderFactory.createEmptyBorder(30, 50, 30, 50));
         formPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -158,15 +188,18 @@ public class RockPaperScissorGame extends JFrame {
 
     private JPanel createGamePanel(){
 
-        JPanel panel = new JPanel(new BorderLayout(10, 10));
-        panel.setBackground(new Color(59, 130, 246));
+        JPanel panel = new ImagePanel("background.jpg");
+        panel.setLayout(new BorderLayout(10, 10));
+        //panel.setBackground(new Color(59, 130, 246));
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         //Top panel player information
 
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
-        topPanel.setBackground(Color.WHITE);
+        //topPanel.setBackground(Color.WHITE);
+        topPanel.setOpaque(false);
+        topPanel.setBackground(new Color(255,255,255,180));
         topPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         playerLabel = new JLabel("Player's Turn");
@@ -184,7 +217,8 @@ public class RockPaperScissorGame extends JFrame {
 
 
         JPanel centerPanel = new JPanel(new GridLayout(1, 3, 15, 0));
-        centerPanel.setBackground(Color.WHITE);
+        //centerPanel.setBackground(Color.WHITE);
+        centerPanel.setOpaque(false);
         centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
 
@@ -210,7 +244,8 @@ public class RockPaperScissorGame extends JFrame {
 
 
         JPanel bottomPanel = new JPanel(new BorderLayout());
-        bottomPanel.setBackground(Color.WHITE);
+        //bottomPanel.setBackground(Color.WHITE);
+        bottomPanel.setOpaque(false);
         bottomPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 20, 20));
 
         JLabel scoreLabel = new JLabel("ScoreBoard");
@@ -232,6 +267,7 @@ public class RockPaperScissorGame extends JFrame {
         JPanel mainGamePanel = new JPanel(new BorderLayout());
         mainGamePanel.add(panel, BorderLayout.CENTER);
         mainGamePanel.add(bottomPanel, BorderLayout.SOUTH);
+        mainGamePanel.setOpaque(false);
 
         return mainGamePanel;
 
@@ -252,10 +288,11 @@ public class RockPaperScissorGame extends JFrame {
 
     private JPanel createWinnerPanel(){
 
-        JPanel panel = new JPanel();
+        JPanel panel = new ImagePanel("background.jpg");
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(new Color(21, 150, 230, 105));
+        //panel.setBackground(new Color(21, 150, 230, 105));
         panel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
+        panel.setOpaque(false);
 
 
         JLabel titleLabel = new JLabel("Game is complete. congratulations to the winners");
@@ -275,7 +312,8 @@ public class RockPaperScissorGame extends JFrame {
         panel.add(Box.createVerticalStrut(40));
 
         JPanel scoresPanel = new JPanel(new BorderLayout());
-        scoresPanel.setBackground(Color.WHITE);
+        //scoresPanel.setBackground(Color.WHITE);
+        scoresPanel.setOpaque(false);
         scoresPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         JLabel finalScoresLabel = new JLabel("Final Scores");
