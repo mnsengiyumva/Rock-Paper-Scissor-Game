@@ -117,7 +117,7 @@ public class RockPaperScissorGame extends JFrame {
 
         JLabel titleLabel = new JLabel("Rock Paper Scissor Game");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 36));
-        titleLabel.setForeground(Color.BLACK);
+        titleLabel.setForeground(Color.white);
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel subtitleLabel = new JLabel("Game Mode");
@@ -136,30 +136,33 @@ public class RockPaperScissorGame extends JFrame {
 
         JPanel formPanel = new JPanel();
         formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
-        formPanel.setBackground(new Color(255,255,255,180));
+        formPanel.setBackground(new Color(255,255,255,100));
         formPanel.setBorder(BorderFactory.createEmptyBorder(30, 50, 30, 50));
         formPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 
         JLabel playersLabel = new JLabel("Number of Players");
-        playersLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        playersLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        playersLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         playersField = new JTextField(10);
         playersField.setFont(new Font("Arial", Font.PLAIN, 16));
-        playersField.setMaximumSize(new Dimension(400, 40));
-        playersField.setBorder(new RoundedBorder(20));
+        playersField.setMaximumSize(new Dimension(200, 40));
+        playersLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
 
         JLabel triesLabel = new JLabel("Tries per Player");
-        triesLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        triesLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        triesLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         triesField = new JTextField(10);
         triesField.setFont(new Font("Arial", Font.PLAIN, 18));
-        triesField.setMaximumSize(new Dimension(400, 40));
-        triesField.setBorder(new RoundedBorder(20));
+        triesField.setMaximumSize(new Dimension(200, 40));
+        triesField.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JButton startButton = new JButton("Start TournamentTournament 🏁");
-        startButton.setFont(new Font("Arial", Font.BOLD, 18));
+        JButton startButton = new JButton("Start TournamentTournament");
+        startButton.setFont(new Font("Arial", Font.BOLD, 20));
         startButton.setBackground(Color.BLACK);
-        startButton.setForeground(Color.BLACK);
+        startButton.setForeground(Color.white);
         startButton.setFocusPainted(false);
         startButton.setMaximumSize(new Dimension(400, 50));
         startButton.addActionListener(e -> startGame());
