@@ -528,7 +528,7 @@ public class RockPaperScissorGame extends JFrame {
         if(winners.size() == 1){
             winnerLabel.setText(winners.getFirst() + " Wins!");
         } else{
-            winnerLabel.setText(String.join(" & ", winners) + " Tie!");
+            winnerLabel.setText(String.join(" &", winners) + " Tie!");
 
         }
 
