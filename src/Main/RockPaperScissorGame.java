@@ -421,7 +421,7 @@ public class RockPaperScissorGame extends JFrame {
 
         } catch (NumberFormatException e){
             JOptionPane.showMessageDialog(this,
-                    "Please enter a valid numbers!",
+                    "Please enter a valid input!",
                     "Invalid Input",
                     JOptionPane.ERROR_MESSAGE);
 
