@@ -55,6 +55,7 @@ class ImagePanel extends JPanel{
 public class RockPaperScissorGame extends JFrame {
 
     private int numPlayers;
+    String playerName;
     private int triesPerPlayer;
     private ArrayList<String> players;
     private HashMap<String, Integer> scores;
