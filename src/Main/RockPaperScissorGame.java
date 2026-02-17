@@ -448,7 +448,7 @@ public class RockPaperScissorGame extends JFrame {
         } else{
 
             resultLabel.setText("You chose "+playerChoice+ " and the Computer chose "+ computerChoice+". It is a tie😰!");
-            resultLabel.setBackground(new Color(214, 218, 141));
+            resultLabel.setBackground(new Color(229, 232, 188));
 
         }
 
