@@ -392,43 +392,6 @@ public class RockPaperScissorGame extends JFrame {
 
     }
 
-//    private void startGame(){
-//
-//        try{
-//            numPlayers = Integer.parseInt(playersField.getText());
-//            triesPerPlayer = Integer.parseInt(triesField.getText());
-//
-//            if(numPlayers <= 0 || triesPerPlayer <= 0){
-//                JOptionPane.showMessageDialog(this, "Please enter positive numbers!",
-//                        "Invalid Input",
-//                        JOptionPane.ERROR_MESSAGE);
-//                return;
-//            }
-//
-//            players = new ArrayList<>();
-//            scores = new HashMap<>();
-//
-//            for(int i = 1; i <= numPlayers; i++){
-//                String playerName = "Player "+ i;
-//                players.add(playerName);
-//                scores.put(playerName, 0);
-//            }
-//
-//            currentPlayerIndex = 0;
-//            currentTries = triesPerPlayer;
-//
-//            updateGamePanel();
-//            cardLayout.show(mainPanel, "game");
-//
-//        } catch (NumberFormatException e){
-//            JOptionPane.showMessageDialog(this,
-//                    "Please enter a valid input!",
-//                    "Invalid Input",
-//                    JOptionPane.ERROR_MESSAGE);
-//
-//        }
-//    }
-
     private void startGame(){
         try{
             numPlayers = Integer.parseInt(playersField.getText());
