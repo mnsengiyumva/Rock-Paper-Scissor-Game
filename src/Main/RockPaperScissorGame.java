@@ -122,7 +122,7 @@ public class RockPaperScissorGame extends JFrame {
 
         JLabel subtitleLabel = new JLabel("Game Mode");
         JLabel sLabel = new JLabel("Enter number of players and tries for each player:");
-        subtitleLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+        subtitleLabel.setFont(new Font("Arial", Font.BOLD, 18));
         subtitleLabel.setForeground(Color.WHITE);
         subtitleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
