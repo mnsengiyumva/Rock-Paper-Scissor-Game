@@ -443,12 +443,12 @@ public class RockPaperScissorGame extends JFrame {
 
         } else if(result.equals("computer")){
             resultLabel.setText("You chose "+playerChoice+ " | Computer chose "+ computerChoice+" | Computer won😔!");
-            resultLabel.setBackground(new Color(254, 202, 202));
+            resultLabel.setBackground(new Color(244, 6, 6));
 
         } else{
 
             resultLabel.setText("You chose "+playerChoice+ " and the Computer chose "+ computerChoice+". It is a tie😰!");
-            resultLabel.setBackground(new Color(254, 249, 195));
+            resultLabel.setBackground(new Color(214, 218, 141));
 
         }
 
