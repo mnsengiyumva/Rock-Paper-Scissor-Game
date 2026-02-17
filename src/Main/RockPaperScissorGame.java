@@ -325,7 +325,7 @@ public class RockPaperScissorGame extends JFrame {
         panel.setOpaque(false);
 
 
-        JLabel titleLabel = new JLabel("Game is complete. congratulations to the winners");
+        JLabel titleLabel = new JLabel("Game Over");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 32));
         titleLabel.setForeground(Color.WHITE);
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -528,6 +528,7 @@ public class RockPaperScissorGame extends JFrame {
 
         if(winners.size() == 1){
             winnerLabel.setText(winners.getFirst() + " Wins!");
+
         } else{
             winnerLabel.setText(String.join(" &", winners) + " Tie!");
 
