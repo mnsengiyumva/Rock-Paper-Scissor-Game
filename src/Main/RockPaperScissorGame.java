@@ -438,7 +438,8 @@ public class RockPaperScissorGame extends JFrame {
         if(result.equals("player")){
             scores.put(currentPlayer, scores.get(currentPlayer)+1);
             resultLabel.setText("You chose "+playerChoice+ " | Computer chose "+ computerChoice+" | You win!🙌");
-            resultLabel.setBackground(new Color(187, 247, 208));
+            resultLabel.setBackground(new Color(59, 202, 12));
+            resultLabel.setForeground(Color.WHITE);
 
         } else if(result.equals("computer")){
             resultLabel.setText("You chose "+playerChoice+ " | Computer chose "+ computerChoice+" | Computer won😔!");
