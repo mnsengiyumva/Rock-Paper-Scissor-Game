@@ -392,8 +392,44 @@ public class RockPaperScissorGame extends JFrame {
 
     }
 
-    private void startGame(){
+//    private void startGame(){
+//
+//        try{
+//            numPlayers = Integer.parseInt(playersField.getText());
+//            triesPerPlayer = Integer.parseInt(triesField.getText());
+//
+//            if(numPlayers <= 0 || triesPerPlayer <= 0){
+//                JOptionPane.showMessageDialog(this, "Please enter positive numbers!",
+//                        "Invalid Input",
+//                        JOptionPane.ERROR_MESSAGE);
+//                return;
+//            }
+//
+//            players = new ArrayList<>();
+//            scores = new HashMap<>();
+//
+//            for(int i = 1; i <= numPlayers; i++){
+//                String playerName = "Player "+ i;
+//                players.add(playerName);
+//                scores.put(playerName, 0);
+//            }
+//
+//            currentPlayerIndex = 0;
+//            currentTries = triesPerPlayer;
+//
+//            updateGamePanel();
+//            cardLayout.show(mainPanel, "game");
+//
+//        } catch (NumberFormatException e){
+//            JOptionPane.showMessageDialog(this,
+//                    "Please enter a valid input!",
+//                    "Invalid Input",
+//                    JOptionPane.ERROR_MESSAGE);
+//
+//        }
+//    }
 
+    private void startGame(){
         try{
             numPlayers = Integer.parseInt(playersField.getText());
             triesPerPlayer = Integer.parseInt(triesField.getText());
@@ -408,10 +444,22 @@ public class RockPaperScissorGame extends JFrame {
             players = new ArrayList<>();
             scores = new HashMap<>();
 
+            // Collect player names
             for(int i = 1; i <= numPlayers; i++){
-                String playerName = "Player "+ i;
-                players.add(playerName);
-                scores.put(playerName, 0);
+                String playerName = JOptionPane.showInputDialog(
+                        this,
+                        "Enter name for Player " + i + ":",
+                        "Player Name",
+                        JOptionPane.QUESTION_MESSAGE
+                );
+
+                // Handle cancel or empty input
+                if(playerName == null || playerName.trim().isEmpty()){
+                    playerName = "Player " + i; // fallback to default name
+                }
+
+                players.add(playerName.trim());
+                scores.put(playerName.trim(), 0);
             }
 
             currentPlayerIndex = 0;
@@ -422,10 +470,9 @@ public class RockPaperScissorGame extends JFrame {
 
         } catch (NumberFormatException e){
             JOptionPane.showMessageDialog(this,
-                    "Please enter a valid input!",
+                    "Please enter valid numbers!",
                     "Invalid Input",
                     JOptionPane.ERROR_MESSAGE);
-
         }
     }
 
