@@ -32,14 +32,18 @@ import javax.sound.sampled.*;
 
 class RoundedBorder extends AbstractBorder {
     private int radius;
+    private Color color;
 
-    RoundedBorder(int radius) {
+    RoundedBorder(int radius, Color color) {
+        this.color = color;
         this.radius = radius;
     }
 
     @Override
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         Graphics2D g2 = (Graphics2D) g;
+        g2.setColor(color);
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.drawRoundRect(x, y, width - 1, height - 1, radius, radius);
     }
 }
@@ -69,6 +73,12 @@ class ImagePanel extends JPanel{
         if(backgroundImage != null){
             g.drawImage(backgroundImage, 0, 0, getWidth(), getHeight(), this);
         }
+        else{
+            g.setColor(new Color(59, 130, 246));
+            g.fillRect(0,0,getWidth(),getHeight());
+        }
+
+        super.paintComponent(g);
     }
 }
 
@@ -414,7 +424,7 @@ public class RockPaperScissorGame extends JFrame {
         startButton.setFocusPainted(false);
         startButton.setMaximumSize(new Dimension(400, 50));
         startButton.addActionListener(e -> startGame());
-        startButton.setBorder(new RoundedBorder(20));
+        startButton.setBorder(new RoundedBorder(20, Color.WHITE));
 
         addButtonHoverEffect(startButton, new Color(99, 102, 241), new Color(79, 82, 221));
 
@@ -443,19 +453,25 @@ public class RockPaperScissorGame extends JFrame {
 
     private JPanel createGamePanel(){
 
+        JLayeredPane layeredPane = new JLayeredPane();
+        layeredPane.setPreferredSize(new Dimension(700, 800));
+
+
         JPanel panel = new ImagePanel("background.jpg");
         panel.setLayout(new BorderLayout(10, 10));
-        //panel.setBackground(new Color(59, 130, 246));
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        panel.setBounds(0, 0, 700, 800);
 
         //Top panel player information
 
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
-        //topPanel.setBackground(Color.WHITE);
         topPanel.setOpaque(false);
         topPanel.setBackground(new Color(255,255,255,180));
         topPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        avatarLabel = new JLabel();
+        avatarLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         playerLabel = new JLabel("Player's Turn");
         playerLabel.setFont(new Font("Arial", Font.BOLD, 28));
@@ -468,9 +484,17 @@ public class RockPaperScissorGame extends JFrame {
         triesLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         triesLabel.setForeground(Color.white);
 
+        countdownLabel = new JLabel("");
+        countdownLabel.setFont(new Font("Arial", Font.BOLD, 72));
+        countdownLabel.setForeground(new Color(255, 0, 0, 200));
+        countdownLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        topPanel.add(avatarLabel);
+        topPanel.add(Box.createVerticalStrut(10));
         topPanel.add(playerLabel);
         topPanel.add(Box.createVerticalStrut(10));
         topPanel.add(triesLabel);
+        topPanel.add(countdownLabel);
 
 
         JPanel centerPanel = new JPanel(new GridLayout(1, 3, 15, 0));
@@ -478,39 +502,58 @@ public class RockPaperScissorGame extends JFrame {
         centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
 
-        rockButton = createChoiceButton("Rock");
-        paperButton = createChoiceButton("Paper");
-        scissorsButton = createChoiceButton("Scissors");
+        rockButton = createChoiceButton("Rock", "rock.png");
+        paperButton = createChoiceButton("Paper", "paper.png");
+        scissorsButton = createChoiceButton("Scissors", "scissors.png");
+
+        rockButton.addActionListener(e -> {
+            playSound("click.wav");
+            playRound("Rock");
+        });
+        paperButton.addActionListener(e -> {
+            playSound("click.wav");
+            playRound("Paper");
+        });
+        scissorsButton.addActionListener(e -> {
+            playSound("click.wav");
+            playRound("Scissors");
+        });
+
+
+
+//        rockButton = createChoiceButton("Rock");
+//        paperButton = createChoiceButton("Paper");
+//        scissorsButton = createChoiceButton("Scissors");
 
 
         rockButton.setMaximumSize(new Dimension(10, 1));
         rockButton.setFont(new Font("Arial", Font.BOLD, 20));
         rockButton.setForeground(Color.WHITE);
         rockButton.setFocusPainted(false);
-        rockButton.addActionListener(e -> createChoiceButton("Rock"));
-        rockButton.setBorder(new RoundedBorder(80));
+        //rockButton.addActionListener(e -> createChoiceButton("Rock"));
+        rockButton.setBorder(new RoundedBorder(80, Color.BLACK));
 
         paperButton.setMaximumSize(new Dimension(10, 1));
         paperButton.setFont(new Font("Arial", Font.BOLD, 20));
         paperButton.setForeground(Color.WHITE);
         paperButton.setFocusPainted(false);
-        paperButton.addActionListener(e -> createChoiceButton("Rock"));
-        paperButton.setBorder(new RoundedBorder(80));
+        //paperButton.addActionListener(e -> createChoiceButton("Rock"));
+        paperButton.setBorder(new RoundedBorder(80, Color.BLACK));
 
         scissorsButton.setMaximumSize(new Dimension(10, 1));
         scissorsButton.setFont(new Font("Arial", Font.BOLD, 20));
         scissorsButton.setForeground(Color.WHITE);
         scissorsButton.setFocusPainted(false);
-        scissorsButton.addActionListener(e -> createChoiceButton("Rock"));
-        scissorsButton.setBorder(new RoundedBorder(80));
+//        scissorsButton.addActionListener(e -> createChoiceButton("Rock"));
+        scissorsButton.setBorder(new RoundedBorder(80, Color.BLACK));
 
         rockButton.setForeground(Color.WHITE);
         paperButton.setForeground(Color.WHITE);
         scissorsButton.setForeground(Color.WHITE);
 
-        rockButton.addActionListener(e -> playRound("Rock"));
-        paperButton.addActionListener(e -> playRound("Paper"));
-        scissorsButton.addActionListener(e -> playRound("Scissors✂"));
+//        rockButton.addActionListener(e -> playRound("Rock"));
+//        paperButton.addActionListener(e -> playRound("Paper"));
+//        scissorsButton.addActionListener(e -> playRound("Scissors✂"));
 
         centerPanel.add(rockButton);
         centerPanel.add(paperButton);
@@ -520,6 +563,9 @@ public class RockPaperScissorGame extends JFrame {
         resultLabel.setFont(new Font("Arial", Font.BOLD, 24));
         resultLabel.setHorizontalAlignment(SwingConstants.CENTER);
         resultLabel.setOpaque(true);
+        resultLabel.setBackground(new Color(255, 255, 255, 220));
+        resultLabel.setPreferredSize(new Dimension(0, 80));
+
 
         resultLabel.setBackground(new Color(255, 255, 255, 100));
 
@@ -527,7 +573,6 @@ public class RockPaperScissorGame extends JFrame {
 
 
         JPanel bottomPanel = new JPanel(new BorderLayout());
-        //bottomPanel.setBackground(Color.WHITE);
         bottomPanel.setOpaque(false);
         bottomPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 20, 20));
 
@@ -548,68 +593,75 @@ public class RockPaperScissorGame extends JFrame {
 
 
         JPanel mainGamePanel = new JPanel(new BorderLayout());
+
         mainGamePanel.add(panel, BorderLayout.CENTER);
         mainGamePanel.add(bottomPanel, BorderLayout.SOUTH);
         mainGamePanel.setOpaque(true);
+        mainGamePanel.setBounds(0,0,700,800);
 
-        return mainGamePanel;
+        particlePanel = new ParticlePanel();
+        particlePanel.setBounds(0, 0, 700, 800);
+
+        layeredPane.add(mainGamePanel, Integer.valueOf(0));
+        layeredPane.add(particlePanel, Integer.valueOf(1));
+
+        JPanel wrapper = new JPanel(new BorderLayout());
+        wrapper.add(layeredPane);
+        return wrapper;
+
+
 
 
 
     }
 
-    private JButton createChoiceButton(String text){
+    private JButton createChoiceButton(String text, String imagePath){
+
+
         JButton button = new JButton("<html><center>"+ text+ "</center></html>");
-        button.setFont(new Font("Arial", Font.BOLD, 18));
-        button.setBackground(new Color(99, 102, 241));
-        button.setForeground(Color.black);
+
+        button.setLayout(new BorderLayout());
+
+        ImageIcon icon = loadScaledImage(imagePath, 100, 100);
+        if (icon != null) {
+            JLabel imageLabel = new JLabel(icon, SwingConstants.CENTER);
+            button.add(imageLabel, BorderLayout.CENTER);
+        }
+
+        JLabel textLabel = new JLabel(text, SwingConstants.CENTER);
+        textLabel.setFont(new Font("Arial", Font.BOLD, 18));
+        button.add(textLabel, BorderLayout.SOUTH);
+
+        button.setBackground(Color.WHITE);
         button.setFocusPainted(false);
-        button.setBorder(BorderFactory.createEmptyBorder(30, 10, 30, 10));
+        button.setBorder(new RoundedBorder(15, new Color(99, 102, 241)));
+
+        // Add hover effect with animation
+        button.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) {
+                button.setBackground(new Color(240, 240, 255));
+                button.setBorder(new RoundedBorder(15, new Color(79, 82, 221)));
+                button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            }
+
+            public void mouseExited(MouseEvent e) {
+                button.setBackground(Color.WHITE);
+                button.setBorder(new RoundedBorder(15, new Color(99, 102, 241)));
+                button.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            }
+        });
 
 
-//        button.addMouseListener(new MouseAdapter(){
-//            public void mouseEntered(MouseEvent e){
-//                button.setBackground(new Color(240, 240, 255));
-//                button.setBorder(BorderFactory.createLineBorder(new Color(99, 102, 241)));
-//
-//            }
-//
-//            public void MouseExited(MouseEvent e){
-//                button.setBackground(Color.WHITE);
-//                button.setBorder(BorderFactory.createEmptyBorder(15, 10, 15, 10));
-//
-//            }
-//        });
+//        button.setFont(new Font("Arial", Font.BOLD, 18));
+//        button.setBackground(new Color(99, 102, 241));
+//        button.setForeground(Color.black);
+//        button.setFocusPainted(false);
+//        button.setBorder(BorderFactory.createEmptyBorder(30, 10, 30, 10));
+
 
         return button;
 
     }
-
-//    private void showResultWithAnimation(String message, Color color) {
-//        resultLabel.setText("");
-//        resultLabel.setBackground(color);
-//
-//        Timer fadeIn = new Timer(50, null);
-//        final int[] charIndex = {0};
-//
-//        fadeIn.addActionListener(e -> {
-//            if(charIndex[0] < message.length()) {
-//                resultLabel.setText(message.substring(0, charIndex[0] + 1));
-//                charIndex[0]++;
-//            } else {
-//                ((Timer)e.getSource()).stop();
-//            }
-//        });
-//        fadeIn.start();
-//    }
-//
-//
-//    private void startCountdown() {
-//        disableButton();
-//        JLabel countdownLabel = new JLabel("3", SwingConstants.CENTER);
-//        countdownLabel.setFont(new Font("Arial", Font.BOLD, 72));
-//        // Add dramatic countdown animation
-//    }
 
 
 
@@ -617,7 +669,6 @@ public class RockPaperScissorGame extends JFrame {
 
         JPanel panel = new ImagePanel("background.jpg");
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        //panel.setBackground(new Color(21, 150, 230, 105));
         panel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
         panel.setOpaque(false);
 
@@ -641,7 +692,7 @@ public class RockPaperScissorGame extends JFrame {
         JPanel scoresPanel = new JPanel(new BorderLayout());
         scoresPanel.setBackground(new Color(255,255,255,100));
         scoresPanel.setOpaque(true);
-        scoresPanel.setBorder(new RoundedBorder(20));
+        scoresPanel.setBorder(new RoundedBorder(20, Color.BLACK));
         scoresPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         JLabel finalScoresLabel = new JLabel("Final Scores");
@@ -666,6 +717,25 @@ public class RockPaperScissorGame extends JFrame {
         playAgainButton.setMaximumSize(new Dimension(300, 50));
         playAgainButton.addActionListener(e -> resetGame());
 
+        // Stats panel
+        JPanel statsPanel = new JPanel(new BorderLayout());
+        statsPanel.setBackground(new Color(255, 255, 255, 220));
+        statsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        statsPanel.setMaximumSize(new Dimension(600, 200));
+
+        JLabel statsLabel = new JLabel("📈 Detailed Statistics");
+        statsLabel.setFont(new Font("Arial", Font.BOLD, 20));
+
+        statsArea = new JTextArea(6, 40);
+        statsArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
+        statsArea.setEditable(false);
+        JScrollPane statsScroll = new JScrollPane(statsArea);
+
+        statsPanel.add(statsLabel, BorderLayout.NORTH);
+        statsPanel.add(statsScroll, BorderLayout.CENTER);
+
+        //Button
+
         JButton quitButton = new JButton("End Game");
         quitButton.setFont(new Font("Arial", Font.BOLD, 18));
         quitButton.setBackground(new Color(132, 131, 34, 100));
@@ -674,36 +744,36 @@ public class RockPaperScissorGame extends JFrame {
         quitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         quitButton.setMaximumSize(new Dimension(300, 50));
         quitButton.addActionListener(e -> {
-            System.exit(0);
+            int choice = JOptionPane.showConfirmDialog(
+                    this,
+                    "Are you sure you want to quit?",
+                    "Confirm Exit",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE
+            );
+            if (choice == JOptionPane.YES_OPTION) {
+                savePlayerProfiles();
+                System.exit(0);
+            }
         });
 
+        addButtonHoverEffect(quitButton, new Color(239, 68, 68), new Color(220, 38, 38));
+
+
         panel.add(scoresPanel);
-        panel.add(Box.createVerticalStrut(10));
+        panel.add(Box.createVerticalStrut(20));
+        panel.add(statsPanel);
+        panel.add(Box.createVerticalStrut(30));
         panel.add(playAgainButton);
-        panel.add(quitButton);
         panel.add(Box.createVerticalStrut(10));
+        panel.add(quitButton);
         panel.add(Box.createHorizontalStrut(5));
 
         return panel;
 
     }
 
-    private void playSound(String soundFile) {
-        try {
-            AudioInputStream audio = AudioSystem.getAudioInputStream(
-                    getClass().getResource("/" + soundFile)
-            );
-            Clip clip = AudioSystem.getClip();
-            clip.open(audio);
-            clip.start();
-        } catch (Exception e) {
-            System.out.println("Sound error: " + soundFile);
-        }
 
-
-// In playRound():
-
-    }
 
     private void startGame(){
         try{
@@ -716,6 +786,10 @@ public class RockPaperScissorGame extends JFrame {
                         JOptionPane.ERROR_MESSAGE);
                 return;
             }
+
+            String diff = (String) difficultyBox.getSelectedItem();
+            assert diff != null;
+            currentDifficulty = Difficulty.valueOf(diff.toUpperCase());
 
             players = new ArrayList<>();
             scores = new HashMap<>();
