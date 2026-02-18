@@ -86,12 +86,17 @@ class PlayerStats {
     String favoriteChoice = "Rock";
     HashMap<String, Integer> choiceCount = new HashMap<>();
     ImageIcon avatar;
+    int lizardWins = 0;
+    int spockWins = 0;
 
     PlayerStats(String name) {
         this.name = name;
         choiceCount.put("Rock", 0);
         choiceCount.put("Paper", 0);
         choiceCount.put("Scissors", 0);
+        choiceCount.put("Lizard", 0);   // ADD
+        choiceCount.put("Spock", 0);
+
     }
 
     void recordWin(String choice) {
@@ -104,6 +109,8 @@ class PlayerStats {
         if (choice.equals("Rock")) rockWins++;
         else if (choice.equals("Paper")) paperWins++;
         else if (choice.equals("Scissors")) scissorsWins++;
+        else if (choice.equals("Lizard")) lizardWins++;  // ADD
+        else if (choice.equals("Spock")) spockWins++;
 
         recordChoice(choice);
     }
@@ -328,6 +335,112 @@ class TournamentBracket {
 }
 
 
+// ============================================================================
+// ACHIEVEMENT SYSTEM
+// ============================================================================
+class Achievement {
+    String id;
+    String name;
+    String description;
+    String emoji;
+    boolean unlocked;
+
+    Achievement(String id, String name, String description, String emoji) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.emoji = emoji;
+        this.unlocked = false;
+    }
+}
+
+class AchievementManager {
+    HashMap<String, Achievement> achievements;
+    HashMap<String, HashSet<String>> playerAchievements; // player -> achievement IDs
+
+    AchievementManager() {
+        achievements = new HashMap<>();
+        playerAchievements = new HashMap<>();
+        initializeAchievements();
+    }
+
+    void initializeAchievements() {
+        achievements.put("first_win", new Achievement("first_win", "First Blood", "Win your first round", "🎯"));
+        achievements.put("win_streak_3", new Achievement("win_streak_3", "Hot Streak", "Win 3 rounds in a row", "🔥"));
+        achievements.put("win_streak_5", new Achievement("win_streak_5", "Unstoppable", "Win 5 rounds in a row", "⚡"));
+        achievements.put("perfect_game", new Achievement("perfect_game", "Flawless Victory", "Win all rounds without losing", "💎"));
+        achievements.put("rock_master", new Achievement("rock_master", "Rock Solid", "Win 10 rounds with Rock", "🪨"));
+        achievements.put("paper_master", new Achievement("paper_master", "Paper Trail", "Win 10 rounds with Paper", "📄"));
+        achievements.put("scissors_master", new Achievement("scissors_master", "Sharp Shooter", "Win 10 rounds with Scissors", "✂️"));
+        achievements.put("comeback_kid", new Achievement("comeback_kid", "Comeback Kid", "Win after being down 3 rounds", "💪"));
+        achievements.put("veteran", new Achievement("veteran", "Veteran Player", "Play 50 total rounds", "🎖️"));
+        achievements.put("tournament_winner", new Achievement("tournament_winner", "Champion", "Win a tournament", "🏆"));
+    }
+
+    void checkAchievements(String player, PlayerStats stats) {
+        HashSet<String> playerAchs = playerAchievements.computeIfAbsent(player, k -> new HashSet<>());
+
+        // First win
+        if (stats.totalWins >= 1 && !playerAchs.contains("first_win")) {
+            unlockAchievement(player, "first_win");
+        }
+
+        // Win streaks
+        if (stats.longestWinStreak >= 3 && !playerAchs.contains("win_streak_3")) {
+            unlockAchievement(player, "win_streak_3");
+        }
+        if (stats.longestWinStreak >= 5 && !playerAchs.contains("win_streak_5")) {
+            unlockAchievement(player, "win_streak_5");
+        }
+
+        // Choice masters
+        if (stats.rockWins >= 10 && !playerAchs.contains("rock_master")) {
+            unlockAchievement(player, "rock_master");
+        }
+        if (stats.paperWins >= 10 && !playerAchs.contains("paper_master")) {
+            unlockAchievement(player, "paper_master");
+        }
+        if (stats.scissorsWins >= 10 && !playerAchs.contains("scissors_master")) {
+            unlockAchievement(player, "scissors_master");
+        }
+
+        // Veteran
+        if (stats.getTotalGames() >= 50 && !playerAchs.contains("veteran")) {
+            unlockAchievement(player, "veteran");
+        }
+    }
+
+    void unlockAchievement(String player, String achievementId) {
+        HashSet<String> playerAchs = playerAchievements.computeIfAbsent(player, k -> new HashSet<>());
+        playerAchs.add(achievementId);
+        Achievement ach = achievements.get(achievementId);
+        ach.unlocked = true;
+    }
+
+    ArrayList<Achievement> getPlayerAchievements(String player) {
+        HashSet<String> achIds = playerAchievements.get(player);
+        ArrayList<Achievement> result = new ArrayList<>();
+        if (achIds != null) {
+            for (String id : achIds) {
+                result.add(achievements.get(id));
+            }
+        }
+        return result;
+    }
+
+    String getAchievementSummary(String player) {
+        ArrayList<Achievement> achs = getPlayerAchievements(player);
+        if (achs.isEmpty()) return "";
+
+        StringBuilder sb = new StringBuilder();
+        for (Achievement ach : achs) {
+            sb.append(ach.emoji).append(" ");
+        }
+        return sb.toString();
+    }
+}
+
+
 
 
 
@@ -342,10 +455,24 @@ public class RockPaperScissorGame extends JFrame {
     private HashMap<String, Integer> scores;
     private HashMap<String, PlayerStats> playerStats;
 
+
+    // Game mode
+    private boolean extendedMode = false; // RPSLS mode
+    private JButton lizardButton, spockButton;
+
+    private JPanel centerPanel;
+
+    // Achievements
+    private AchievementManager achievementManager;
+    private HashMap<String, String> playerAvatars; // player -> avatar emoji
+
     // Tournament mode
     private boolean tournamentMode = false;
     private TournamentBracket bracket;
     private JTextArea bracketDisplay;
+
+    private JCheckBox tournamentCheckbox;
+    private JComboBox<String> gameModeBox;
 
 
 
@@ -403,6 +530,10 @@ public class RockPaperScissorGame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         loadPlayerProfiles();
+
+        // Initialize achievement system
+        achievementManager = new AchievementManager();
+        playerAvatars = new HashMap<>();
 
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
@@ -531,8 +662,27 @@ public class RockPaperScissorGame extends JFrame {
 
         difficultyBox = new JComboBox<>(new String[]{"Easy", "Medium", "Hard"});
 
+        // ADD AFTER difficultyBox:
+        JLabel gameModeLabel = new JLabel("Game Mode");
+        gameModeLabel.setFont(new Font("Arial", Font.BOLD, 16));
+
+        //JComboBox<String> gameModeBox = new JComboBox<>(new String[]{"Classic (3 choices)",
+        // "Extended (5 choices - RPSLS)"});
+
+        gameModeBox = new JComboBox<>(new String[]{"Classic (3 choices)", "Extended (5 choices - RPSLS)"});
+
+        gameModeBox.setFont(new Font("Arial", Font.PLAIN, 16));
+        gameModeBox.setMaximumSize(new Dimension(400, 40));
+
+        formPanel.add(gameModeLabel);
+        formPanel.add(Box.createVerticalStrut(10));
+        formPanel.add(gameModeBox);
+        formPanel.add(Box.createVerticalStrut(20));
+
         // ADD THIS BEFORE startButton code:
-        JCheckBox tournamentCheckbox = new JCheckBox("Tournament Bracket Mode (4+ players)");
+//        JCheckBox tournamentCheckbox = new JCheckBox("Tournament Bracket Mode (4+ players)");
+        tournamentCheckbox = new JCheckBox("Tournament Bracket Mode (4+ players)");
+        tournamentCheckbox.setForeground(Color.WHITE);
         tournamentCheckbox.setFont(new Font("Arial", Font.PLAIN, 16));
         tournamentCheckbox.setOpaque(false);
         tournamentCheckbox.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -624,9 +774,33 @@ public class RockPaperScissorGame extends JFrame {
         topPanel.add(countdownLabel);
 
 
-        JPanel centerPanel = new JPanel(new GridLayout(1, 3, 15, 0));
+//        JPanel centerPanel = new JPanel(new GridLayout(1, 3, 15, 0));
+//        centerPanel.setOpaque(false);
+//        centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        // REPLACE: JPanel centerPanel = new JPanel(new GridLayout(1, 3, 15, 0));
+        // WITH:
+        centerPanel = new JPanel();
+        centerPanel.setLayout(new GridLayout(1, 3, 15, 0)); // Will change to 1,5 in extended mode
         centerPanel.setOpaque(false);
         centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        rockButton = createChoiceButton("Rock", "rock.png");
+        paperButton = createChoiceButton("Paper", "paper.png");
+        scissorsButton = createChoiceButton("Scissors", "scissors.png");
+        lizardButton = createChoiceButton("Lizard", "lizard.png");
+        spockButton = createChoiceButton("Spock", "spock.png");
+
+        rockButton.addActionListener(e -> { playSound("click.wav"); playRound("Rock"); });
+        paperButton.addActionListener(e -> { playSound("click.wav"); playRound("Paper"); });
+        scissorsButton.addActionListener(e -> { playSound("click.wav"); playRound("Scissors"); });
+        lizardButton.addActionListener(e -> { playSound("click.wav"); playRound("Lizard"); });
+        spockButton.addActionListener(e -> { playSound("click.wav"); playRound("Spock"); });
+
+        centerPanel.add(rockButton);
+        centerPanel.add(paperButton);
+        centerPanel.add(scissorsButton);
+        // Lizard and Spock added dynamically based on mode
 
 
         rockButton = createChoiceButton("Rock", "rock.png");
@@ -973,13 +1147,15 @@ public class RockPaperScissorGame extends JFrame {
             }
 
             // Check tournament mode
-            Component[] components = ((JPanel)((JPanel)mainPanel.getComponent(1)).getComponent(1)).getComponents();
-            for (Component c : components) {
-                if (c instanceof JCheckBox) {
-                    tournamentMode = ((JCheckBox)c).isSelected();
-                    break;
-                }
-            }
+//            Component[] components = ((JPanel)((JPanel)mainPanel.getComponent(1)).getComponent(1)).getComponents();
+//            for (Component c : components) {
+//                if (c instanceof JCheckBox) {
+//                    tournamentMode = ((JCheckBox)c).isSelected();
+//                    break;
+//                }
+//            }
+            // Check tournament mode (simplified)
+            tournamentMode = tournamentCheckbox.isSelected();
 
             if (tournamentMode && numPlayers < 4) {
                 JOptionPane.showMessageDialog(this,
@@ -992,6 +1168,26 @@ public class RockPaperScissorGame extends JFrame {
             // Set difficulty
             String diff = (String) difficultyBox.getSelectedItem();
             currentDifficulty = Difficulty.valueOf(diff.toUpperCase());
+
+            // ADD AFTER: currentDifficulty = Difficulty.valueOf(diff.toUpperCase());
+
+            // Get game mode
+//            for (Component c : components) {
+//                if (c instanceof JComboBox && c != difficultyBox) {
+//                    JComboBox<?> modeBox = (JComboBox<?>)c;
+//                    extendedMode = modeBox.getSelectedIndex() == 1;
+//                    break;
+//                }
+//            }
+
+            // Get game mode (simplified)
+            extendedMode = gameModeBox.getSelectedIndex() == 1;
+
+
+            // Update UI for extended mode
+            updateGameModeUI();
+
+
 
             players = new ArrayList<>();
             scores = new HashMap<>();
@@ -1011,6 +1207,23 @@ public class RockPaperScissorGame extends JFrame {
                 }
 
                 players.add(playerName.trim());
+
+                // ADD AFTER: players.add(playerName.trim());
+
+                // Avatar selection
+                String[] avatarOptions = {"👤", "😀", "😎", "🤓", "🥳", "🤠", "👑", "🎮", "🐱", "🐶", "🦁", "🐼"};
+                String avatar = (String) JOptionPane.showInputDialog(
+                        this,
+                        "Choose an avatar for " + playerName.trim(),
+                        "Avatar Selection",
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        avatarOptions,
+                        avatarOptions[0]
+                );
+
+                if (avatar == null) avatar = "👤";
+                playerAvatars.put(playerName.trim(), avatar);
                 scores.put(playerName.trim(), 0);
                 playerStats.put(playerName.trim(), new PlayerStats(playerName.trim()));
             }
@@ -1036,6 +1249,61 @@ public class RockPaperScissorGame extends JFrame {
                     JOptionPane.ERROR_MESSAGE);
         }
     }
+
+//    private void updateGameModeUI() {
+//        // Find the center panel in game panel
+//        Component[] mainComps = ((JPanel)mainPanel.getComponent(2)).getComponents();
+//        JLayeredPane layeredPane = (JLayeredPane)mainComps[0];
+//        JPanel mainGamePanel = (JPanel)layeredPane.getComponent(0);
+//        JPanel panel = (JPanel)mainGamePanel.getComponent(0);
+//        JPanel centerPanel = (JPanel)panel.getComponent(1);
+//        // Add this near other JPanel/JButton declarations
+//
+//
+//        centerPanel.removeAll();
+//
+//        if (extendedMode) {
+//            centerPanel.setLayout(new GridLayout(1, 5, 10, 0));
+//            centerPanel.add(rockButton);
+//            centerPanel.add(paperButton);
+//            centerPanel.add(scissorsButton);
+//            centerPanel.add(lizardButton);
+//            centerPanel.add(spockButton);
+//        } else {
+//            centerPanel.setLayout(new GridLayout(1, 3, 15, 0));
+//            centerPanel.add(rockButton);
+//            centerPanel.add(paperButton);
+//            centerPanel.add(scissorsButton);
+//        }
+//
+//        centerPanel.revalidate();
+//        centerPanel.repaint();
+//    }
+
+
+    private void updateGameModeUI() {
+        if (centerPanel == null) return; // Safety check
+
+        centerPanel.removeAll();
+
+        if (extendedMode) {
+            centerPanel.setLayout(new GridLayout(1, 5, 10, 0));
+            centerPanel.add(rockButton);
+            centerPanel.add(paperButton);
+            centerPanel.add(scissorsButton);
+            centerPanel.add(lizardButton);
+            centerPanel.add(spockButton);
+        } else {
+            centerPanel.setLayout(new GridLayout(1, 3, 15, 0));
+            centerPanel.add(rockButton);
+            centerPanel.add(paperButton);
+            centerPanel.add(scissorsButton);
+        }
+
+        centerPanel.revalidate();
+        centerPanel.repaint();
+    }
+
 
     private void updateBracketDisplay() {
         if (!tournamentMode || bracket == null) return;
@@ -1114,52 +1382,117 @@ public class RockPaperScissorGame extends JFrame {
 
         }
 
+        // ADD AFTER: stats.recordWin(playerChoice); (or recordLoss, recordTie)
+
+        // Check for new achievements
+        achievementManager.checkAchievements(currentPlayer, stats);
+
         playerChoiceHistory.add(playerChoice);
 
         currentTries--;
 
-        if(currentTries == 0){
+        if (currentTries == 0) {
             disableButton();
 
-            Timer timer = new Timer(2000, e ->{
-                currentPlayerIndex++;
+            Timer timer = new Timer(2500, e -> {
+                if (tournamentMode) {
+                    // Tournament mode: record winner and advance bracket
+                    //String currentPlayer = players.get(currentPlayerIndex);
+                    bracket.recordMatchWinner(currentPlayer);
+                    updateBracketDisplay();
 
-                if(currentPlayerIndex >= players.size()){
-                    showWinner();
-                }
-                else{
-
-                    currentTries = triesPerPlayer;
-                    resultLabel.setText(" ");
-                    resultLabel.setBackground(new Color(255, 255, 255, 220));
-                    countdownLabel.setText("");
-                    enableButtons();
-                    updateGamePanel();
-                    startCountdown();
+                    if (bracket.isComplete()) {
+                        showTournamentWinner();
+                    } else {
+                        // Setup next match
+                        BracketMatch nextMatch = bracket.getCurrentMatch();
+                        if (nextMatch != null && !nextMatch.player1.equals("BYE") && !nextMatch.player2.equals("BYE")) {
+                            // Find player indices
+                            currentPlayerIndex = players.indexOf(nextMatch.player1);
+                            currentTries = triesPerPlayer;
+                            scores.put(nextMatch.player1, 0);
+                            scores.put(nextMatch.player2, 0);
+                            resultLabel.setText(" ");
+                            resultLabel.setBackground(new Color(255, 255, 255, 220));
+                            countdownLabel.setText("");
+                            enableButtons();
+                            updateGamePanel();
+                            startCountdown();
+                        }
+                    }
+                } else {
+                    // Normal mode (existing code)
+                    currentPlayerIndex++;
+                    if (currentPlayerIndex >= players.size()) {
+                        showWinner();
+                    } else {
+                        currentTries = triesPerPlayer;
+                        resultLabel.setText(" ");
+                        resultLabel.setBackground(new Color(255, 255, 255, 220));
+                        countdownLabel.setText("");
+                        enableButtons();
+                        updateGamePanel();
+                        startCountdown();
+                    }
                 }
             });
 
             timer.setRepeats(false);
             timer.start();
-        } else{
+        } else {
             updateGamePanel();
         }
+
+//
+
+
     }
 
-    private String determineWinner(String player, String computer){
-        if(player.equals(computer)) return "tie";
+//    private String determineWinner(String player, String computer){
+//        if(player.equals(computer)) return "tie";
+//
+//        if((player.equals("Rock") && computer.equals("Scissors")) ||
+//                (player.equals("Paper") && computer.equals("Rock")) ||
+//                (player.equals("Scissors") && computer.equals("Paper"))) {
+//
+//            return "player";
+//        }
+//        return "computer";
+//    }
 
-        if((player.equals("Rock") && computer.equals("Scissors")) ||
-                (player.equals("Paper") && computer.equals("Rock")) ||
-                (player.equals("Scissors") && computer.equals("Paper"))) {
 
-            return "player";
+    private String determineWinner(String player, String computer) {
+        if (player.equals(computer)) return "tie";
+
+        if (extendedMode) {
+            // Rock-Paper-Scissors-Lizard-Spock rules
+            HashMap<String, HashSet<String>> wins = new HashMap<>();
+            wins.put("Rock", new HashSet<>(Arrays.asList("Scissors", "Lizard")));
+            wins.put("Paper", new HashSet<>(Arrays.asList("Rock", "Spock")));
+            wins.put("Scissors", new HashSet<>(Arrays.asList("Paper", "Lizard")));
+            wins.put("Lizard", new HashSet<>(Arrays.asList("Spock", "Paper")));
+            wins.put("Spock", new HashSet<>(Arrays.asList("Scissors", "Rock")));
+
+            if (wins.get(player).contains(computer)) {
+                return "player";
+            }
+            return "computer";
+        } else {
+            // Classic rules
+            if ((player.equals("Rock") && computer.equals("Scissors")) ||
+                    (player.equals("Paper") && computer.equals("Rock")) ||
+                    (player.equals("Scissors") && computer.equals("Paper"))) {
+                return "player";
+            }
+            return "computer";
         }
-        return "computer";
     }
 
     private String getComputerChoice() {
-        String[] choices = {"Rock", "Paper", "Scissors"};
+        String[] choices = extendedMode?
+                new String[]{"Rock", "Paper", "Scissors", "Lizard", "Spock"} :
+                new String[]{"Rock", "Paper", "Scissors"};
+
 
         switch (currentDifficulty) {
             case EASY:
@@ -1212,25 +1545,56 @@ public class RockPaperScissorGame extends JFrame {
         playerLabel.setText(currentPlayer + "'s Turn");
         triesLabel.setText("Tries remaining: "+currentTries);
 
-        StringBuilder sb = new StringBuilder();
+//        StringBuilder sb = new StringBuilder();
+//
+//        for(int i = 0; i < players.size(); i++){
+//            String player = players.get(i);
+//
+//            sb.append(player);
+//            if(i == currentPlayerIndex){
+//                sb.append(" ");
+//            }
+//            sb.append(": ").append(scores.get(player)).append(" points\n");
+//
+//            PlayerStats pStats = playerStats.get(player);
+//
+//            if(pStats.currentWinStreak>1){
+//                sb.append(" ").append(pStats.currentWinStreak);
+//            }
+//            sb.append("\n");
+//
+//        }
 
-        for(int i = 0; i < players.size(); i++){
+        // REPLACE the existing StringBuilder section with:
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < players.size(); i++) {
             String player = players.get(i);
 
+            // Add avatar
+            String avatar = playerAvatars.getOrDefault(player, "👤");
+            sb.append(avatar).append(" ");
+
             sb.append(player);
-            if(i == currentPlayerIndex){
-                sb.append(" ");
+            if (i == currentPlayerIndex) {
+                sb.append(" ← 👈");
             }
-            sb.append(": ").append(scores.get(player)).append(" points\n");
+            sb.append(": ").append(scores.get(player)).append(" pts");
 
             PlayerStats pStats = playerStats.get(player);
-
-            if(pStats.currentWinStreak>1){
-                sb.append(" ").append(pStats.currentWinStreak);
+            if (pStats.currentWinStreak > 1) {
+                sb.append(" 🔥").append(pStats.currentWinStreak);
             }
-            sb.append("\n");
 
+            // Add achievements
+            String achs = achievementManager.getAchievementSummary(player);
+            if (!achs.isEmpty()) {
+                sb.append(" ").append(achs);
+            }
+
+            sb.append("\n");
         }
+
+
 
         scoreboardArea.setText(sb.toString());
 
@@ -1290,6 +1654,18 @@ public class RockPaperScissorGame extends JFrame {
             statsSb.append(String.format("  Favorite: %s\n", stats.favoriteChoice));
             statsSb.append(String.format("  Rock Wins: %d | Paper: %d | Scissors: %d\n",
                     stats.rockWins, stats.paperWins, stats.scissorsWins));
+
+            // FIND the statsSb section and ADD this before the closing:
+
+            // ADD BEFORE the closing of the for loop:
+            ArrayList<Achievement> playerAchs = achievementManager.getPlayerAchievements(player);
+            if (!playerAchs.isEmpty()) {
+                statsSb.append("  Achievements: ");
+                for (Achievement ach : playerAchs) {
+                    statsSb.append(ach.emoji).append(" ");
+                }
+                statsSb.append("\n");
+            }
         }
 
         statsArea.setText(statsSb.toString());
@@ -1316,6 +1692,50 @@ public class RockPaperScissorGame extends JFrame {
 
     }
 
+    private void showTournamentWinner() {
+        playSound("victory.wav");
+
+        String champion = bracket.getTournamentWinner();
+        winnerLabel.setText("🏆 TOURNAMENT CHAMPION: " + champion + " 🏆");
+
+        // Show bracket final state
+        StringBuilder sb = new StringBuilder();
+        sb.append("FINAL BRACKET:\n\n");
+        updateBracketDisplay();
+
+        finalScoresArea.setText(bracketDisplay.getText());
+
+        // Show detailed stats
+        StringBuilder statsSb = new StringBuilder();
+        for (String player : players) {
+            if (player.equals("BYE")) continue;
+            PlayerStats stats = playerStats.get(player);
+            statsSb.append("━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+            statsSb.append(player).append(":\n");
+            statsSb.append(String.format("  Tournament Wins: %d\n", scores.getOrDefault(player, 0)));
+            statsSb.append(String.format("  Win Rate: %.1f%%\n", stats.getWinRate()));
+            statsSb.append(String.format("  Best Streak: %d\n", stats.longestWinStreak));
+        }
+
+        statsArea.setText(statsSb.toString());
+
+        // Celebration
+        Timer celebrationTimer = new Timer(200, null);
+        final int[] explosions = {0};
+        celebrationTimer.addActionListener(e -> {
+            int x = (int)(Math.random() * 600) + 50;
+            int y = (int)(Math.random() * 400) + 100;
+            particlePanel.explode(x, y);
+            explosions[0]++;
+            if (explosions[0] >= 15) {
+                ((Timer)e.getSource()).stop();
+            }
+        });
+        celebrationTimer.start();
+
+        cardLayout.show(mainPanel, "winner");
+    }
+
     private void showResultWithAnimation(String message, Color color) {
         resultLabel.setBackground(color);
         resultLabel.setText("");
@@ -1332,6 +1752,20 @@ public class RockPaperScissorGame extends JFrame {
             }
         });
         fadeIn.start();
+    }
+
+    private void showAchievementUnlock(String player, String achievementId) {
+        Achievement ach = achievementManager.achievements.get(achievementId);
+        if (ach == null) return;
+
+        JOptionPane.showMessageDialog(
+                this,
+                ach.emoji + " ACHIEVEMENT UNLOCKED!\n\n" +
+                        ach.name + "\n" + ach.description,
+                "Achievement for " + player,
+                JOptionPane.INFORMATION_MESSAGE
+        );
+        playSound("achievement.wav"); // Add this sound file if you have one
     }
 
     private void startCountdown() {
@@ -1475,6 +1909,32 @@ public class RockPaperScissorGame extends JFrame {
                 KeyStroke.getKeyStroke(KeyEvent.VK_S, 0),
                 JComponent.WHEN_IN_FOCUSED_WINDOW
         );
+
+        // ADD AFTER the existing three shortcuts:
+
+        getRootPane().registerKeyboardAction(
+                e -> {
+                    if (lizardButton.isEnabled() && extendedMode) {
+                        playSound("click.wav");
+                        playRound("Lizard");
+                    }
+                },
+                KeyStroke.getKeyStroke(KeyEvent.VK_L, 0),
+                JComponent.WHEN_IN_FOCUSED_WINDOW
+        );
+
+        getRootPane().registerKeyboardAction(
+                e -> {
+                    if (spockButton.isEnabled() && extendedMode) {
+                        playSound("click.wav");
+                        playRound("Spock");
+                    }
+                },
+                KeyStroke.getKeyStroke(KeyEvent.VK_K, 0),
+                JComponent.WHEN_IN_FOCUSED_WINDOW
+        );
+
+
     }
 
     // ========================================================================
