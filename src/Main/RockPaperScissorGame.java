@@ -89,6 +89,16 @@ class PlayerStats {
     int lizardWins = 0;
     int spockWins = 0;
 
+
+    int maxDeficit = 0; // Track worst deficit
+
+    void updateDeficit(int opponentScore, int myScore) {
+        int deficit = opponentScore - myScore;
+        if (deficit > maxDeficit) {
+            maxDeficit = deficit;
+        }
+    }
+
     PlayerStats(String name) {
         this.name = name;
         choiceCount.put("Rock", 0);
@@ -96,6 +106,7 @@ class PlayerStats {
         choiceCount.put("Scissors", 0);
         choiceCount.put("Lizard", 0);   // ADD
         choiceCount.put("Spock", 0);
+
 
     }
 
@@ -1112,6 +1123,18 @@ public class RockPaperScissorGame extends JFrame {
 
             playSound("start.wav");
             updateGamePanel();
+            playSound("start.wav");
+            updateGamePanel();
+            cardLayout.show(mainPanel, "game");
+            updateGameModeUI();
+
+            // ADD THIS - Start with countdown
+            Timer initialDelay = new Timer(500, e -> {
+                startCountdown();
+                ((Timer)e.getSource()).stop();
+            });
+            initialDelay.setRepeats(false);
+            initialDelay.start();
             cardLayout.show(mainPanel, "game");
             // Update UI for extended mode
             updateGameModeUI();
@@ -1222,7 +1245,10 @@ public class RockPaperScissorGame extends JFrame {
     public void playRound(String playerChoice){
         String[] choices = {"Rock", "Paper", "Scissors"};
 
+        //String computerChoice = choices[new Random().nextInt(3)];
+
         String computerChoice = choices[new Random().nextInt(3)];
+
         String result = determineWinner(playerChoice, computerChoice);
         String currentPlayer = players.get(currentPlayerIndex);
         PlayerStats stats = playerStats.get(currentPlayer);
@@ -1231,10 +1257,16 @@ public class RockPaperScissorGame extends JFrame {
         if(result.equals("player")){
 
             scores.put(currentPlayer, scores.get(currentPlayer)+1);
-            resultLabel.setText("You chose "+playerChoice+ " | Computer chose "+ computerChoice+" | You win!🙌");
+            //resultLabel.setText("You chose "+playerChoice+ " | Computer chose "+ computerChoice+" | You won!🙌");
             stats.recordWin(playerChoice);
             //showResultWithAnimation("You chose "+playerChoice+ " | Computer chose "+ computerChoice+" | You win!🙌", new Color(187, 247, 208));
-            resultLabel.setBackground(new Color(59, 202, 12));
+            //resultLabel.setBackground(new Color(59, 202, 12));
+
+            showResultWithAnimation(
+                    "You chose " + playerChoice + " | Computer chose " + computerChoice + " | You Win! 🎉",
+                    new Color(59, 202, 12)
+            );
+
             resultLabel.setForeground(Color.WHITE);
 
             playSound("/sounds/win.wav");
@@ -1242,22 +1274,53 @@ public class RockPaperScissorGame extends JFrame {
 
         } else if(result.equals("computer")){
             stats.recordLoss(playerChoice);
-            resultLabel.setText("You chose "+playerChoice+ " | Computer chose "+ computerChoice+" | Computer won😔!");
-            resultLabel.setBackground(new Color(244, 6, 6));
+            //resultLabel.setText("You chose "+playerChoice+ " | Computer chose "+ computerChoice+" | Computer won😔!");
+            //resultLabel.setBackground(new Color(244, 6, 6));
+            showResultWithAnimation(
+                    "You chose " + playerChoice + " | Computer chose " + computerChoice + " | Computer Wins 😔",
+                    new Color(244, 6, 6)
+            );
             playSound("/sounds/lose.wav");
 
 
         } else{
             stats.recordTie(playerChoice);
 
-            resultLabel.setText("You chose "+playerChoice+ " and the Computer chose "+ computerChoice+". It is a tie😰!");
-            resultLabel.setBackground(new Color(219, 227, 109));
+            //resultLabel.setText("You chose "+playerChoice+ " and the Computer chose "+ computerChoice+". It is a tie😰!");
+            //resultLabel.setBackground(new Color(219, 227, 109));
+            showResultWithAnimation(
+                    "You chose " + playerChoice + " | Computer chose " + computerChoice + " | It's a Tie! 🤝",
+                    new Color(219, 227, 109)
+            );
             playSound("/sounds/tie.wav");
 
         }
 
         // Check for new achievements
+        //achievementManager.checkAchievements(currentPlayer, stats);
+
+        // Check for new achievements
+        HashSet<String> beforeAchs = new HashSet<>(achievementManager.playerAchievements.getOrDefault(currentPlayer, new HashSet<>()));
         achievementManager.checkAchievements(currentPlayer, stats);
+        HashSet<String> afterAchs = achievementManager.playerAchievements.getOrDefault(currentPlayer, new HashSet<>());
+
+        // Show popup for newly unlocked achievements
+        for (String achId : afterAchs) {
+            if (!beforeAchs.contains(achId)) {
+                showAchievementUnlock(currentPlayer, achId);
+            }
+        }
+
+        // Track comeback potential
+        if (result.equals("computer")) {
+            // Check if opponent (computer) is ahead by 3+
+            int playerScore = scores.get(currentPlayer);
+            int roundsPlayed = triesPerPlayer - currentTries;
+            int computerScore = roundsPlayed - playerScore;
+            stats.updateDeficit(computerScore, playerScore);
+        }
+
+
 
         playerChoiceHistory.add(playerChoice);
 
@@ -1403,6 +1466,10 @@ public class RockPaperScissorGame extends JFrame {
         String currentPlayer = players.get(currentPlayerIndex);
         PlayerStats stats = playerStats.get(currentPlayer);
 
+        String avatar = playerAvatars.getOrDefault(currentPlayer, "👤");
+        avatarLabel.setText(avatar);
+        avatarLabel.setFont(new Font("Arial", Font.PLAIN, 64));
+
         playerLabel.setText(currentPlayer + "'s Turn");
         triesLabel.setText("Tries remaining: "+currentTries);
 
@@ -1411,7 +1478,7 @@ public class RockPaperScissorGame extends JFrame {
             String player = players.get(i);
 
             // Add avatar
-            String avatar = playerAvatars.getOrDefault(player, "👤");
+            //String avatar = playerAvatars.getOrDefault(player, "👤");
             sb.append(avatar).append(" ");
 
             sb.append(player);
@@ -1437,6 +1504,9 @@ public class RockPaperScissorGame extends JFrame {
 
 
         scoreboardArea.setText(sb.toString());
+        if (tournamentMode) {
+            updateBracketDisplay();
+        }
 
     }
 
@@ -1538,6 +1608,12 @@ public class RockPaperScissorGame extends JFrame {
         String champion = bracket.getTournamentWinner();
         winnerLabel.setText("🏆 TOURNAMENT CHAMPION: " + champion + " 🏆");
 
+        // Award tournament winner achievement
+        achievementManager.unlockAchievement(champion, "tournament_winner");
+        showAchievementUnlock(champion, "tournament_winner");
+
+
+
         // Show bracket final state
         StringBuilder sb = new StringBuilder();
         sb.append("FINAL BRACKET:\n\n");
@@ -1558,6 +1634,14 @@ public class RockPaperScissorGame extends JFrame {
         }
 
         statsArea.setText(statsSb.toString());
+        // Check for perfect games
+        for (String player : players) {
+            PlayerStats stats = playerStats.get(player);
+            if (stats.totalLosses == 0 && stats.totalWins > 0) {
+                achievementManager.unlockAchievement(player, "perfect_game");
+                showAchievementUnlock(player, "perfect_game");
+            }
+        }
 
         // Celebration
         Timer celebrationTimer = new Timer(200, null);
