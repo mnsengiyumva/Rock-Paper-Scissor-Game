@@ -897,39 +897,43 @@ public class RockPaperScissorGame extends JFrame {
     private JPanel createGamePanel() {
         // Base panel with image background
         JPanel basePanel = new ImagePanel("/images/background.jpg");
-        basePanel.setLayout(new BorderLayout(10, 10));
+        basePanel.setLayout(new BorderLayout(3, 3));
         basePanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        // Layered pane for particles on top
         JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setLayout(null);
         layeredPane.setOpaque(false);
 
         // Main content panel (transparent to show background)
-        JPanel contentPanel = new JPanel(new BorderLayout(10, 10));
+        JPanel contentPanel = new JPanel(new BorderLayout(0, 0));
         contentPanel.setOpaque(false);
 
         // Top panel - player information
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
-        topPanel.setBackground(new Color(255, 255, 255, 220));
+        topPanel.setBackground(new Color(255, 255, 255, 10));
         topPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         avatarLabel = new JLabel();
         avatarLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         playerLabel = new JLabel("Player's Turn");
-        playerLabel.setFont(new Font("Arial", Font.BOLD, 28));
+        playerLabel.setFont(new Font("Arial", Font.BOLD, 38));
+        playerLabel.setForeground(Color.WHITE);
         playerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         triesLabel = new JLabel("Tries remaining: 0");
-        triesLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+        triesLabel.setFont(new Font("Arial", Font.PLAIN, 28));
         triesLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        triesLabel.setForeground(Color.WHITE);
+
+
 
         countdownLabel = new JLabel("");
         countdownLabel.setFont(new Font("Arial", Font.BOLD, 72));
         countdownLabel.setForeground(new Color(255, 0, 0, 200));
         countdownLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        countdownLabel.setOpaque(false);
 
         topPanel.add(avatarLabel);
         topPanel.add(Box.createVerticalStrut(10));
@@ -940,9 +944,12 @@ public class RockPaperScissorGame extends JFrame {
 
         // Center panel - choice buttons
         centerPanel = new JPanel();
-        centerPanel.setLayout(new GridLayout(1, 3, 15, 0));
+        centerPanel.setLayout(new GridLayout(1, 3, 10, 0));
         centerPanel.setOpaque(false);
+        //centerPanel.setForeground(Color.WHITE);
+        //centerPanel.setFont(new Font("Arial", Font.BOLD, 20));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
 
         rockButton = createChoiceButton("Rock", "rock.png");
         paperButton = createChoiceButton("Paper", "paper.png");
