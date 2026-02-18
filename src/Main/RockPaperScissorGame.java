@@ -793,6 +793,7 @@ public class RockPaperScissorGame extends JFrame {
 
             players = new ArrayList<>();
             scores = new HashMap<>();
+            playerStats = new HashMap<>();
 
             // Collect player names
             for(int i = 1; i <= numPlayers; i++){
@@ -810,11 +811,18 @@ public class RockPaperScissorGame extends JFrame {
 
                 players.add(playerName.trim());
                 scores.put(playerName.trim(), 0);
+                playerStats.put(playerName.trim(), new PlayerStats(playerName.trim()));
             }
+
 
             currentPlayerIndex = 0;
             currentTries = triesPerPlayer;
+            playerChoiceHistory.clear();
 
+            updateGamePanel();
+            cardLayout.show(mainPanel, "game");
+
+            playSound("start.wav");
             updateGamePanel();
             cardLayout.show(mainPanel, "game");
 
@@ -827,35 +835,44 @@ public class RockPaperScissorGame extends JFrame {
     }
 
 
-
-
-
-
     public void playRound(String playerChoice){
         String[] choices = {"Rock", "Paper", "Scissors"};
-        String computerChoice = choices[new Random().nextInt(3)];
 
+        String computerChoice = choices[new Random().nextInt(3)];
         String result = determineWinner(playerChoice, computerChoice);
         String currentPlayer = players.get(currentPlayerIndex);
+        PlayerStats stats = playerStats.get(currentPlayer);
+
 
         if(result.equals("player")){
-            playSound("win.wav");
+
             scores.put(currentPlayer, scores.get(currentPlayer)+1);
             resultLabel.setText("You chose "+playerChoice+ " | Computer chose "+ computerChoice+" | You win!🙌");
+            stats.recordWin(playerChoice);
+            //showResultWithAnimation("You chose "+playerChoice+ " | Computer chose "+ computerChoice+" | You win!🙌", new Color(187, 247, 208));
             resultLabel.setBackground(new Color(59, 202, 12));
             resultLabel.setForeground(Color.WHITE);
 
+            playSound("win.wav");
+            particlePanel.explode(350, 300);
+
         } else if(result.equals("computer")){
-            playSound("lose.wav");
+            stats.recordLoss(playerChoice);
             resultLabel.setText("You chose "+playerChoice+ " | Computer chose "+ computerChoice+" | Computer won😔!");
             resultLabel.setBackground(new Color(244, 6, 6));
+            playSound("lose.wav");
+
 
         } else{
+            stats.recordTie(playerChoice);
 
             resultLabel.setText("You chose "+playerChoice+ " and the Computer chose "+ computerChoice+". It is a tie😰!");
             resultLabel.setBackground(new Color(229, 232, 188));
+            playSound("tie.wav");
 
         }
+
+        playerChoiceHistory.add(playerChoice);
 
         currentTries--;
 
@@ -872,9 +889,11 @@ public class RockPaperScissorGame extends JFrame {
 
                     currentTries = triesPerPlayer;
                     resultLabel.setText(" ");
-                    resultLabel.setBackground(Color.WHITE);
+                    resultLabel.setBackground(new Color(255, 255, 255, 220));
+                    countdownLabel.setText("");
                     enableButtons();
                     updateGamePanel();
+                    startCountdown();
                 }
             });
 
@@ -895,6 +914,53 @@ public class RockPaperScissorGame extends JFrame {
             return "player";
         }
         return "computer";
+    }
+
+    private String getComputerChoice() {
+        String[] choices = {"Rock", "Paper", "Scissors"};
+
+        switch (currentDifficulty) {
+            case EASY:
+                return choices[new Random().nextInt(3)];
+
+            case MEDIUM:
+                // 50% random, 50% pattern based
+                if (Math.random() < 0.5) {
+                    return choices[new Random().nextInt(3)];
+                }
+                // Fall through to HARD logic
+
+            case HARD:
+                // Counter player's most frequent choice
+                if (playerChoiceHistory.size() > 0) {
+                    HashMap<String, Integer> choiceCounts = new HashMap<>();
+                    choiceCounts.put("Rock", 0);
+                    choiceCounts.put("Paper", 0);
+                    choiceCounts.put("Scissors", 0);
+
+                    for (String choice : playerChoiceHistory) {
+                        choiceCounts.put(choice, choiceCounts.get(choice) + 1);
+                    }
+
+                    String mostFrequent = "Rock";
+                    int maxCount = 0;
+                    for (Map.Entry<String, Integer> entry : choiceCounts.entrySet()) {
+                        if (entry.getValue() > maxCount) {
+                            maxCount = entry.getValue();
+                            mostFrequent = entry.getKey();
+                        }
+                    }
+
+                    // Counter the most frequent choice
+                    if (mostFrequent.equals("Rock")) return "Paper";
+                    if (mostFrequent.equals("Paper")) return "Scissors";
+                    return "Rock";
+                }
+                return choices[new Random().nextInt(3)];
+
+            default:
+                return choices[new Random().nextInt(3)];
+        }
     }
 
     private void updateGamePanel(){
