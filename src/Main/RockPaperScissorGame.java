@@ -223,10 +223,13 @@ class ParticlePanel extends JPanel {
 public class RockPaperScissorGame extends JFrame {
 
     private int numPlayers;
-    String playerName;
+
     private int triesPerPlayer;
     private ArrayList<String> players;
     private HashMap<String, Integer> scores;
+    private HashMap<String, PlayerStats> playerStats;
+
+
 
     private int currentPlayerIndex;
 
@@ -238,6 +241,7 @@ public class RockPaperScissorGame extends JFrame {
     //Panel components
     private JTextField playersField;
     private JTextField triesField;
+    private JComboBox<String> difficultyBox;
 
     //Game panel component;
 
@@ -245,7 +249,10 @@ public class RockPaperScissorGame extends JFrame {
     private JLabel triesLabel;
     private JLabel resultLabel;
     private JTextArea scoreboardArea;
+    private JLabel avatarLabel;
+    private JLabel countdownLabel;
     private JLabel wish;
+
 
     private JButton rockButton, paperButton, scissorsButton;
 
@@ -253,6 +260,20 @@ public class RockPaperScissorGame extends JFrame {
 
     private JLabel winnerLabel;
     private JTextArea finalScoresArea;
+    private JTextArea statsArea;
+
+
+    private ParticlePanel particlePanel;
+
+    // Game modes
+    private enum Difficulty { EASY, MEDIUM, HARD }
+    private Difficulty currentDifficulty = Difficulty.MEDIUM;
+
+    // Player history for AI
+    private ArrayList<String> playerChoiceHistory = new ArrayList<>();
+
+    // Sound enabled flag
+    private boolean soundEnabled = true;
 
     /**
      * Constructor
@@ -263,13 +284,22 @@ public class RockPaperScissorGame extends JFrame {
         setSize(600, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        loadPlayerProfiles();
 
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
+        mainPanel.setOpaque(false);
 
+        mainPanel.add(createSplashPanel(), "splash");
         mainPanel.add(createSetupPanel(), "setup");
         mainPanel.add(createGamePanel(), "game");
         mainPanel.add(createWinnerPanel(), "winner");
+        add(mainPanel);
+
+        setupKeyboardShortcuts();
+        setVisible(true);
+
+        showSplashScreen();
 
         add(mainPanel);
         setVisible(true);
@@ -285,12 +315,44 @@ public class RockPaperScissorGame extends JFrame {
 
     }
 
+    private JPanel createSplashPanel() {
+        JPanel panel = new ImagePanel("splash.jpg");
+        panel.setLayout(new BorderLayout());
+
+        JLabel logo = new JLabel("🎮 Rock Paper Scissors Tournament", SwingConstants.CENTER);
+        logo.setFont(new Font("Arial", Font.BOLD, 48));
+        logo.setForeground(Color.WHITE);
+
+        JLabel subtitle = new JLabel("Pro Edition", SwingConstants.CENTER);
+        subtitle.setFont(new Font("Arial", Font.ITALIC, 24));
+        subtitle.setForeground(new Color(255, 255, 255, 200));
+
+        JPanel centerPanel = new JPanel();
+        centerPanel.setOpaque(false);
+        centerPanel.setLayout(new BoxLayout(centerPanel, BoxLayout.Y_AXIS));
+        centerPanel.add(Box.createVerticalGlue());
+        centerPanel.add(logo);
+        centerPanel.add(Box.createVerticalStrut(20));
+        centerPanel.add(subtitle);
+        centerPanel.add(Box.createVerticalGlue());
+
+        panel.add(centerPanel, BorderLayout.CENTER);
+
+        return panel;
+    }
+
+    private void showSplashScreen() {
+        cardLayout.show(mainPanel, "splash");
+        Timer splashTimer = new Timer(2000, e -> cardLayout.show(mainPanel, "setup"));
+        splashTimer.setRepeats(false);
+        splashTimer.start();
+    }
+
     private JPanel createSetupPanel(){
 
         JPanel panel = new ImagePanel("background.jpg");
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
-
 
 
         JLabel titleLabel = new JLabel("Rock Paper Scissor Game");
@@ -299,7 +361,6 @@ public class RockPaperScissorGame extends JFrame {
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel subtitleLabel = new JLabel("Game Mode");
-        JLabel sLabel = new JLabel("Enter number of players and tries for each player:");
         subtitleLabel.setFont(new Font("Arial", Font.BOLD, 18));
         subtitleLabel.setForeground(Color.WHITE);
         subtitleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -332,12 +393,20 @@ public class RockPaperScissorGame extends JFrame {
 
         JLabel triesLabel = new JLabel("Tries per Player");
         triesLabel.setFont(new Font("Arial", Font.BOLD, 20));
+
         triesLabel.setForeground(Color.white);
         triesLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         triesField = new JTextField(10);
         triesField.setFont(new Font("Arial", Font.PLAIN, 18));
         triesField.setMaximumSize(new Dimension(200, 40));
         triesField.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JLabel difficultyLabel = new JLabel("AI Difficulty");
+        difficultyLabel.setFont(new Font("Arial", Font.BOLD, 16));
+
+        difficultyBox = new JComboBox<>(new String[]{"Easy", "Medium", "Hard"});
+
 
         JButton startButton = new JButton("Start TournamentTournament");
         startButton.setFont(new Font("Arial", Font.BOLD, 20));
@@ -346,6 +415,8 @@ public class RockPaperScissorGame extends JFrame {
         startButton.setMaximumSize(new Dimension(400, 50));
         startButton.addActionListener(e -> startGame());
         startButton.setBorder(new RoundedBorder(20));
+
+        addButtonHoverEffect(startButton, new Color(99, 102, 241), new Color(79, 82, 221));
 
         JLabel wish = new JLabel("Good Luck");
         wish.setFont(new Font("Arial", Font.BOLD, 16));
@@ -358,6 +429,10 @@ public class RockPaperScissorGame extends JFrame {
         formPanel.add(triesLabel);
         formPanel.add(Box.createVerticalStrut(10));
         formPanel.add(triesField);
+        formPanel.add(Box.createVerticalStrut(10));
+        formPanel.add(difficultyLabel);
+        formPanel.add(Box.createVerticalStrut(10));
+        formPanel.add(difficultyBox);
         formPanel.add(Box.createVerticalStrut(30));
         formPanel.add(startButton);
 
