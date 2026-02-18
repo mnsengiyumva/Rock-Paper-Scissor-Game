@@ -744,12 +744,12 @@ public class RockPaperScissorGame extends JFrame {
         avatarLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         playerLabel = new JLabel("Player's Turn");
-        playerLabel.setFont(new Font("Arial", Font.BOLD, 32));
+        playerLabel.setFont(new Font("Arial", Font.BOLD, 38));
         playerLabel.setForeground(Color.WHITE);
         playerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         triesLabel = new JLabel("Tries remaining: 0");
-        triesLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+        triesLabel.setFont(new Font("Arial", Font.PLAIN, 23));
         triesLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         triesLabel.setForeground(Color.WHITE);
 
@@ -757,7 +757,7 @@ public class RockPaperScissorGame extends JFrame {
 
         countdownLabel = new JLabel("");
         countdownLabel.setFont(new Font("Arial", Font.BOLD, 62));
-        countdownLabel.setForeground(new Color(255, 0, 0, 200));
+        countdownLabel.setForeground(new Color(59, 202, 12, 255));
         countdownLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         countdownLabel.setOpaque(false);
 
