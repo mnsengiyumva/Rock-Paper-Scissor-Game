@@ -333,6 +333,7 @@ public class RockPaperScissorGame extends JFrame {
         logo.setFont(new Font("Arial", Font.BOLD, 40));
         logo.setAlignmentX(Component.CENTER_ALIGNMENT);
         logo.setForeground(Color.WHITE);
+        playSound("/sounds/start.wav");
 
         JLabel subtitle = new JLabel("Pro Edition", SwingConstants.CENTER);
         subtitle.setFont(new Font("Arial", Font.ITALIC, 20));
@@ -437,6 +438,7 @@ public class RockPaperScissorGame extends JFrame {
 
         JLabel wish = new JLabel("Good Luck");
         wish.setFont(new Font("Arial", Font.BOLD, 16));
+        playSound("/sounds/start.wav");
 
 
         formPanel.add(playersLabel);
