@@ -965,6 +965,7 @@ public class RockPaperScissorGame extends JFrame {
 
     private void updateGamePanel(){
         String currentPlayer = players.get(currentPlayerIndex);
+        PlayerStats stats = playerStats.get(currentPlayer);
 
         playerLabel.setText(currentPlayer + "'s Turn");
         triesLabel.setText("Tries remaining: "+currentTries);
@@ -980,6 +981,13 @@ public class RockPaperScissorGame extends JFrame {
             }
             sb.append(": ").append(scores.get(player)).append(" points\n");
 
+            PlayerStats pStats = playerStats.get(player);
+
+            if(pStats.currentWinStreak>1){
+                sb.append(" ").append(pStats.currentWinStreak);
+            }
+            sb.append("\n");
+
         }
 
         scoreboardArea.setText(sb.toString());
@@ -987,6 +995,8 @@ public class RockPaperScissorGame extends JFrame {
     }
 
     private void showWinner(){
+
+        playSound("victory.wav");
         int maxScore = Collections.max(scores.values());
 
         ArrayList<String> winners = new ArrayList<>();
