@@ -506,54 +506,35 @@ public class RockPaperScissorGame extends JFrame {
         paperButton = createChoiceButton("Paper", "paper.png");
         scissorsButton = createChoiceButton("Scissors", "scissors.png");
 
-        rockButton.addActionListener(e -> {
-            playSound("click.wav");
-            playRound("Rock");
-        });
-        paperButton.addActionListener(e -> {
-            playSound("click.wav");
-            playRound("Paper");
-        });
-        scissorsButton.addActionListener(e -> {
-            playSound("click.wav");
-            playRound("Scissors");
-        });
-
-
-
-//        rockButton = createChoiceButton("Rock");
-//        paperButton = createChoiceButton("Paper");
-//        scissorsButton = createChoiceButton("Scissors");
 
 
         rockButton.setMaximumSize(new Dimension(10, 1));
         rockButton.setFont(new Font("Arial", Font.BOLD, 20));
         rockButton.setForeground(Color.WHITE);
         rockButton.setFocusPainted(false);
-        //rockButton.addActionListener(e -> createChoiceButton("Rock"));
-        rockButton.setBorder(new RoundedBorder(80, Color.BLACK));
+        //rockButton.addActionListener(e -> createChoiceButton("Rock", "rock.png"));
+        rockButton.setBorder(new RoundedBorder(80, Color.WHITE));
 
         paperButton.setMaximumSize(new Dimension(10, 1));
         paperButton.setFont(new Font("Arial", Font.BOLD, 20));
         paperButton.setForeground(Color.WHITE);
         paperButton.setFocusPainted(false);
-        //paperButton.addActionListener(e -> createChoiceButton("Rock"));
-        paperButton.setBorder(new RoundedBorder(80, Color.BLACK));
+        //paperButton.addActionListener(e -> createChoiceButton("Rock", "paper.png"));
+        paperButton.setBorder(new RoundedBorder(80, Color.WHITE));
 
         scissorsButton.setMaximumSize(new Dimension(10, 1));
         scissorsButton.setFont(new Font("Arial", Font.BOLD, 20));
         scissorsButton.setForeground(Color.WHITE);
-        scissorsButton.setFocusPainted(false);
-//        scissorsButton.addActionListener(e -> createChoiceButton("Rock"));
-        scissorsButton.setBorder(new RoundedBorder(80, Color.BLACK));
+        //scissorsButton.setFocusPainted(false);scissorsButton.addActionListener(e -> createChoiceButton("Scissors", "scissors.png"));
+        scissorsButton.setBorder(new RoundedBorder(80, Color.WHITE));
 
         rockButton.setForeground(Color.WHITE);
         paperButton.setForeground(Color.WHITE);
         scissorsButton.setForeground(Color.WHITE);
 
-//        rockButton.addActionListener(e -> playRound("Rock"));
-//        paperButton.addActionListener(e -> playRound("Paper"));
-//        scissorsButton.addActionListener(e -> playRound("Scissors✂"));
+        rockButton.addActionListener(e -> playRound("Rock"));
+        paperButton.addActionListener(e -> playRound("Paper"));
+        scissorsButton.addActionListener(e -> playRound("Scissors✂"));
 
         centerPanel.add(rockButton);
         centerPanel.add(paperButton);
@@ -1036,7 +1017,41 @@ public class RockPaperScissorGame extends JFrame {
 
         finalScoresArea.setText(sb.toString());
 
+        StringBuilder statsSb = new StringBuilder();
+        for (String player : players) {
+            PlayerStats stats = playerStats.get(player);
+            statsSb.append("━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
+            statsSb.append(player).append(":\n");
+            statsSb.append(String.format("  Win Rate: %.1f%%\n", stats.getWinRate()));
+            statsSb.append(String.format("  Record: %dW-%dL-%dT\n",
+                    stats.totalWins, stats.totalLosses, stats.totalTies));
+            statsSb.append(String.format("  Best Streak: %d wins\n", stats.longestWinStreak));
+            statsSb.append(String.format("  Favorite: %s\n", stats.favoriteChoice));
+            statsSb.append(String.format("  Rock Wins: %d | Paper: %d | Scissors: %d\n",
+                    stats.rockWins, stats.paperWins, stats.scissorsWins));
+        }
+
+        statsArea.setText(statsSb.toString());
+
+        // Save player profiles
+        savePlayerProfiles();
+
+        // Celebration animation
+        Timer celebrationTimer = new Timer(200, null);
+        final int[] explosions = {0};
+        celebrationTimer.addActionListener(e -> {
+            int x = (int)(Math.random() * 600) + 50;
+            int y = (int)(Math.random() * 400) + 100;
+            particlePanel.explode(x, y);
+            explosions[0]++;
+            if (explosions[0] >= 10) {
+                ((Timer)e.getSource()).stop();
+            }
+        });
+        celebrationTimer.start();
+
         cardLayout.show(mainPanel, "winner");
+
 
     }
 
@@ -1060,7 +1075,7 @@ public class RockPaperScissorGame extends JFrame {
 
     private void startCountdown() {
         final int[] count = {3};
-        disableButtons();
+        disableButton();
 
         Timer countdownTimer = new Timer(1000, null);
         countdownTimer.addActionListener(e -> {
@@ -1271,7 +1286,7 @@ public class RockPaperScissorGame extends JFrame {
     // MAIN METHOD
     // ========================================================================
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new RockPaperScissorGamePro());
+        SwingUtilities.invokeLater(() -> new RockPaperScissorGame());
     }
 
 
