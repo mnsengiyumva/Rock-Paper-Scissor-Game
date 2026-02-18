@@ -888,28 +888,37 @@ public class RockPaperScissorGame extends JFrame {
 
 
 
-    private JButton createChoiceButton(String text, String imagePath){
+//
 
 
-        JButton button = new JButton("<html><center>"+ text+ "</center></html>");
-
-        button.setLayout(new BorderLayout());
-
-        ImageIcon icon = loadScaledImage(imagePath, 100, 100);
-        if (icon != null) {
-            JLabel imageLabel = new JLabel(icon, SwingConstants.CENTER);
-            button.add(imageLabel, BorderLayout.CENTER);
-        }
-
-        JLabel textLabel = new JLabel(text, SwingConstants.CENTER);
-        textLabel.setFont(new Font("Arial", Font.BOLD, 18));
-        button.add(textLabel, BorderLayout.SOUTH);
-
+    private JButton createChoiceButton(String text, String imagePath) {
+        JButton button = new JButton();
         button.setBackground(Color.WHITE);
         button.setFocusPainted(false);
-        button.setBorder(new RoundedBorder(15, new Color(99, 102, 241)));
+        button.setBorder(new RoundedBorder(15, new Color(255, 255, 255)));
+        button.setLayout(new GridBagLayout()); // Use GridBagLayout for centering
 
-        // Add hover effect with animation
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.insets = new Insets(10, 10, 5, 10);
+
+        // Image
+        ImageIcon icon = loadScaledImage(imagePath, 80, 80);
+        if (icon != null) {
+            JLabel imageLabel = new JLabel(icon);
+            button.add(imageLabel, gbc);
+        }
+
+        // Text centered below image
+        gbc.gridy = 1;
+        gbc.insets = new Insets(5, 10, 10, 10);
+        JLabel textLabel = new JLabel(text, SwingConstants.CENTER);
+        textLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        textLabel.setForeground(Color.WHITE);
+        button.add(textLabel, gbc);
+
+        // Hover effect
         button.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent e) {
                 button.setBackground(new Color(240, 240, 255));
@@ -925,7 +934,6 @@ public class RockPaperScissorGame extends JFrame {
         });
 
         return button;
-
     }
 
 
