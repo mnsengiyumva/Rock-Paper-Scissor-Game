@@ -1183,12 +1183,6 @@ public class RockPaperScissorGame extends JFrame {
             // Get game mode (simplified)
             extendedMode = gameModeBox.getSelectedIndex() == 1;
 
-
-            // Update UI for extended mode
-            updateGameModeUI();
-
-
-
             players = new ArrayList<>();
             scores = new HashMap<>();
             playerStats = new HashMap<>();
@@ -1241,6 +1235,8 @@ public class RockPaperScissorGame extends JFrame {
             playSound("start.wav");
             updateGamePanel();
             cardLayout.show(mainPanel, "game");
+            // Update UI for extended mode
+            updateGameModeUI();
 
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this,
