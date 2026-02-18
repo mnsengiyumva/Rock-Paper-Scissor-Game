@@ -1,11 +1,34 @@
 package Main;
+
+import org.w3c.dom.events.MouseEvent;
+
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.*;
 import javax.swing.Timer;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
 import java.util.HashMap;
 import java.awt.*;
 import java.util.*;
 import javax.swing.border.AbstractBorder;
 import javax.swing.border.Border;
+import java.util.List;
+import java.io.*;
+import javax.sound.sampled.*;
+
+
+//private HashMap<String, PlayerStats> playerStats;
+
+//class PlayerStats {
+//    int wins, losses, ties;
+//    int rockWins, paperWins, scissorsWins;
+//    int longestStreak;
+//    int currentStreak;
+//}
+
+// Show stats in winner panel with charts/bars
 
 class RoundedBorder extends AbstractBorder {
     private int radius;
@@ -48,6 +71,151 @@ class ImagePanel extends JPanel{
         }
     }
 }
+
+
+class PlayerStats {
+String name;
+int totalWins = 0;
+int totalLosses = 0;
+int totalTies = 0;
+int rockWins = 0;
+int paperWins = 0;
+int scissorsWins = 0;
+int longestWinStreak = 0;
+int currentWinStreak = 0;
+String favoriteChoice = "Rock";
+HashMap<String, Integer> choiceCount = new HashMap<>();
+ImageIcon avatar;
+
+PlayerStats(String name) {
+    this.name = name;
+    choiceCount.put("Rock", 0);
+    choiceCount.put("Paper", 0);
+    choiceCount.put("Scissors", 0);
+}
+
+void recordWin(String choice) {
+    totalWins++;
+    currentWinStreak++;
+    if (currentWinStreak > longestWinStreak) {
+        longestWinStreak = currentWinStreak;
+    }
+
+    if (choice.equals("Rock")) rockWins++;
+    else if (choice.equals("Paper")) paperWins++;
+    else if (choice.equals("Scissors")) scissorsWins++;
+
+    recordChoice(choice);
+}
+
+void recordLoss(String choice) {
+    totalLosses++;
+    currentWinStreak = 0;
+    recordChoice(choice);
+}
+
+void recordTie(String choice) {
+    totalTies++;
+    recordChoice(choice);
+}
+
+void recordChoice(String choice) {
+    choiceCount.put(choice, choiceCount.get(choice) + 1);
+    updateFavoriteChoice();
+}
+
+void updateFavoriteChoice() {
+    int maxCount = 0;
+    for (Map.Entry<String, Integer> entry : choiceCount.entrySet()) {
+        if (entry.getValue() > maxCount) {
+            maxCount = entry.getValue();
+            favoriteChoice = entry.getKey();
+        }
+    }
+}
+
+int getTotalGames() {
+    return totalWins + totalLosses + totalTies;
+}
+
+double getWinRate() {
+    int total = getTotalGames();
+    return total > 0 ? (totalWins * 100.0 / total) : 0;
+}
+}
+
+// ============================================================================
+// PARTICLE EFFECT CLASS (for celebrations)
+// ============================================================================
+class Particle {
+    double x, y;
+    double vx, vy;
+    Color color;
+    int size;
+    int life;
+
+    Particle(double x, double y) {
+        this.x = x;
+        this.y = y;
+        this.vx = (Math.random() - 0.5) * 10;
+        this.vy = (Math.random() - 0.5) * 10 - 5;
+        this.color = new Color(
+                (int)(Math.random() * 255),
+                (int)(Math.random() * 255),
+                (int)(Math.random() * 255)
+        );
+        this.size = (int)(Math.random() * 8) + 3;
+        this.life = 100;
+    }
+
+    void update() {
+        x += vx;
+        y += vy;
+        vy += 0.3; // gravity
+        life--;
+    }
+
+    boolean isAlive() {
+        return life > 0;
+    }
+
+    void draw(Graphics g) {
+        g.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(),
+                Math.min(255, life * 2)));
+        g.fillOval((int)x, (int)y, size, size);
+    }
+}
+
+class ParticlePanel extends JPanel {
+    private List<Particle> particles = new ArrayList<>();
+    private Timer animationTimer;
+
+    ParticlePanel() {
+        setOpaque(false);
+        animationTimer = new Timer(30, e -> {
+            particles.removeIf(p -> !p.isAlive());
+            particles.forEach(Particle::update);
+            repaint();
+            if (particles.isEmpty()) {
+                ((Timer)e.getSource()).stop();
+            }
+        });
+    }
+
+    void explode(int x, int y) {
+        for (int i = 0; i < 50; i++) {
+            particles.add(new Particle(x, y));
+        }
+        animationTimer.start();
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        particles.forEach(p -> p.draw(g));
+    }
+}
+
 
 
 
@@ -105,6 +273,15 @@ public class RockPaperScissorGame extends JFrame {
 
         add(mainPanel);
         setVisible(true);
+
+        // In constructor:
+        getRootPane().registerKeyboardAction(
+                e -> playRound("Rock"),
+                KeyStroke.getKeyStroke(KeyEvent.VK_R, 0),
+                JComponent.WHEN_IN_FOCUSED_WINDOW
+        );
+// P for Paper, S for Scissors
+
 
     }
 
@@ -313,9 +490,53 @@ public class RockPaperScissorGame extends JFrame {
         button.setForeground(Color.black);
         button.setFocusPainted(false);
         button.setBorder(BorderFactory.createEmptyBorder(30, 10, 30, 10));
+
+
+//        button.addMouseListener(new MouseAdapter(){
+//            public void mouseEntered(MouseEvent e){
+//                button.setBackground(new Color(240, 240, 255));
+//                button.setBorder(BorderFactory.createLineBorder(new Color(99, 102, 241)));
+//
+//            }
+//
+//            public void MouseExited(MouseEvent e){
+//                button.setBackground(Color.WHITE);
+//                button.setBorder(BorderFactory.createEmptyBorder(15, 10, 15, 10));
+//
+//            }
+//        });
+
         return button;
 
     }
+
+//    private void showResultWithAnimation(String message, Color color) {
+//        resultLabel.setText("");
+//        resultLabel.setBackground(color);
+//
+//        Timer fadeIn = new Timer(50, null);
+//        final int[] charIndex = {0};
+//
+//        fadeIn.addActionListener(e -> {
+//            if(charIndex[0] < message.length()) {
+//                resultLabel.setText(message.substring(0, charIndex[0] + 1));
+//                charIndex[0]++;
+//            } else {
+//                ((Timer)e.getSource()).stop();
+//            }
+//        });
+//        fadeIn.start();
+//    }
+//
+//
+//    private void startCountdown() {
+//        disableButton();
+//        JLabel countdownLabel = new JLabel("3", SwingConstants.CENTER);
+//        countdownLabel.setFont(new Font("Arial", Font.BOLD, 72));
+//        // Add dramatic countdown animation
+//    }
+
+
 
     private JPanel createWinnerPanel(){
 
@@ -392,6 +613,23 @@ public class RockPaperScissorGame extends JFrame {
 
     }
 
+    private void playSound(String soundFile) {
+        try {
+            AudioInputStream audio = AudioSystem.getAudioInputStream(
+                    getClass().getResource("/" + soundFile)
+            );
+            Clip clip = AudioSystem.getClip();
+            clip.open(audio);
+            clip.start();
+        } catch (Exception e) {
+            System.out.println("Sound error: " + soundFile);
+        }
+
+
+// In playRound():
+
+    }
+
     private void startGame(){
         try{
             numPlayers = Integer.parseInt(playersField.getText());
@@ -439,6 +677,11 @@ public class RockPaperScissorGame extends JFrame {
         }
     }
 
+
+
+
+
+
     public void playRound(String playerChoice){
         String[] choices = {"Rock", "Paper", "Scissors"};
         String computerChoice = choices[new Random().nextInt(3)];
@@ -447,12 +690,14 @@ public class RockPaperScissorGame extends JFrame {
         String currentPlayer = players.get(currentPlayerIndex);
 
         if(result.equals("player")){
+            playSound("win.wav");
             scores.put(currentPlayer, scores.get(currentPlayer)+1);
             resultLabel.setText("You chose "+playerChoice+ " | Computer chose "+ computerChoice+" | You win!🙌");
             resultLabel.setBackground(new Color(59, 202, 12));
             resultLabel.setForeground(Color.WHITE);
 
         } else if(result.equals("computer")){
+            playSound("lose.wav");
             resultLabel.setText("You chose "+playerChoice+ " | Computer chose "+ computerChoice+" | Computer won😔!");
             resultLabel.setBackground(new Color(244, 6, 6));
 
@@ -570,6 +815,50 @@ public class RockPaperScissorGame extends JFrame {
 
     }
 
+    private void showResultWithAnimation(String message, Color color) {
+        resultLabel.setBackground(color);
+        resultLabel.setText("");
+
+        Timer fadeIn = new Timer(30, null);
+        final int[] charIndex = {0};
+
+        fadeIn.addActionListener(e -> {
+            if (charIndex[0] < message.length()) {
+                resultLabel.setText(message.substring(0, charIndex[0] + 1));
+                charIndex[0]++;
+            } else {
+                ((Timer) e.getSource()).stop();
+            }
+        });
+        fadeIn.start();
+    }
+
+    private void startCountdown() {
+        final int[] count = {3};
+        disableButtons();
+
+        Timer countdownTimer = new Timer(1000, null);
+        countdownTimer.addActionListener(e -> {
+            if (count[0] > 0) {
+                countdownLabel.setText(String.valueOf(count[0]));
+                playSound("beep.wav");
+                count[0]--;
+            } else {
+                countdownLabel.setText("GO!");
+                playSound("go.wav");
+                Timer clearTimer = new Timer(500, evt -> {
+                    countdownLabel.setText("");
+                    enableButtons();
+                    ((Timer) evt.getSource()).stop();
+                });
+                clearTimer.setRepeats(false);
+                clearTimer.start();
+                ((Timer) e.getSource()).stop();
+            }
+        });
+        countdownTimer.start();
+    }
+
     private void disableButton(){
         rockButton.setEnabled(false);
         paperButton.setEnabled(false);
@@ -593,6 +882,171 @@ public class RockPaperScissorGame extends JFrame {
         enableButtons();
 
         cardLayout.show(mainPanel, "setup");
+    }
+
+    private void playSound(String soundFile) {
+        if (!soundEnabled) return;
+
+        try {
+            java.net.URL soundURL = getClass().getResource("/sounds/" + soundFile);
+            if (soundURL == null) {
+                // Try direct file path
+                File soundPath = new File("sounds/" + soundFile);
+                if (soundPath.exists()) {
+                    soundURL = soundPath.toURI().toURL();
+                } else {
+                    return;
+                }
+            }
+
+            AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundURL);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioIn);
+            clip.start();
+
+            // Clean up after playing
+            clip.addLineListener(event -> {
+                if (event.getType() == LineEvent.Type.STOP) {
+                    clip.close();
+                }
+            });
+
+        } catch (Exception e) {
+            // Fail silently if sound not available
+        }
+    }
+
+    // ========================================================================
+    // IMAGE LOADING
+    // ========================================================================
+    private ImageIcon loadScaledImage(String path, int width, int height) {
+        try {
+            java.net.URL imgURL = getClass().getResource("/" + path);
+            ImageIcon icon;
+
+            if (imgURL != null) {
+                icon = new ImageIcon(imgURL);
+            } else {
+                icon = new ImageIcon(path);
+            }
+
+            Image scaled = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+            return new ImageIcon(scaled);
+        } catch (Exception e) {
+            System.out.println("Image not found: " + path);
+            return null;
+        }
+    }
+
+    // ========================================================================
+    // KEYBOARD SHORTCUTS
+    // ========================================================================
+    private void setupKeyboardShortcuts() {
+        getRootPane().registerKeyboardAction(
+                e -> {
+                    if (rockButton.isEnabled()) {
+                        playSound("click.wav");
+                        playRound("Rock");
+                    }
+                },
+                KeyStroke.getKeyStroke(KeyEvent.VK_R, 0),
+                JComponent.WHEN_IN_FOCUSED_WINDOW
+        );
+
+        getRootPane().registerKeyboardAction(
+                e -> {
+                    if (paperButton.isEnabled()) {
+                        playSound("click.wav");
+                        playRound("Paper");
+                    }
+                },
+                KeyStroke.getKeyStroke(KeyEvent.VK_P, 0),
+                JComponent.WHEN_IN_FOCUSED_WINDOW
+        );
+
+        getRootPane().registerKeyboardAction(
+                e -> {
+                    if (scissorsButton.isEnabled()) {
+                        playSound("click.wav");
+                        playRound("Scissors");
+                    }
+                },
+                KeyStroke.getKeyStroke(KeyEvent.VK_S, 0),
+                JComponent.WHEN_IN_FOCUSED_WINDOW
+        );
+    }
+
+    // ========================================================================
+    // BUTTON HOVER EFFECT
+    // ========================================================================
+    private void addButtonHoverEffect(JButton button, Color normalColor, Color hoverColor) {
+        button.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) {
+                button.setBackground(hoverColor);
+                button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            }
+
+            public void mouseExited(MouseEvent e) {
+                button.setBackground(normalColor);
+                button.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            }
+        });
+    }
+
+    // ========================================================================
+    // SAVE/LOAD PLAYER PROFILES
+    // ========================================================================
+    private void savePlayerProfiles() {
+        if (playerStats == null || playerStats.isEmpty()) return;
+
+        try {
+            File profilesFile = new File("player_profiles.txt");
+            BufferedWriter writer = new BufferedWriter(new FileWriter(profilesFile));
+
+            for (Map.Entry<String, PlayerStats> entry : playerStats.entrySet()) {
+                PlayerStats stats = entry.getValue();
+                writer.write(String.format("%s|%d|%d|%d|%d\n",
+                        stats.name,
+                        stats.totalWins,
+                        stats.totalLosses,
+                        stats.totalTies,
+                        stats.longestWinStreak
+                ));
+            }
+
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Could not save profiles: " + e.getMessage());
+        }
+    }
+
+    private void loadPlayerProfiles() {
+        try {
+            File profilesFile = new File("player_profiles.txt");
+            if (!profilesFile.exists()) return;
+
+            BufferedReader reader = new BufferedReader(new FileReader(profilesFile));
+            String line;
+
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split("\\|");
+                if (parts.length >= 5) {
+                    // Future use: can display returning player stats
+                    System.out.println("Loaded profile: " + parts[0]);
+                }
+            }
+
+            reader.close();
+        } catch (IOException e) {
+            System.out.println("Could not load profiles: " + e.getMessage());
+        }
+    }
+
+    // ========================================================================
+    // MAIN METHOD
+    // ========================================================================
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new RockPaperScissorGamePro());
     }
 
 
