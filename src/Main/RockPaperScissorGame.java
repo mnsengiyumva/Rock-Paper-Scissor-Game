@@ -19,17 +19,6 @@ import java.io.*;
 import javax.sound.sampled.*;
 
 
-//private HashMap<String, PlayerStats> playerStats;
-
-//class PlayerStats {
-//    int wins, losses, ties;
-//    int rockWins, paperWins, scissorsWins;
-//    int longestStreak;
-//    int currentStreak;
-//}
-
-// Show stats in winner panel with charts/bars
-
 class RoundedBorder extends AbstractBorder {
     private int radius;
     private Color color;
@@ -84,74 +73,75 @@ class ImagePanel extends JPanel{
 
 
 class PlayerStats {
-String name;
-int totalWins = 0;
-int totalLosses = 0;
-int totalTies = 0;
-int rockWins = 0;
-int paperWins = 0;
-int scissorsWins = 0;
-int longestWinStreak = 0;
-int currentWinStreak = 0;
-String favoriteChoice = "Rock";
-HashMap<String, Integer> choiceCount = new HashMap<>();
-ImageIcon avatar;
 
-PlayerStats(String name) {
-    this.name = name;
-    choiceCount.put("Rock", 0);
-    choiceCount.put("Paper", 0);
-    choiceCount.put("Scissors", 0);
-}
+    String name;
+    int totalWins = 0;
+    int totalLosses = 0;
+    int totalTies = 0;
+    int rockWins = 0;
+    int paperWins = 0;
+    int scissorsWins = 0;
+    int longestWinStreak = 0;
+    int currentWinStreak = 0;
+    String favoriteChoice = "Rock";
+    HashMap<String, Integer> choiceCount = new HashMap<>();
+    ImageIcon avatar;
 
-void recordWin(String choice) {
-    totalWins++;
-    currentWinStreak++;
-    if (currentWinStreak > longestWinStreak) {
-        longestWinStreak = currentWinStreak;
+    PlayerStats(String name) {
+        this.name = name;
+        choiceCount.put("Rock", 0);
+        choiceCount.put("Paper", 0);
+        choiceCount.put("Scissors", 0);
     }
 
-    if (choice.equals("Rock")) rockWins++;
-    else if (choice.equals("Paper")) paperWins++;
-    else if (choice.equals("Scissors")) scissorsWins++;
+    void recordWin(String choice) {
+        totalWins++;
+        currentWinStreak++;
+        if (currentWinStreak > longestWinStreak) {
+            longestWinStreak = currentWinStreak;
+        }
 
-    recordChoice(choice);
-}
+        if (choice.equals("Rock")) rockWins++;
+        else if (choice.equals("Paper")) paperWins++;
+        else if (choice.equals("Scissors")) scissorsWins++;
 
-void recordLoss(String choice) {
-    totalLosses++;
-    currentWinStreak = 0;
-    recordChoice(choice);
-}
+        recordChoice(choice);
+    }
 
-void recordTie(String choice) {
-    totalTies++;
-    recordChoice(choice);
-}
+    void recordLoss(String choice) {
+        totalLosses++;
+        currentWinStreak = 0;
+        recordChoice(choice);
+    }
 
-void recordChoice(String choice) {
-    choiceCount.put(choice, choiceCount.get(choice) + 1);
-    updateFavoriteChoice();
-}
+    void recordTie(String choice) {
+        totalTies++;
+        recordChoice(choice);
+    }
 
-void updateFavoriteChoice() {
-    int maxCount = 0;
-    for (Map.Entry<String, Integer> entry : choiceCount.entrySet()) {
-        if (entry.getValue() > maxCount) {
-            maxCount = entry.getValue();
-            favoriteChoice = entry.getKey();
+    void recordChoice(String choice) {
+        choiceCount.put(choice, choiceCount.get(choice) + 1);
+        updateFavoriteChoice();
+    }
+
+    void updateFavoriteChoice() {
+        int maxCount = 0;
+        for (Map.Entry<String, Integer> entry : choiceCount.entrySet()) {
+            if (entry.getValue() > maxCount) {
+                maxCount = entry.getValue();
+                favoriteChoice = entry.getKey();
+            }
         }
     }
-}
 
-int getTotalGames() {
-    return totalWins + totalLosses + totalTies;
-}
+    int getTotalGames() {
+        return totalWins + totalLosses + totalTies;
+    }
 
-double getWinRate() {
-    int total = getTotalGames();
-    return total > 0 ? (totalWins * 100.0 / total) : 0;
-}
+    double getWinRate() {
+        int total = getTotalGames();
+        return total > 0 ? (totalWins * 100.0 / total) : 0;
+    }
 }
 
 // ============================================================================
@@ -226,6 +216,119 @@ class ParticlePanel extends JPanel {
     }
 }
 
+// ============================================================================
+// TOURNAMENT BRACKET CLASSES
+// ============================================================================
+class BracketMatch {
+    String player1;
+    String player2;
+    String winner;
+    int round;
+    boolean completed;
+
+    BracketMatch(String p1, String p2, int round) {
+        this.player1 = p1;
+        this.player2 = p2;
+        this.round = round;
+        this.completed = false;
+    }
+}
+
+class TournamentBracket {
+    ArrayList<ArrayList<BracketMatch>> rounds;
+    ArrayList<String> participants;
+    int currentRound;
+    int currentMatchInRound;
+
+    TournamentBracket(ArrayList<String> players) {
+        this.participants = new ArrayList<>(players);
+        this.rounds = new ArrayList<>();
+        this.currentRound = 0;
+        this.currentMatchInRound = 0;
+        generateBracket();
+    }
+
+    void generateBracket() {
+        // Pad participants to next power of 2
+        int targetSize = 1;
+        while (targetSize < participants.size()) {
+            targetSize *= 2;
+        }
+
+        while (participants.size() < targetSize) {
+            participants.add("BYE");
+        }
+
+        // Generate first round matches
+        ArrayList<BracketMatch> firstRound = new ArrayList<>();
+        for (int i = 0; i < participants.size(); i += 2) {
+            firstRound.add(new BracketMatch(participants.get(i), participants.get(i + 1), 1));
+        }
+        rounds.add(firstRound);
+
+        // Generate subsequent rounds
+        int roundNum = 2;
+        int matchCount = firstRound.size() / 2;
+
+        while (matchCount >= 1) {
+            ArrayList<BracketMatch> round = new ArrayList<>();
+            for (int i = 0; i < matchCount; i++) {
+                round.add(new BracketMatch("TBD", "TBD", roundNum));
+            }
+            rounds.add(round);
+            matchCount /= 2;
+            roundNum++;
+        }
+    }
+
+    BracketMatch getCurrentMatch() {
+        if (currentRound >= rounds.size()) return null;
+        ArrayList<BracketMatch> round = rounds.get(currentRound);
+        if (currentMatchInRound >= round.size()) return null;
+        return round.get(currentMatchInRound);
+    }
+
+    void recordMatchWinner(String winner) {
+        BracketMatch match = getCurrentMatch();
+        if (match == null) return;
+
+        match.winner = winner;
+        match.completed = true;
+
+        // Advance to next match or round
+        currentMatchInRound++;
+        if (currentMatchInRound >= rounds.get(currentRound).size()) {
+            advanceWinnersToNextRound();
+            currentRound++;
+            currentMatchInRound = 0;
+        }
+    }
+
+    void advanceWinnersToNextRound() {
+        if (currentRound + 1 >= rounds.size()) return;
+
+        ArrayList<BracketMatch> currentRoundMatches = rounds.get(currentRound);
+        ArrayList<BracketMatch> nextRoundMatches = rounds.get(currentRound + 1);
+
+        for (int i = 0; i < nextRoundMatches.size(); i++) {
+            BracketMatch nextMatch = nextRoundMatches.get(i);
+            nextMatch.player1 = currentRoundMatches.get(i * 2).winner;
+            nextMatch.player2 = currentRoundMatches.get(i * 2 + 1).winner;
+        }
+    }
+
+    boolean isComplete() {
+        return currentRound >= rounds.size();
+    }
+
+    String getTournamentWinner() {
+        if (!isComplete()) return null;
+        return rounds.get(rounds.size() - 1).get(0).winner;
+    }
+}
+
+
+
 
 
 
@@ -238,6 +341,11 @@ public class RockPaperScissorGame extends JFrame {
     private ArrayList<String> players;
     private HashMap<String, Integer> scores;
     private HashMap<String, PlayerStats> playerStats;
+
+    // Tournament mode
+    private boolean tournamentMode = false;
+    private TournamentBracket bracket;
+    private JTextArea bracketDisplay;
 
 
 
@@ -423,6 +531,16 @@ public class RockPaperScissorGame extends JFrame {
 
         difficultyBox = new JComboBox<>(new String[]{"Easy", "Medium", "Hard"});
 
+        // ADD THIS BEFORE startButton code:
+        JCheckBox tournamentCheckbox = new JCheckBox("Tournament Bracket Mode (4+ players)");
+        tournamentCheckbox.setFont(new Font("Arial", Font.PLAIN, 16));
+        tournamentCheckbox.setOpaque(false);
+        tournamentCheckbox.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        formPanel.add(Box.createVerticalStrut(10));
+        formPanel.add(tournamentCheckbox);
+        formPanel.add(Box.createVerticalStrut(20));
+
 
 
         JButton startButton = new JButton("Start Game");
@@ -569,10 +687,26 @@ public class RockPaperScissorGame extends JFrame {
         JLabel scoreLabel = new JLabel("ScoreBoard");
         scoreLabel.setFont(new Font("Arial", Font.BOLD, 14));
 
+
+
         scoreboardArea = new JTextArea(8, 40);
         scoreboardArea.setFont(new Font("Monospaced", Font.PLAIN, 14));
         scoreboardArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(scoreboardArea);
+
+        // ADD THIS after scoreboardArea and scrollPane:
+        bracketDisplay = new JTextArea(6, 40);
+        bracketDisplay.setFont(new Font("Monospaced", Font.PLAIN, 12));
+        bracketDisplay.setEditable(false);
+        JScrollPane bracketScroll = new JScrollPane(bracketDisplay);
+
+        // Update bottomPanel to show bracket in tournament mode
+        JTabbedPane tabbedPane = new JTabbedPane();
+        tabbedPane.addTab("Scoreboard", scrollPane);
+        tabbedPane.addTab("Bracket", bracketScroll);
+
+        bottomPanel.add(scoreLabel, BorderLayout.NORTH);
+        bottomPanel.add(tabbedPane, BorderLayout.CENTER); // Replace: bottomPanel.add(scrollPane, ...)
 
         bottomPanel.add(scoreLabel, BorderLayout.NORTH);
         bottomPanel.add(scrollPane, BorderLayout.CENTER);
@@ -765,20 +899,98 @@ public class RockPaperScissorGame extends JFrame {
 
 
 
-    private void startGame(){
-        try{
+//    private void startGame(){
+//        try{
+//            numPlayers = Integer.parseInt(playersField.getText());
+//            triesPerPlayer = Integer.parseInt(triesField.getText());
+//
+//            if(numPlayers <= 0 || triesPerPlayer <= 0){
+//                JOptionPane.showMessageDialog(this, "Please enter positive numbers!",
+//                        "Invalid Input",
+//                        JOptionPane.ERROR_MESSAGE);
+//                return;
+//            }
+//
+//            String diff = (String) difficultyBox.getSelectedItem();
+//            assert diff != null;
+//            currentDifficulty = Difficulty.valueOf(diff.toUpperCase());
+//
+//            players = new ArrayList<>();
+//            scores = new HashMap<>();
+//            playerStats = new HashMap<>();
+//
+//            // Collect player names
+//            for(int i = 1; i <= numPlayers; i++){
+//                String playerName = JOptionPane.showInputDialog(
+//                        this,
+//                        "Enter name for Player " + i + ":",
+//                        "Player Name",
+//                        JOptionPane.QUESTION_MESSAGE
+//                );
+//
+//                // Handle cancel or empty input
+//                if(playerName == null || playerName.trim().isEmpty()){
+//                    playerName = "Player " + i; // fallback to default name
+//                }
+//
+//                players.add(playerName.trim());
+//                scores.put(playerName.trim(), 0);
+//                playerStats.put(playerName.trim(), new PlayerStats(playerName.trim()));
+//            }
+//
+//
+//            currentPlayerIndex = 0;
+//            currentTries = triesPerPlayer;
+//            playerChoiceHistory.clear();
+//
+//            updateGamePanel();
+//            cardLayout.show(mainPanel, "game");
+//
+//            playSound("/sounds/start.wav");
+//            updateGamePanel();
+//            cardLayout.show(mainPanel, "game");
+//
+//        } catch (NumberFormatException e){
+//            JOptionPane.showMessageDialog(this,
+//                    "Please enter valid numbers!",
+//                    "Invalid Input",
+//                    JOptionPane.ERROR_MESSAGE);
+//        }
+//    }
+
+
+    private void startGame() {
+        try {
             numPlayers = Integer.parseInt(playersField.getText());
             triesPerPlayer = Integer.parseInt(triesField.getText());
 
-            if(numPlayers <= 0 || triesPerPlayer <= 0){
-                JOptionPane.showMessageDialog(this, "Please enter positive numbers!",
+            if (numPlayers <= 0 || triesPerPlayer <= 0) {
+                JOptionPane.showMessageDialog(this,
+                        "Please enter positive numbers!",
                         "Invalid Input",
                         JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
+            // Check tournament mode
+            Component[] components = ((JPanel)((JPanel)mainPanel.getComponent(1)).getComponent(1)).getComponents();
+            for (Component c : components) {
+                if (c instanceof JCheckBox) {
+                    tournamentMode = ((JCheckBox)c).isSelected();
+                    break;
+                }
+            }
+
+            if (tournamentMode && numPlayers < 4) {
+                JOptionPane.showMessageDialog(this,
+                        "Tournament mode requires at least 4 players!",
+                        "Invalid Setup",
+                        JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+
+            // Set difficulty
             String diff = (String) difficultyBox.getSelectedItem();
-            assert diff != null;
             currentDifficulty = Difficulty.valueOf(diff.toUpperCase());
 
             players = new ArrayList<>();
@@ -786,7 +998,7 @@ public class RockPaperScissorGame extends JFrame {
             playerStats = new HashMap<>();
 
             // Collect player names
-            for(int i = 1; i <= numPlayers; i++){
+            for (int i = 1; i <= numPlayers; i++) {
                 String playerName = JOptionPane.showInputDialog(
                         this,
                         "Enter name for Player " + i + ":",
@@ -794,9 +1006,8 @@ public class RockPaperScissorGame extends JFrame {
                         JOptionPane.QUESTION_MESSAGE
                 );
 
-                // Handle cancel or empty input
-                if(playerName == null || playerName.trim().isEmpty()){
-                    playerName = "Player " + i; // fallback to default name
+                if (playerName == null || playerName.trim().isEmpty()) {
+                    playerName = "Player " + i;
                 }
 
                 players.add(playerName.trim());
@@ -804,25 +1015,66 @@ public class RockPaperScissorGame extends JFrame {
                 playerStats.put(playerName.trim(), new PlayerStats(playerName.trim()));
             }
 
-
             currentPlayerIndex = 0;
             currentTries = triesPerPlayer;
             playerChoiceHistory.clear();
 
+            // Initialize tournament bracket if needed
+            if (tournamentMode) {
+                bracket = new TournamentBracket(players);
+                updateBracketDisplay();
+            }
+
+            playSound("start.wav");
             updateGamePanel();
             cardLayout.show(mainPanel, "game");
 
-            playSound("/sounds/start.wav");
-            updateGamePanel();
-            cardLayout.show(mainPanel, "game");
-
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this,
                     "Please enter valid numbers!",
                     "Invalid Input",
                     JOptionPane.ERROR_MESSAGE);
         }
     }
+
+    private void updateBracketDisplay() {
+        if (!tournamentMode || bracket == null) return;
+
+        StringBuilder display = new StringBuilder();
+        display.append("═══════ TOURNAMENT BRACKET ═══════\n\n");
+
+        for (int r = 0; r < bracket.rounds.size(); r++) {
+            String roundName;
+            int remaining = bracket.rounds.size() - r;
+            if (remaining == 1) roundName = "🏆 FINAL";
+            else if (remaining == 2) roundName = "SEMI-FINALS";
+            else if (remaining == 3) roundName = "QUARTER-FINALS";
+            else roundName = "ROUND " + (r + 1);
+
+            display.append(roundName).append(":\n");
+
+            ArrayList<BracketMatch> round = bracket.rounds.get(r);
+            for (int m = 0; m < round.size(); m++) {
+                BracketMatch match = round.get(m);
+                String status = match.completed ? "✓" :
+                        (r == bracket.currentRound && m == bracket.currentMatchInRound) ? "▶" : "○";
+
+                display.append("  ").append(status).append(" ");
+                display.append(match.player1).append(" vs ").append(match.player2);
+
+                if (match.completed) {
+                    display.append(" → Winner: ").append(match.winner);
+                }
+                display.append("\n");
+            }
+            display.append("\n");
+        }
+
+        if (bracketDisplay != null) {
+            bracketDisplay.setText(display.toString());
+        }
+    }
+
 
 
     public void playRound(String playerChoice){
