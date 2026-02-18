@@ -314,27 +314,30 @@ public class RockPaperScissorGame extends JFrame {
         add(mainPanel);
         setVisible(true);
 
-        // In constructor:
-        getRootPane().registerKeyboardAction(
-                e -> playRound("Rock"),
-                KeyStroke.getKeyStroke(KeyEvent.VK_R, 0),
-                JComponent.WHEN_IN_FOCUSED_WINDOW
-        );
+//        // In constructor:
+//        getRootPane().registerKeyboardAction(
+//                e -> playRound("Rock"),
+//                KeyStroke.getKeyStroke(KeyEvent.VK_R, 0),
+//                JComponent.WHEN_IN_FOCUSED_WINDOW
+//        );
 // P for Paper, S for Scissors
 
 
     }
 
     private JPanel createSplashPanel() {
-        JPanel panel = new ImagePanel("splash.jpg");
+        JPanel panel = new ImagePanel("/images/background.jpg");
         panel.setLayout(new BorderLayout());
 
-        JLabel logo = new JLabel("🎮 Rock Paper Scissors Tournament", SwingConstants.CENTER);
-        logo.setFont(new Font("Arial", Font.BOLD, 48));
+        JLabel logo = new JLabel("Rock Paper Scissors Game", SwingConstants.CENTER);
+        logo.setFont(new Font("Arial", Font.BOLD, 40));
+        logo.setAlignmentX(Component.CENTER_ALIGNMENT);
         logo.setForeground(Color.WHITE);
 
         JLabel subtitle = new JLabel("Pro Edition", SwingConstants.CENTER);
-        subtitle.setFont(new Font("Arial", Font.ITALIC, 24));
+        subtitle.setFont(new Font("Arial", Font.ITALIC, 20));
+        subtitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         subtitle.setForeground(new Color(255, 255, 255, 200));
 
         JPanel centerPanel = new JPanel();
@@ -360,7 +363,7 @@ public class RockPaperScissorGame extends JFrame {
 
     private JPanel createSetupPanel(){
 
-        JPanel panel = new ImagePanel("background.jpg");
+        JPanel panel = new ImagePanel("/images/background.jpg");
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
 
@@ -393,40 +396,44 @@ public class RockPaperScissorGame extends JFrame {
         JLabel playersLabel = new JLabel("Number of Players");
         playersLabel.setFont(new Font("Arial", Font.BOLD, 20));
         playersLabel.setForeground(Color.white);
-        playersLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        playersLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
         playersField = new JTextField(10);
         playersField.setFont(new Font("Arial", Font.PLAIN, 16));
         playersField.setMaximumSize(new Dimension(200, 40));
-        playersLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        playersField.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
 
         JLabel triesLabel = new JLabel("Tries per Player");
         triesLabel.setFont(new Font("Arial", Font.BOLD, 20));
 
         triesLabel.setForeground(Color.white);
-        triesLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        triesLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
         triesField = new JTextField(10);
         triesField.setFont(new Font("Arial", Font.PLAIN, 18));
         triesField.setMaximumSize(new Dimension(200, 40));
-        triesField.setAlignmentX(Component.CENTER_ALIGNMENT);
+        triesField.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
-        JLabel difficultyLabel = new JLabel("AI Difficulty");
-        difficultyLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        JLabel difficultyLabel = new JLabel("Choose Difficulty Level");
+        difficultyLabel.setForeground(Color.WHITE);
+        difficultyLabel.setAlignmentX(Component.RIGHT_ALIGNMENT);
+        difficultyLabel.setFont(new Font("Arial", Font.BOLD, 20));
 
         difficultyBox = new JComboBox<>(new String[]{"Easy", "Medium", "Hard"});
 
 
-        JButton startButton = new JButton("Start TournamentTournament");
+
+        JButton startButton = new JButton("Start Game");
         startButton.setFont(new Font("Arial", Font.BOLD, 20));
         startButton.setForeground(Color.WHITE);
         startButton.setFocusPainted(false);
         startButton.setMaximumSize(new Dimension(400, 50));
         startButton.addActionListener(e -> startGame());
         startButton.setBorder(new RoundedBorder(20, Color.WHITE));
+        startButton.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
-        addButtonHoverEffect(startButton, new Color(99, 102, 241), new Color(79, 82, 221));
+        //addButtonHoverEffect(startButton, new Color(99, 102, 241), new Color(79, 82, 221));
 
         JLabel wish = new JLabel("Good Luck");
         wish.setFont(new Font("Arial", Font.BOLD, 16));
@@ -457,7 +464,7 @@ public class RockPaperScissorGame extends JFrame {
         layeredPane.setPreferredSize(new Dimension(700, 800));
 
 
-        JPanel panel = new ImagePanel("background.jpg");
+        JPanel panel = new ImagePanel("/images/background.jpg");
         panel.setLayout(new BorderLayout(10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         panel.setBounds(0, 0, 700, 800);
@@ -508,21 +515,21 @@ public class RockPaperScissorGame extends JFrame {
 
 
 
-        rockButton.setMaximumSize(new Dimension(10, 1));
+        rockButton.setMaximumSize(new Dimension(10, 0));
         rockButton.setFont(new Font("Arial", Font.BOLD, 20));
         rockButton.setForeground(Color.WHITE);
         rockButton.setFocusPainted(false);
         //rockButton.addActionListener(e -> createChoiceButton("Rock", "rock.png"));
         rockButton.setBorder(new RoundedBorder(80, Color.WHITE));
 
-        paperButton.setMaximumSize(new Dimension(10, 1));
+        paperButton.setMaximumSize(new Dimension(10, 0));
         paperButton.setFont(new Font("Arial", Font.BOLD, 20));
         paperButton.setForeground(Color.WHITE);
         paperButton.setFocusPainted(false);
         //paperButton.addActionListener(e -> createChoiceButton("Rock", "paper.png"));
         paperButton.setBorder(new RoundedBorder(80, Color.WHITE));
 
-        scissorsButton.setMaximumSize(new Dimension(10, 1));
+        scissorsButton.setMaximumSize(new Dimension(10, 0));
         scissorsButton.setFont(new Font("Arial", Font.BOLD, 20));
         scissorsButton.setForeground(Color.WHITE);
         //scissorsButton.setFocusPainted(false);scissorsButton.addActionListener(e -> createChoiceButton("Scissors", "scissors.png"));
@@ -534,7 +541,7 @@ public class RockPaperScissorGame extends JFrame {
 
         rockButton.addActionListener(e -> playRound("Rock"));
         paperButton.addActionListener(e -> playRound("Paper"));
-        scissorsButton.addActionListener(e -> playRound("Scissors✂"));
+        scissorsButton.addActionListener(e -> playRound("Scissors"));
 
         centerPanel.add(rockButton);
         centerPanel.add(paperButton);
@@ -648,7 +655,7 @@ public class RockPaperScissorGame extends JFrame {
 
     private JPanel createWinnerPanel(){
 
-        JPanel panel = new ImagePanel("background.jpg");
+        JPanel panel = new ImagePanel("/images/background.jpg");
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setBorder(BorderFactory.createEmptyBorder(50, 50, 50, 50));
         panel.setOpaque(false);
@@ -704,7 +711,7 @@ public class RockPaperScissorGame extends JFrame {
         statsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         statsPanel.setMaximumSize(new Dimension(600, 200));
 
-        JLabel statsLabel = new JLabel("📈 Detailed Statistics");
+        JLabel statsLabel = new JLabel("Detailed Results Statistics");
         statsLabel.setFont(new Font("Arial", Font.BOLD, 20));
 
         statsArea = new JTextArea(6, 40);
@@ -803,7 +810,7 @@ public class RockPaperScissorGame extends JFrame {
             updateGamePanel();
             cardLayout.show(mainPanel, "game");
 
-            playSound("start.wav");
+            playSound("/sounds/start.wav");
             updateGamePanel();
             cardLayout.show(mainPanel, "game");
 
@@ -834,14 +841,14 @@ public class RockPaperScissorGame extends JFrame {
             resultLabel.setBackground(new Color(59, 202, 12));
             resultLabel.setForeground(Color.WHITE);
 
-            playSound("win.wav");
+            playSound("/sounds/win.wav");
             particlePanel.explode(350, 300);
 
         } else if(result.equals("computer")){
             stats.recordLoss(playerChoice);
             resultLabel.setText("You chose "+playerChoice+ " | Computer chose "+ computerChoice+" | Computer won😔!");
             resultLabel.setBackground(new Color(244, 6, 6));
-            playSound("lose.wav");
+            playSound("/sounds/lose.wav");
 
 
         } else{
@@ -849,7 +856,7 @@ public class RockPaperScissorGame extends JFrame {
 
             resultLabel.setText("You chose "+playerChoice+ " and the Computer chose "+ computerChoice+". It is a tie😰!");
             resultLabel.setBackground(new Color(229, 232, 188));
-            playSound("tie.wav");
+            playSound("/sounds/tie.wav");
 
         }
 
@@ -977,7 +984,7 @@ public class RockPaperScissorGame extends JFrame {
 
     private void showWinner(){
 
-        playSound("victory.wav");
+        playSound("/sounds/victory.wav");
         int maxScore = Collections.max(scores.values());
 
         ArrayList<String> winners = new ArrayList<>();
@@ -1081,11 +1088,11 @@ public class RockPaperScissorGame extends JFrame {
         countdownTimer.addActionListener(e -> {
             if (count[0] > 0) {
                 countdownLabel.setText(String.valueOf(count[0]));
-                playSound("beep.wav");
+                playSound("/sounds/beep.wav");
                 count[0]--;
             } else {
                 countdownLabel.setText("GO!");
-                playSound("go.wav");
+                playSound("/sounds/go.wav");
                 Timer clearTimer = new Timer(500, evt -> {
                     countdownLabel.setText("");
                     enableButtons();
@@ -1128,10 +1135,10 @@ public class RockPaperScissorGame extends JFrame {
         if (!soundEnabled) return;
 
         try {
-            java.net.URL soundURL = getClass().getResource("/sounds/" + soundFile);
+            java.net.URL soundURL = getClass().getResource(soundFile);
             if (soundURL == null) {
                 // Try direct file path
-                File soundPath = new File("sounds/" + soundFile);
+                File soundPath = new File(soundFile);
                 if (soundPath.exists()) {
                     soundURL = soundPath.toURI().toURL();
                 } else {
@@ -1185,7 +1192,7 @@ public class RockPaperScissorGame extends JFrame {
         getRootPane().registerKeyboardAction(
                 e -> {
                     if (rockButton.isEnabled()) {
-                        playSound("click.wav");
+                        playSound("/sounds/click.wav");
                         playRound("Rock");
                     }
                 },
@@ -1196,7 +1203,7 @@ public class RockPaperScissorGame extends JFrame {
         getRootPane().registerKeyboardAction(
                 e -> {
                     if (paperButton.isEnabled()) {
-                        playSound("click.wav");
+                        playSound("/sounds/click.wav");
                         playRound("Paper");
                     }
                 },
@@ -1207,7 +1214,7 @@ public class RockPaperScissorGame extends JFrame {
         getRootPane().registerKeyboardAction(
                 e -> {
                     if (scissorsButton.isEnabled()) {
-                        playSound("click.wav");
+                        playSound("/sounds/click.wav");
                         playRound("Scissors");
                     }
                 },
