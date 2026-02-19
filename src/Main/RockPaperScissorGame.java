@@ -1832,9 +1832,7 @@ public class RockPaperScissorGame extends JFrame {
 
     }
 
-    // ========================================================================
-    // BUTTON HOVER EFFECT
-    // ========================================================================
+
     private void addButtonHoverEffect(JButton button, Color normalColor, Color hoverColor) {
         button.addMouseListener(new MouseAdapter() {
             public void mouseEntered(MouseEvent e) {
