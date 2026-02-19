@@ -882,10 +882,6 @@ public class RockPaperScissorGame extends JFrame {
     }
 
 
-
-//
-
-
     private JButton createChoiceButton(String text, String imagePath) {
         JButton button = new JButton();
         button.setBackground(Color.WHITE);
@@ -1090,7 +1086,6 @@ public class RockPaperScissorGame extends JFrame {
 
                 players.add(playerName.trim());
 
-                // ADD AFTER: players.add(playerName.trim());
 
                 // Avatar selection
                 String[] avatarOptions = {"👤", "😀", "😎", "🤓", "🥳", "🤠", "👑", "🎮", "🐱", "🐶", "🦁", "🐼"};
@@ -1446,8 +1441,7 @@ public class RockPaperScissorGame extends JFrame {
         for (int i = 0; i < players.size(); i++) {
             String player = players.get(i);
 
-            // Add avatar
-            //String avatar = playerAvatars.getOrDefault(player, "👤");
+
             sb.append(avatar).append(" ");
 
             sb.append(player);
@@ -1469,8 +1463,6 @@ public class RockPaperScissorGame extends JFrame {
 
             sb.append("\n");
         }
-
-
 
         scoreboardArea.setText(sb.toString());
         if (tournamentMode) {
@@ -1499,7 +1491,6 @@ public class RockPaperScissorGame extends JFrame {
             winnerLabel.setText(String.join(" &", winners) + " Tie!");
 
         }
-
         //Sort the scores in descending order;
 
         ArrayList<Map.Entry<String, Integer>> sortedScores = new ArrayList<>(scores.entrySet());
