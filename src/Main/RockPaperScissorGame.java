@@ -1893,9 +1893,7 @@ public class RockPaperScissorGame extends JFrame {
         }
     }
 
-    // ========================================================================
-    // MAIN METHOD
-    // ========================================================================
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> new RockPaperScissorGame());
     }
