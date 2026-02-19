@@ -772,8 +772,7 @@ public class RockPaperScissorGame extends JFrame {
         centerPanel = new JPanel();
         centerPanel.setLayout(new GridLayout(1, 3, 10, 0));
         centerPanel.setOpaque(false);
-        //centerPanel.setForeground(Color.WHITE);
-        //centerPanel.setFont(new Font("Arial", Font.BOLD, 20));
+
         centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
 
@@ -1151,35 +1150,6 @@ public class RockPaperScissorGame extends JFrame {
         }
     }
 
-//    private void updateGameModeUI() {
-//        // Find the center panel in game panel
-//        Component[] mainComps = ((JPanel)mainPanel.getComponent(2)).getComponents();
-//        JLayeredPane layeredPane = (JLayeredPane)mainComps[0];
-//        JPanel mainGamePanel = (JPanel)layeredPane.getComponent(0);
-//        JPanel panel = (JPanel)mainGamePanel.getComponent(0);
-//        JPanel centerPanel = (JPanel)panel.getComponent(1);
-//        // Add this near other JPanel/JButton declarations
-//
-//
-//        centerPanel.removeAll();
-//
-//        if (extendedMode) {
-//            centerPanel.setLayout(new GridLayout(1, 5, 10, 0));
-//            centerPanel.add(rockButton);
-//            centerPanel.add(paperButton);
-//            centerPanel.add(scissorsButton);
-//            centerPanel.add(lizardButton);
-//            centerPanel.add(spockButton);
-//        } else {
-//            centerPanel.setLayout(new GridLayout(1, 3, 15, 0));
-//            centerPanel.add(rockButton);
-//            centerPanel.add(paperButton);
-//            centerPanel.add(scissorsButton);
-//        }
-//
-//        centerPanel.revalidate();
-//        centerPanel.repaint();
-//    }
 
 
     private void updateGameModeUI() {
@@ -1300,8 +1270,7 @@ public class RockPaperScissorGame extends JFrame {
 
         }
 
-        // Check for new achievements
-        //achievementManager.checkAchievements(currentPlayer, stats);
+
 
         // Check for new achievements
         HashSet<String> beforeAchs = new HashSet<>(achievementManager.playerAchievements.getOrDefault(currentPlayer, new HashSet<>()));
@@ -1801,9 +1770,7 @@ public class RockPaperScissorGame extends JFrame {
         }
     }
 
-    // ========================================================================
-    // KEYBOARD SHORTCUTS
-    // ========================================================================
+
     private void setupKeyboardShortcuts() {
         getRootPane().registerKeyboardAction(
                 e -> {
