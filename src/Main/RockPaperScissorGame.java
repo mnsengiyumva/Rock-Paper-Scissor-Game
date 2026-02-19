@@ -453,7 +453,6 @@ class AchievementManager {
 public class RockPaperScissorGame extends JFrame {
 
     private int numPlayers;
-
     private int triesPerPlayer;
     private ArrayList<String> players;
     private HashMap<String, Integer> scores;
@@ -463,7 +462,6 @@ public class RockPaperScissorGame extends JFrame {
     // Game mode
     private boolean extendedMode = false; // RPSLS mode
     private JButton lizardButton, spockButton;
-
     private JPanel centerPanel;
 
     // Achievements
@@ -474,7 +472,6 @@ public class RockPaperScissorGame extends JFrame {
     private boolean tournamentMode = false;
     private TournamentBracket bracket;
     private JTextArea bracketDisplay;
-
     private JCheckBox tournamentCheckbox;
     private JComboBox<String> gameModeBox;
 
@@ -693,7 +690,6 @@ public class RockPaperScissorGame extends JFrame {
         startButton.setBorder(new RoundedBorder(20, Color.WHITE));
         startButton.setAlignmentX(Component.RIGHT_ALIGNMENT);
 
-        //addButtonHoverEffect(startButton, new Color(99, 102, 241), new Color(79, 82, 221));
 
         JLabel wish = new JLabel("Good Luck");
         wish.setFont(new Font("Arial", Font.BOLD, 16));
