@@ -1847,9 +1847,6 @@ public class RockPaperScissorGame extends JFrame {
         });
     }
 
-    // ========================================================================
-    // SAVE/LOAD PLAYER PROFILES
-    // ========================================================================
     private void savePlayerProfiles() {
         if (playerStats == null || playerStats.isEmpty()) return;
 
