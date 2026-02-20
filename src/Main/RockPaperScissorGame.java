@@ -1729,9 +1729,7 @@ public class RockPaperScissorGame extends JFrame {
         }
     }
 
-    // ========================================================================
-    // IMAGE LOADING
-    // ========================================================================
+    //Load Image
     private ImageIcon loadScaledImage(String path, int width, int height) {
         try {
             java.net.URL imgURL = getClass().getResource("/" + path);
