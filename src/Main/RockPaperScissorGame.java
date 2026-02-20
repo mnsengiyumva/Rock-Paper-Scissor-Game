@@ -1,7 +1,6 @@
 package Main;
 
 import org.w3c.dom.events.MouseEvent;
-
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
