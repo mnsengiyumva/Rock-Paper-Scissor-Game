@@ -1470,7 +1470,6 @@ public class RockPaperScissorGame extends JFrame {
         }
 
     }
-
     private void showWinner(){
 
         playSound("/sounds/victory.wav");
