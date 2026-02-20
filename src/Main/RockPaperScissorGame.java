@@ -445,11 +445,6 @@ class AchievementManager {
 }
 
 
-
-
-
-
-
 public class RockPaperScissorGame extends JFrame {
 
     private int numPlayers;
