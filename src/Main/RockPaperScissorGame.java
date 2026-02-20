@@ -521,9 +521,6 @@ public class RockPaperScissorGame extends JFrame {
     // Sound enabled flag
     private boolean soundEnabled = true;
 
-    /**
-     * Constructor
-     */
 
     public RockPaperScissorGame(){
         setTitle("Rock Paper Scissor Game");
@@ -678,8 +675,6 @@ public class RockPaperScissorGame extends JFrame {
         formPanel.add(Box.createVerticalStrut(10));
         formPanel.add(tournamentCheckbox);
         formPanel.add(Box.createVerticalStrut(20));
-
-
 
         JButton startButton = new JButton("Start Game");
         startButton.setFont(new Font("Arial", Font.BOLD, 20));
