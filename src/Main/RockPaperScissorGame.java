@@ -1524,9 +1524,6 @@ public class RockPaperScissorGame extends JFrame {
             statsSb.append(String.format("  Rock Wins: %d | Paper: %d | Scissors: %d\n",
                     stats.rockWins, stats.paperWins, stats.scissorsWins));
 
-            // FIND the statsSb section and ADD this before the closing:
-
-            // ADD BEFORE the closing of the for loop:
             ArrayList<Achievement> playerAchs = achievementManager.getPlayerAchievements(player);
             if (!playerAchs.isEmpty()) {
                 statsSb.append("  Achievements: ");
@@ -1538,8 +1535,6 @@ public class RockPaperScissorGame extends JFrame {
         }
 
         statsArea.setText(statsSb.toString());
-
-        // Save player profiles
         savePlayerProfiles();
 
         // Celebration animation
