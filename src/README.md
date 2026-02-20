@@ -1,0 +1,1 @@
+This project is implements famous rock paper scissors game
