@@ -1784,8 +1784,6 @@ public class RockPaperScissorGame extends JFrame {
                 JComponent.WHEN_IN_FOCUSED_WINDOW
         );
 
-        // ADD AFTER the existing three shortcuts:
-
         getRootPane().registerKeyboardAction(
                 e -> {
                     if (lizardButton.isEnabled() && extendedMode) {
@@ -1871,8 +1869,6 @@ public class RockPaperScissorGame extends JFrame {
             System.out.println("Could not load profiles: " + e.getMessage());
         }
     }
-
-
 
 
 
