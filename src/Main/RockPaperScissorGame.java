@@ -1275,6 +1275,11 @@ public class RockPaperScissorGame extends JFrame {
         currentTries--;
 
 
+        if(currentTries <= 0){
+            disableButton();
+        }
+
+
 
 
 
@@ -1422,6 +1427,9 @@ public class RockPaperScissorGame extends JFrame {
         avatarLabel.setFont(new Font("Arial", Font.PLAIN, 64));
 
         playerLabel.setText(currentPlayer + "'s Turn");
+        if(currentTries < 0){
+            currentTries = 0;
+        }
         triesLabel.setText("Tries remaining: "+currentTries);
 
         StringBuilder sb = new StringBuilder();
