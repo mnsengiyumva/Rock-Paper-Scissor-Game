@@ -1272,12 +1272,14 @@ public class RockPaperScissorGame extends JFrame {
 
         playerChoiceHistory.add(playerChoice);
 
-        currentTries--;
-
-
         if(currentTries < 0){
             disableButton();
         }
+
+        currentTries--;
+
+
+
 
 
         if (currentTries == 0) {
