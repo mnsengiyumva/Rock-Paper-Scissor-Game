@@ -1290,7 +1290,7 @@ public class RockPaperScissorGame extends JFrame {
                             scores.put(nextMatch.player1, 0);
                             scores.put(nextMatch.player2, 0);
                             resultLabel.setText(" ");
-                            resultLabel.setBackground(new Color(255, 255, 255, 220));
+                            resultLabel.setBackground(new Color(255, 255, 255, 110));
                             countdownLabel.setText("");
                             enableButtons();
                             updateGamePanel();
@@ -1305,7 +1305,7 @@ public class RockPaperScissorGame extends JFrame {
                     } else {
                         currentTries = triesPerPlayer;
                         resultLabel.setText(" ");
-                        resultLabel.setBackground(new Color(255, 255, 255, 220));
+                        resultLabel.setBackground(new Color(255, 255, 255, 110));
                         countdownLabel.setText("");
                         enableButtons();
                         updateGamePanel();
