@@ -1222,8 +1222,6 @@ public class RockPaperScissorGame extends JFrame {
 
         } else if(result.equals("computer")){
             stats.recordLoss(playerChoice);
-            //resultLabel.setText("You chose "+playerChoice+ " | Computer chose "+ computerChoice+" | Computer won😔!");
-            //resultLabel.setBackground(new Color(244, 6, 6));
             showResultWithAnimation(
                     "You chose " + playerChoice + " | Computer chose " + computerChoice + " | Computer Wins 😔",
                     new Color(244, 6, 6)
@@ -1277,8 +1275,6 @@ public class RockPaperScissorGame extends JFrame {
 
             Timer timer = new Timer(2500, e -> {
                 if (tournamentMode) {
-                    // Tournament mode: record winner and advance bracket
-                    //String currentPlayer = players.get(currentPlayerIndex);
                     bracket.recordMatchWinner(currentPlayer);
                     updateBracketDisplay();
 
