@@ -1199,8 +1199,6 @@ public class RockPaperScissorGame extends JFrame {
     public void playRound(String playerChoice){
         String[] choices = {"Rock", "Paper", "Scissors"};
 
-        //String computerChoice = choices[new Random().nextInt(3)];
-
         String computerChoice = choices[new Random().nextInt(3)];
 
         String result = determineWinner(playerChoice, computerChoice);
@@ -1211,13 +1209,9 @@ public class RockPaperScissorGame extends JFrame {
         if(result.equals("player")){
 
             scores.put(currentPlayer, scores.get(currentPlayer)+1);
-            //resultLabel.setText("You chose "+playerChoice+ " | Computer chose "+ computerChoice+" | You won!🙌");
             stats.recordWin(playerChoice);
-            //showResultWithAnimation("You chose "+playerChoice+ " | Computer chose "+ computerChoice+" | You win!🙌", new Color(187, 247, 208));
-            //resultLabel.setBackground(new Color(59, 202, 12));
-
             showResultWithAnimation(
-                    "You chose " + playerChoice + " | Computer chose " + computerChoice + " | You Win! 🎉",
+                    "You chose " + playerChoice + " | Computer chose " + computerChoice + " | You Won the Round! 🎉",
                     new Color(59, 202, 12)
             );
 
