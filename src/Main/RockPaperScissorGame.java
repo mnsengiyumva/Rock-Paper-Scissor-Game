@@ -1198,14 +1198,15 @@ public class RockPaperScissorGame extends JFrame {
     public void playRound(String playerChoice){
         String[] choices = {"Rock", "Paper", "Scissors"};
 
-        if(currentTries <= 0){
-            return;
-        }
+
 
         String computerChoice = choices[new Random().nextInt(3)];
 
         String result = determineWinner(playerChoice, computerChoice);
         String currentPlayer = players.get(currentPlayerIndex);
+        if(currentTries <= 0){
+            return;
+        }
         PlayerStats stats = playerStats.get(currentPlayer);
 
 
