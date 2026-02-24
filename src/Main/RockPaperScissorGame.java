@@ -1110,7 +1110,7 @@ public class RockPaperScissorGame extends JFrame {
             cardLayout.show(mainPanel, "game");
             updateGameModeUI();
 
-            // ADD THIS - Start with countdown
+
             Timer initialDelay = new Timer(500, e -> {
                 startCountdown();
                 ((Timer)e.getSource()).stop();
@@ -1268,16 +1268,17 @@ public class RockPaperScissorGame extends JFrame {
         }
 
 
-
         playerChoiceHistory.add(playerChoice);
 
-        if(currentTries < 0){
-            disableButton();
-        }
+
 
         currentTries--;
 
-        if (currentTries == 0) {
+//        if(currentTries < 0){
+//            disableButton();
+//        }
+
+        if (currentTries <= 0) {
             disableButton();
 
             Timer timer = new Timer(2500, e -> {
