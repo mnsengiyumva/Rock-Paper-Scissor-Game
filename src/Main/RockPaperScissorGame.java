@@ -696,6 +696,7 @@ public class RockPaperScissorGame extends JFrame {
         formPanel.add(difficultyBox);
         formPanel.add(Box.createVerticalStrut(30));
         formPanel.add(startButton);
+        playSound("win.wav");
 
         panel.add(formPanel);
         return panel;
@@ -1024,6 +1025,8 @@ public class RockPaperScissorGame extends JFrame {
     }
 
     private void startGame() {
+
+        playSound("win.wav");
         try {
             numPlayers = Integer.parseInt(playersField.getText());
             triesPerPlayer = Integer.parseInt(triesField.getText());
