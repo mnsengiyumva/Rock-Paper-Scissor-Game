@@ -645,7 +645,7 @@ public class RockPaperScissorGame extends JFrame {
         difficultyBox = new JComboBox<>(new String[]{"Easy", "Medium", "Hard"});
 
         // ADD AFTER difficultyBox:
-        JLabel gameModeLabel = new JLabel("Game Mode");
+        JLabel gameModeLabel = new JLabel("");
         gameModeLabel.setFont(new Font("Arial", Font.BOLD, 16));
 
         gameModeBox = new JComboBox<>(new String[]{"Classic (3 choices)", "Extended (5 choices - RPSLS)"});
