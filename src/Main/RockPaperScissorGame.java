@@ -578,9 +578,10 @@ public class RockPaperScissorGame extends JFrame {
 
     private void showSplashScreen() {
         cardLayout.show(mainPanel, "splash");
-        Timer splashTimer = new Timer(2000, e -> cardLayout.show(mainPanel, "setup"));
+        Timer splashTimer = new Timer(3000, e -> cardLayout.show(mainPanel, "setup"));
         splashTimer.setRepeats(false);
         splashTimer.start();
+
     }
 
     private JPanel createSetupPanel(){
@@ -1026,7 +1027,6 @@ public class RockPaperScissorGame extends JFrame {
 
     private void startGame() {
 
-        playSound("win.wav");
         try {
             numPlayers = Integer.parseInt(playersField.getText());
             triesPerPlayer = Integer.parseInt(triesField.getText());
