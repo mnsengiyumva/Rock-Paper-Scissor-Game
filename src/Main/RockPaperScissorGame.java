@@ -644,7 +644,6 @@ public class RockPaperScissorGame extends JFrame {
 
         difficultyBox = new JComboBox<>(new String[]{"Easy", "Medium", "Hard"});
 
-        // ADD AFTER difficultyBox:
         JLabel gameModeLabel = new JLabel("");
         gameModeLabel.setFont(new Font("Arial", Font.BOLD, 16));
 
@@ -914,7 +913,6 @@ public class RockPaperScissorGame extends JFrame {
 
         return button;
     }
-
 
 
     private JPanel createWinnerPanel(){
