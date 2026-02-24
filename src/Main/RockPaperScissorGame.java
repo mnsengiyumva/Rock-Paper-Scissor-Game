@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.awt.*;
 import java.util.*;
 import javax.swing.border.AbstractBorder;
-import javax.swing.border.Border;
 import java.util.List;
 import java.io.*;
 import javax.sound.sampled.*;
@@ -1278,10 +1277,6 @@ public class RockPaperScissorGame extends JFrame {
 
         currentTries--;
 
-
-
-
-
         if (currentTries == 0) {
             disableButton();
 
@@ -1364,56 +1359,6 @@ public class RockPaperScissorGame extends JFrame {
                 return "player";
             }
             return "computer";
-        }
-    }
-
-    private String getComputerChoice() {
-        String[] choices = extendedMode?
-                new String[]{"Rock", "Paper", "Scissors", "Lizard", "Spock"} :
-                new String[]{"Rock", "Paper", "Scissors"};
-
-
-        switch (currentDifficulty) {
-            case EASY:
-                return choices[new Random().nextInt(3)];
-
-            case MEDIUM:
-                // 50% random, 50% pattern based
-                if (Math.random() < 0.5) {
-                    return choices[new Random().nextInt(3)];
-                }
-                // Fall through to HARD logic
-
-            case HARD:
-                // Counter player's most frequent choice
-                if (playerChoiceHistory.size() > 0) {
-                    HashMap<String, Integer> choiceCounts = new HashMap<>();
-                    choiceCounts.put("Rock", 0);
-                    choiceCounts.put("Paper", 0);
-                    choiceCounts.put("Scissors", 0);
-
-                    for (String choice : playerChoiceHistory) {
-                        choiceCounts.put(choice, choiceCounts.get(choice) + 1);
-                    }
-
-                    String mostFrequent = "Rock";
-                    int maxCount = 0;
-                    for (Map.Entry<String, Integer> entry : choiceCounts.entrySet()) {
-                        if (entry.getValue() > maxCount) {
-                            maxCount = entry.getValue();
-                            mostFrequent = entry.getKey();
-                        }
-                    }
-
-                    // Counter the most frequent choice
-                    if (mostFrequent.equals("Rock")) return "Paper";
-                    if (mostFrequent.equals("Paper")) return "Scissors";
-                    return "Rock";
-                }
-                return choices[new Random().nextInt(3)];
-
-            default:
-                return choices[new Random().nextInt(3)];
         }
     }
 
