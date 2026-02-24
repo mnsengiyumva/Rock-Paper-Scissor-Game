@@ -1238,7 +1238,7 @@ public class RockPaperScissorGame extends JFrame {
 
             showResultWithAnimation(
                     "You chose " + playerChoice + " | Computer chose " + computerChoice + " | It's a Tie! 🤝",
-                    new Color(219, 217, 229)
+                    new Color(219, 217, 129)
             );
             playSound("/sounds/tie.wav");
 
