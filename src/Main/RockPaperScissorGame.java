@@ -1272,13 +1272,7 @@ public class RockPaperScissorGame extends JFrame {
 
         playerChoiceHistory.add(playerChoice);
 
-
-
         currentTries--;
-
-//        if(currentTries < 0){
-//            disableButton();
-//        }
 
         if (currentTries <= 0) {
             disableButton();
@@ -1302,7 +1296,7 @@ public class RockPaperScissorGame extends JFrame {
                             scores.put(nextMatch.player2, 0);
                             resultLabel.setText(" ");
                             resultLabel.setBackground(new Color(255, 255, 255, 110));
-                            countdownLabel.setText("");
+                            countdownLabel.setText(" ");
                             enableButtons();
                             updateGamePanel();
                             startCountdown();
