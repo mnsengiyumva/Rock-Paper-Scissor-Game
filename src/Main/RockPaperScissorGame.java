@@ -20,8 +20,8 @@ import javax.sound.sampled.*;
 
 
 class RoundedBorder extends AbstractBorder {
-    private int radius;
-    private Color color;
+    private final int radius;
+    private final Color color;
 
     RoundedBorder(int radius, Color color) {
         this.color = color;
@@ -117,11 +117,13 @@ class PlayerStats {
             longestWinStreak = currentWinStreak;
         }
 
-        if (choice.equals("Rock")) rockWins++;
-        else if (choice.equals("Paper")) paperWins++;
-        else if (choice.equals("Scissors")) scissorsWins++;
-        else if (choice.equals("Lizard")) lizardWins++;  // ADD
-        else if (choice.equals("Spock")) spockWins++;
+        switch (choice) {
+            case "Rock" -> rockWins++;
+            case "Paper" -> paperWins++;
+            case "Scissors" -> scissorsWins++;
+            case "Lizard" -> lizardWins++;  // ADD
+            case "Spock" -> spockWins++;
+        }
 
         recordChoice(choice);
     }
@@ -202,8 +204,8 @@ class Particle {
 }
 
 class ParticlePanel extends JPanel {
-    private List<Particle> particles = new ArrayList<>();
-    private Timer animationTimer;
+    private final List<Particle> particles = new ArrayList<>();
+    private final Timer animationTimer;
 
     ParticlePanel() {
         setOpaque(false);
@@ -335,7 +337,7 @@ class TournamentBracket {
 
     String getTournamentWinner() {
         if (!isComplete()) return null;
-        return rounds.get(rounds.size() - 1).get(0).winner;
+        return rounds.getLast().getFirst().winner;
     }
 }
 
@@ -445,7 +447,6 @@ class AchievementManager {
 
 public class RockPaperScissorGame extends JFrame {
 
-    private int numPlayers;
     private int triesPerPlayer;
     private ArrayList<String> players;
     private HashMap<String, Integer> scores;
@@ -458,8 +459,8 @@ public class RockPaperScissorGame extends JFrame {
     private JPanel centerPanel;
 
     // Achievements
-    private AchievementManager achievementManager;
-    private HashMap<String, String> playerAvatars; // player -> avatar emoji
+    private final AchievementManager achievementManager;
+    private final HashMap<String, String> playerAvatars; // player -> avatar emoji
 
     // Tournament mode
     private boolean tournamentMode = false;
@@ -474,8 +475,8 @@ public class RockPaperScissorGame extends JFrame {
 
     private int currentTries;
 
-    private JPanel mainPanel;
-    private CardLayout cardLayout;
+    private final JPanel mainPanel;
+    private final CardLayout cardLayout;
 
     //Panel components
     private JTextField playersField;
@@ -506,13 +507,9 @@ public class RockPaperScissorGame extends JFrame {
 
     // Game modes
     private enum Difficulty { EASY, MEDIUM, HARD }
-    private Difficulty currentDifficulty = Difficulty.MEDIUM;
 
     // Player history for AI
-    private ArrayList<String> playerChoiceHistory = new ArrayList<>();
-
-    // Sound enabled flag
-    private boolean soundEnabled = true;
+    private final ArrayList<String> playerChoiceHistory = new ArrayList<>();
 
 
     public RockPaperScissorGame(){
@@ -884,7 +881,7 @@ public class RockPaperScissorGame extends JFrame {
         gbc.insets = new Insets(10, 10, 5, 10);
 
         // Image
-        ImageIcon icon = loadScaledImage(imagePath, 80, 80);
+        ImageIcon icon = loadScaledImage(imagePath);
         if (icon != null) {
             JLabel imageLabel = new JLabel(icon);
             button.add(imageLabel, gbc);
@@ -1028,7 +1025,7 @@ public class RockPaperScissorGame extends JFrame {
     private void startGame() {
 
         try {
-            numPlayers = Integer.parseInt(playersField.getText());
+            int numPlayers = Integer.parseInt(playersField.getText());
             triesPerPlayer = Integer.parseInt(triesField.getText());
 
             if (numPlayers <= 0 || triesPerPlayer <= 0) {
@@ -1051,7 +1048,8 @@ public class RockPaperScissorGame extends JFrame {
 
             // Set difficulty
             String diff = (String) difficultyBox.getSelectedItem();
-            currentDifficulty = Difficulty.valueOf(diff.toUpperCase());
+            assert diff != null;
+            Difficulty currentDifficulty = Difficulty.valueOf(diff.toUpperCase());
 
 
             extendedMode = gameModeBox.getSelectedIndex() == 1;
@@ -1634,6 +1632,8 @@ public class RockPaperScissorGame extends JFrame {
     }
 
     private void playSound(String soundFile) {
+        // Sound enabled flag
+        boolean soundEnabled = true;
         if (!soundEnabled) return;
 
         try {
@@ -1666,7 +1666,7 @@ public class RockPaperScissorGame extends JFrame {
     }
 
     //Load Image
-    private ImageIcon loadScaledImage(String path, int width, int height) {
+    private ImageIcon loadScaledImage(String path) {
         try {
             java.net.URL imgURL = getClass().getResource("/" + path);
             ImageIcon icon;
@@ -1677,7 +1677,7 @@ public class RockPaperScissorGame extends JFrame {
                 icon = new ImageIcon(path);
             }
 
-            Image scaled = icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH);
+            Image scaled = icon.getImage().getScaledInstance(80, 80, Image.SCALE_SMOOTH);
             return new ImageIcon(scaled);
         } catch (Exception e) {
             System.out.println("Image not found: " + path);
