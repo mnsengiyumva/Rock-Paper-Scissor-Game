@@ -19,7 +19,8 @@ import java.io.*;
 import javax.sound.sampled.*;
 
 /**
- * This method
+ * This method makes round corners for buttons
+ * using the specified radius
  */
 
 class RoundedBorder extends AbstractBorder {
