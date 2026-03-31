@@ -19,7 +19,7 @@ import java.io.*;
 import javax.sound.sampled.*;
 
 /**
- * This method makes round corners for buttons
+ * This class makes round borders for buttons
  * using the specified radius
  */
 
