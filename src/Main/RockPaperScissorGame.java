@@ -71,6 +71,13 @@ class ImagePanel extends JPanel{
         return false;
     }
 
+
+    /**
+     * This method ensures that we set appropriate colors for our features
+     * if the background image is not provided
+     * @param g the <code>Graphics</code> object to protect
+     */
+
     protected void paintComponent(Graphics g){
         super.paintComponent(g);
 
@@ -86,7 +93,9 @@ class ImagePanel extends JPanel{
     }
 }
 
-
+/**
+ * This class handles player statistics
+ */
 class PlayerStats {
 
     String name;
