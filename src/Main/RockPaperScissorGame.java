@@ -115,9 +115,7 @@ class PlayerStats {
     ImageIcon avatar;
     int lizardWins = 0;
     int spockWins = 0;
-
-
-    int maxDeficit = 0; // Track worst deficit
+    int maxDeficit = 0;
 
     void updateDeficit(int opponentScore, int myScore) {
         int deficit = opponentScore - myScore;
@@ -126,6 +124,10 @@ class PlayerStats {
         }
     }
 
+    /**
+     * PlayerStarts Constructor
+     * @param name
+     */
     PlayerStats(String name) {
         this.name = name;
         choiceCount.put("Rock", 0);
@@ -136,6 +138,11 @@ class PlayerStats {
 
 
     }
+
+    /**
+     *
+     * @param choice
+     */
 
     void recordWin(String choice) {
         totalWins++;
