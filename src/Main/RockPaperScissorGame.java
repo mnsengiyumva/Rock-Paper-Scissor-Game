@@ -41,6 +41,11 @@ class RoundedBorder extends AbstractBorder {
     }
 }
 
+
+/**
+ * ImagePanel class handles the background image instead of using default colors
+ * Image can be changed depending on user preferences
+ */
 class ImagePanel extends JPanel{
 
     private Image backgroundImage;
@@ -55,6 +60,12 @@ class ImagePanel extends JPanel{
         }
         setOpaque(false);
     }
+
+    /**
+     * This method ensures that our image is not transparent
+     *
+     * @return false if we want our background image not to be seen through
+     */
 
     public boolean isOpaque(){
         return false;
