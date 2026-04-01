@@ -96,7 +96,8 @@ class ImagePanel extends JPanel{
 /**
  * This class handles player statistics
  * including, wins and loses for every button,
- * tracks player's favorite button,
+ * tracks player's favorite button
+ * uses HashMap to record choice count (option and how many times it was chosen)
  */
 class PlayerStats {
 
