@@ -163,7 +163,7 @@ class PlayerStats {
     }
 
     /**
-     * This method records
+     * This method records loses for a player
      * @param choice
      */
 
@@ -172,6 +172,8 @@ class PlayerStats {
         currentWinStreak = 0;
         recordChoice(choice);
     }
+
+    /
 
     void recordTie(String choice) {
         totalTies++;
