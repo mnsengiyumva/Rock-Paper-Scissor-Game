@@ -139,7 +139,8 @@ class PlayerStats {
     }
 
     /**
-     *
+     *This methods records wins of each player
+     * It uses switch statement to  increment a correct choice
      * @param choice
      */
 
@@ -160,6 +161,11 @@ class PlayerStats {
 
         recordChoice(choice);
     }
+
+    /**
+     * This method records
+     * @param choice
+     */
 
     void recordLoss(String choice) {
         totalLosses++;
