@@ -136,7 +136,6 @@ class PlayerStats {
         choiceCount.put("Lizard", 0);   // ADD
         choiceCount.put("Spock", 0);
 
-
     }
 
     /**
