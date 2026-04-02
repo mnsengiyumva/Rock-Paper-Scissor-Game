@@ -11,7 +11,6 @@ GAME TOOLS AND LIBRARIES
 This game uses GUI (Graphical User Interface) to visualize the game panels and features.
 Here are the Java libraries and mdules used to develop this game:
 
-
 [//]: # (org.w3c.dom.events.MouseEvent;)
 
 [//]: # (javax.sound.sampled.AudioInputStream;)
