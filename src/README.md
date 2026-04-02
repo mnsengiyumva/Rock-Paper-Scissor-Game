@@ -10,23 +10,27 @@ GAME TOOLS AND LIBRARIES
 
 This game uses GUI (Graphical User Interface) to visualize the game panels and features.
 Here are the Java libraries and mdules used to develop this game:
+
+
 org.w3c.dom.events.MouseEvent;
 javax.sound.sampled.AudioInputStream;
 javax.sound.sampled.AudioSystem;
- javax.sound.sampled.Clip;
+javax.sound.sampled.Clip;
 javax.swing.*;
 javax.swing.Timer;
 java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.util.HashMap;
-import java.awt.*;
-import java.util.*;
-import javax.swing.border.AbstractBorder;
-import java.util.List;
-import java.io.*;
-import javax.sound.sampled.*;
+java.awt.event.ComponentEvent;
+java.awt.event.KeyEvent;
+java.awt.event.MouseAdapter;
+java.util.HashMap;
+java.util.*;
+javax.swing.border.AbstractBorder;
+java.util.List;
+java.io.*;
+javax.sound.sampled.*;
+
+
+
 using other advanced features and other choice options
 
 
