@@ -8,7 +8,7 @@ In this game, Scissors beat paper (Scissors cut papers), Rock beat Scissors, Pap
 
 GAME TOOLS AND LIBRARIES
 
-This game uses GUI (Graphical User Interface) to visualize the 
+This game uses GUI (Graphical User Interface) to visualize the game panels and features
 using other advanced features and other choice options
 
 
