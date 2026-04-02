@@ -216,6 +216,12 @@ class PlayerStats {
         return totalWins + totalLosses + totalTies;
     }
 
+    /**
+     * This method calculates the win percentage of each player
+     * after considering the tota wins, losses, and ties
+     *
+     */
+
     double getWinRate() {
         int total = getTotalGames();
         return total > 0 ? (totalWins * 100.0 / total) : 0;
