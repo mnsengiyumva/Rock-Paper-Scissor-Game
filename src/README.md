@@ -7,6 +7,8 @@ I knew already how to play this game with another person where to people compete
 In this game, Scissors beat paper (Scissors cut papers), Rock beat Scissors, Paper beats Rocks. 
 
 GAME TOOLS AND LIBRARIES
+
+This game uses GUI (Graphical User Interface) to visualize the 
 using other advanced features and other choice options
 
 
