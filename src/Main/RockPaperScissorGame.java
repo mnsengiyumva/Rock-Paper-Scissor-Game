@@ -173,17 +173,29 @@ class PlayerStats {
         recordChoice(choice);
     }
 
-    /
+    /**
+     * This methods handles the tie situation
+     * @param choice
+     */
 
     void recordTie(String choice) {
         totalTies++;
         recordChoice(choice);
     }
 
+    /**
+     * This Method records player choices in HashMap, key: choice, value: choiceCount
+     */
+
     void recordChoice(String choice) {
         choiceCount.put(choice, choiceCount.get(choice) + 1);
         updateFavoriteChoice();
     }
+
+    /**
+     * This tracks the favorite choice of a player,
+     *
+     */
 
     void updateFavoriteChoice() {
         int maxCount = 0;
@@ -194,6 +206,11 @@ class PlayerStats {
             }
         }
     }
+
+    /**
+     *
+     * @return This method returns player's wins losses, and ties combined
+     */
 
     int getTotalGames() {
         return totalWins + totalLosses + totalTies;
