@@ -228,12 +228,21 @@ class PlayerStats {
     }
 }
 
+/**
+ *
+ */
 class Particle {
     double x, y;
     double vx, vy;
     Color color;
     int size;
     int life;
+
+    /**
+     * Class constructor
+     * @param x
+     * @param y
+     */
 
     Particle(double x, double y) {
         this.x = x;
