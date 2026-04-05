@@ -1,6 +1,10 @@
-Project: ROCK-PAPER-SCISSORS GAME BY Mico
 
-# INTRODUCTION
+# Project Name: ROCK-PAPER-SCISSORS GAME
+
+A java based project of the famous Rock-Paper-Scissors Game
+
+# Features
+
 
 In this project, I'm implementing the famous Rock Paper Scissors game. 
 I knew already how to play this game with another person where to people compete to see who wins rounds of trials.
