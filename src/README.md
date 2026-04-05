@@ -43,8 +43,7 @@ Here are the Java libraries and modules used to develop this game:
 
 [//]: # (javax.sound.sampled.*;)
 
-
-
+These libraries and modules helps us to make 
 using other advanced features and other choice options
 
 
