@@ -1,15 +1,15 @@
 Project: ROCK-PAPER-SCISSORS GAME BY Mico
 
-INTRODUCTION
+# INTRODUCTION
 
 In this project, I'm implementing the famous Rock Paper Scissors game. 
 I knew already how to play this game with another person where to people compete to see who wins rounds of trials.
 In this game, Scissors beat paper (Scissors cut papers), Rock beat Scissors, Paper beats Rocks. 
 
-GAME TOOLS AND LIBRARIES
+# GAME MODULES AND LIBRARIES
 
 This game uses GUI (Graphical User Interface) to visualize the game panels and features.
-Here are the Java libraries and mdules used to develop this game:
+Here are the Java libraries and modules used to develop this game:
 
 [//]: # (org.w3c.dom.events.MouseEvent;)
 
