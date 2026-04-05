@@ -3,7 +3,13 @@
 
 A java based project of the famous Rock-Paper-Scissors Game
 
-# Features
+# Versions used
+- Java SDK 25
+- Gradle
+
+# Installation and Execution
+
+-
 
 
 In this project, I'm implementing the famous Rock Paper Scissors game. 
