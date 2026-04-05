@@ -9,6 +9,13 @@ A java based project of the famous Rock-Paper-Scissors Game
 
 # Installation and Execution
 
+1. Clone the repository: git clone https://github.com/mnsengiyumva/Rock-Paper-Scissor-Game.git
+2. Navigate to the directory: cd Rock-Paper-Scissors-Game
+3. Compile and Run:
+    javac Main.java
+    java Main
+
+
 -
 
 
