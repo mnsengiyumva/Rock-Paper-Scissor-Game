@@ -850,49 +850,8 @@ public class RockPaperScissorGame extends JFrame {
         if (currentTries <= 0) {
             disableButton();
 
-            Timer timer = new Timer(2500, e -> {
-                if (tournamentMode) {
-                    bracket.recordMatchWinner(currentPlayer);
-                    updateBracketDisplay();
 
-                    if (bracket.isComplete()) {
-                        showTournamentWinner();
-                    } else {
-                        // Setup next match
-                        BracketMatch nextMatch = bracket.getCurrentMatch();
-                        if (nextMatch != null && !nextMatch.player1.equals("BYE") && !nextMatch.player2.equals("BYE")) {
-                            // Find player indices
-                            currentTries = triesPerPlayer;
-                            currentPlayerIndex = players.indexOf(nextMatch.player1);
-
-                            scores.put(nextMatch.player1, 0);
-                            scores.put(nextMatch.player2, 0);
-                            resultLabel.setText(" ");
-                            resultLabel.setBackground(new Color(255, 255, 255, 110));
-                            countdownLabel.setText(" ");
-                            enableButtons();
-                            updateGamePanel();
-                            startCountdown();
-                        }
-                    }
-                } else {
-                    // Normal mode (existing code)
-                    currentPlayerIndex++;
-                    if (currentPlayerIndex >= players.size()) {
-                        showWinner();
-                    } else {
-                        currentTries = triesPerPlayer;
-                        resultLabel.setText(" ");
-                        resultLabel.setBackground(new Color(255, 255, 255, 110));
-                        countdownLabel.setText("");
-                        enableButtons();
-                        updateGamePanel();
-                        startCountdown();
-                    }
-                }
-            });
-
-            timer.setRepeats(false);
+            Timer timer = getTimer(currentPlayer);
             timer.start();
         } else {
             updateGamePanel();
@@ -903,6 +862,52 @@ public class RockPaperScissorGame extends JFrame {
 
     }
 
+    private Timer getTimer(String currentPlayer) {
+        Timer timer = new Timer(2500, e -> {
+            if (tournamentMode) {
+                bracket.recordMatchWinner(currentPlayer);
+                updateBracketDisplay();
+
+                if (bracket.isComplete()) {
+                    showTournamentWinner();
+                } else {
+                    // Setup next match
+                    BracketMatch nextMatch = bracket.getCurrentMatch();
+                    if (nextMatch != null && !nextMatch.player1.equals("BYE") && !nextMatch.player2.equals("BYE")) {
+                        // Find player indices
+                        currentTries = triesPerPlayer;
+                        currentPlayerIndex = players.indexOf(nextMatch.player1);
+
+                        scores.put(nextMatch.player1, 0);
+                        scores.put(nextMatch.player2, 0);
+                        resultLabel.setText(" ");
+                        resultLabel.setBackground(new Color(255, 255, 255, 110));
+                        countdownLabel.setText(" ");
+                        enableButtons();
+                        updateGamePanel();
+                        startCountdown();
+                    }
+                }
+            } else {
+                // Normal mode 
+                currentPlayerIndex++;
+                if (currentPlayerIndex >= players.size()) {
+                    showWinner();
+                } else {
+                    currentTries = triesPerPlayer;
+                    resultLabel.setText(" ");
+                    resultLabel.setBackground(new Color(255, 255, 255, 110));
+                    countdownLabel.setText("");
+                    enableButtons();
+                    updateGamePanel();
+                    startCountdown();
+                }
+            }
+        });
+
+        timer.setRepeats(false);
+        return timer;
+    }
 
 
     private String determineWinner(String player, String computer) {
