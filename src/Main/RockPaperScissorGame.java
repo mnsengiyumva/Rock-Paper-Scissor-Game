@@ -22,6 +22,8 @@ import javax.sound.sampled.*;
 /**
  * This is the RockPaperScissorGame class is the main class of this game
  * It contains all important variables and methods that implement the game
+ *triesPerPlayer: tries that each player has
+ * ArrayList class players: record all names of players currently in the tournament
  */
 public class RockPaperScissorGame extends JFrame {
 
