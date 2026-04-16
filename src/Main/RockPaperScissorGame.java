@@ -24,6 +24,7 @@ import javax.sound.sampled.*;
  * It contains all important variables and methods that implement the game
  *triesPerPlayer: tries that each player has
  * ArrayList class players: record all names of players currently in the tournament
+ *HashMap scores records player name and their respective scores
  */
 public class RockPaperScissorGame extends JFrame {
 
@@ -61,6 +62,7 @@ public class RockPaperScissorGame extends JFrame {
     private JComboBox<String> difficultyBox;
 
     //Game panel component;
+
 
     private JLabel playerLabel;
     private JLabel triesLabel;
