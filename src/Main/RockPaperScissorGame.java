@@ -19,7 +19,10 @@ import java.io.*;
 import javax.sound.sampled.*;
 
 
-
+/**
+ * This is the RockPaperScissorGame class is the main class of this game
+ * It contains all important variables and methods that implement the game
+ */
 public class RockPaperScissorGame extends JFrame {
 
     private int triesPerPlayer;
@@ -44,10 +47,7 @@ public class RockPaperScissorGame extends JFrame {
     private JCheckBox tournamentCheckbox;
     private JComboBox<String> gameModeBox;
 
-
-
     private int currentPlayerIndex;
-
     private int currentTries;
 
     private final JPanel mainPanel;
