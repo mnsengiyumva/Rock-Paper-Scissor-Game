@@ -25,6 +25,7 @@ import javax.sound.sampled.*;
  *triesPerPlayer: tries that each player has
  * ArrayList class players: record all names of players currently in the tournament
  *HashMap scores records player name and their respective scores
+ * HashMap playerStats records player statistics based on current attempts while playing
  */
 public class RockPaperScissorGame extends JFrame {
 
