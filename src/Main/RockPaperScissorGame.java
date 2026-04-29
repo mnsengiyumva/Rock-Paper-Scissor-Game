@@ -123,6 +123,12 @@ public class RockPaperScissorGame extends JFrame {
 
     }
 
+
+    /**
+     * This method handles s
+     * @return
+     */
+
     private JPanel createSplashPanel() {
         JPanel panel = new ImagePanel("/images/background.jpg");
         panel.setLayout(new BorderLayout());
