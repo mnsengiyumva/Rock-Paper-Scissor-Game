@@ -1,70 +1,126 @@
+# Rock Paper Scissors — Ultimate Edition
 
-# Project Name: ROCK-PAPER-SCISSORS GAME
+A feature-rich desktop Rock Paper Scissors game built in Java Swing, complete with multiple difficulty levels, extended gameplay (Lizard & Spock), a tournament bracket system, player profiles, achievements, and particle effects.
 
-A java based project of the famous Rock-Paper-Scissors Game
+---
 
-# Versions used
-- Java SDK 25
-- Gradle
+## Features
 
-# Installation and Execution
+### Core Gameplay
+- Classic **Rock, Paper, Scissors** — plus the **Lizard & Spock** extension (as popularized by *The Big Bang Theory*)
+- Three AI difficulty levels: **Easy**, **Medium**, and **Hard**
+- Animated UI with custom hover effects and rounded borders
 
-1. Clone the repository: git clone https://github.com/mnsengiyumva/Rock-Paper-Scissor-Game.git
-2. Navigate to the directory: cd Rock-Paper-Scissors-Game
-3. Compile and Run:
-    javac Main.java
-    java Main
+### Player Profiles
+- Multiple named player profiles stored in `player_profiles.txt`
+- Per-player statistics tracked across sessions:
+    - Total wins, losses, and ties
+    - Win rate and longest win streak
+    - Per-choice win counts (Rock, Paper, Scissors, Lizard, Spock)
+    - Favourite choice (auto-detected from history)
+    - Largest comeback deficit recovered
 
+### Tournament Mode
+- Multi-player **tournament bracket** supporting 2–N participants
+- Automatic bracket generation and round advancement
+- Match-by-match play with a live bracket display
 
--
+### Achievement System
+- Unlockable achievements tracked per player
+- Achievements checked automatically after each round
+- Visual summary of earned badges with emoji icons
 
+### Visual Polish
+- **Particle explosion effects** on win/loss events
+- Custom **image background panel**
+- Smooth component resize handling
+- Consistent themed color palette with hover animations
 
-In this project, I'm implementing the famous Rock Paper Scissors game. 
-I knew already how to play this game with another person where to people compete to see who wins rounds of trials.
-In this game, Scissors beat paper (Scissors cut papers), Rock beat Scissors, Paper beats Rocks. 
+---
 
-# GAME MODULES AND LIBRARIES
+## Project Structure
 
-This game uses GUI (Graphical User Interface) to visualize the game panels and features.
-Here are the Java libraries and modules used to develop this game:
+```
+Main.java                  — Entry point
+RockPaperScissorGame.java  — Main game window (JFrame) and round logic
+  └── Difficulty            — Enum: EASY | MEDIUM | HARD
+PlayerStats.java           — Per-player statistics model
+Achievement.java           — Achievement data model
+AchievementManager.java    — Achievement unlock logic and registry
+TournamentBracket.java     — Bracket generation and advancement
+BracketMatch.java          — Individual match model
+ParticlePanel.java         — Particle effect overlay panel
+Particle.java              — Individual particle physics & rendering
+ImagePanel.java            — Background image rendering panel
+RoundedBorder.java         — Custom rounded UI border component
+player_profiles.txt        — Persistent player profile data
+```
 
-[//]: # (org.w3c.dom.events.MouseEvent;)
+---
 
-[//]: # (javax.sound.sampled.AudioInputStream;)
+## Player Profile Format
 
-[//]: # (javax.sound.sampled.AudioSystem;)
+Profiles are saved to `player_profiles.txt`, one player per line:
 
-[//]: # (javax.sound.sampled.Clip;)
+```
+PlayerName|wins|losses|ties|streak
+```
 
-[//]: # (javax.swing.*;)
+Example:
+```
+Player 1|2|1|2|2
+Player 2|2|1|2|2
+Player 3|4|0|1|4
+```
 
-[//]: # (javax.swing.Timer;)
+---
 
-[//]: # (java.awt.event.ComponentAdapter;)
+## Getting Started
 
-[//]: # (java.awt.event.ComponentEvent;)
+### Requirements
+- Java 11 or higher (Java 21 recommended)
+- No external dependencies — pure Java SE + Swing
 
-[//]: # (java.awt.event.KeyEvent;)
+### Running the Game
 
-[//]: # (java.awt.event.MouseAdapter;)
+```bash
+# Compile all source files
+javac -d out src/Main/*.java
 
-[//]: # (java.util.HashMap;)
+# Run
+java -cp out Main.Main
+```
 
-[//]: # (java.util.*;)
+Or if running from pre-compiled `.class` files:
 
-[//]: # (javax.swing.border.AbstractBorder;)
+```bash
+java -cp . Main.Main
+```
 
-[//]: # (java.util.List;)
+---
 
-[//]: # (java.io.*;)
+## Game Rules
 
-[//]: # (javax.sound.sampled.*;)
+| Choice   | Beats              | Loses to            |
+|----------|--------------------|---------------------|
+| Rock     | Scissors, Lizard   | Paper, Spock        |
+| Paper    | Rock, Spock        | Scissors, Lizard    |
+| Scissors | Paper, Lizard      | Rock, Spock         |
+| Lizard   | Paper, Spock       | Rock, Scissors      |
+| Spock    | Rock, Scissors     | Paper, Lizard       |
 
-These libraries and modules helps us to make 
-using other advanced features and other choice options
+---
 
+## Difficulty Levels
 
-The game uses GUI features, and sounds effect depending on the level of the game.
-For example 
+| Level  | AI Behaviour                                      |
+|--------|---------------------------------------------------|
+| Easy   | AI picks randomly                                 |
+| Medium | AI uses mild counter-strategy based on history    |
+| Hard   | AI actively predicts and counters your patterns   |
 
+---
 
+## License
+
+This project is for personal/educational use. Feel free to fork and extend it.
