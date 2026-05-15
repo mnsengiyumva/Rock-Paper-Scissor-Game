@@ -1141,6 +1141,14 @@ public class RockPaperScissorGame extends JFrame {
 
         final String[] dotFrames = {"🙂", "🙂 .", "🙂 . .", "🙂 . . ."};
 
+        final int[] dotStep = {0};
+
+        final int totalDots = dotFrames.length*3;
+
+        resultLabel.setText(dotFrames[0]);
+
+        Timer dotTime = new Timer(200, null)
+
         resultLabel.setBackground(color);
         resultLabel.setText("");
 
