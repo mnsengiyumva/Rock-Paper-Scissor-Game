@@ -1199,6 +1199,8 @@ public class RockPaperScissorGame extends JFrame {
         rockButton.setEnabled(false);
         paperButton.setEnabled(false);
         scissorsButton.setEnabled(false);
+        lizardButton.setEnabled(false);
+        spockButton.setEnabled(false);
     }
 
     private void enableButtons(){
@@ -1206,6 +1208,12 @@ public class RockPaperScissorGame extends JFrame {
         rockButton.setEnabled(true);
         paperButton.setEnabled(true);
         scissorsButton.setEnabled(true);
+
+        if(extendedMode){
+            lizardButton.setEnabled(true);
+            spockButton.setEnabled(true);
+        ;
+        }
 
 
     }
