@@ -1171,9 +1171,17 @@ public class RockPaperScissorGame extends JFrame {
                         resultLabel.setText(message.substring(0, charIndex[0]+1));
                         charIndex[0]++;
                     }
+
+                    else{
+                        ((javax.swing.Timer) typeEvent.getSource()).stop();
+                    }
                 });
+
+                typeTimer.start();
             }
         });
+
+        dotTimer.start();
 
         resultLabel.setBackground(color);
         resultLabel.setText("");
