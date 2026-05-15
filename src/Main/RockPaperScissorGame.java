@@ -10,6 +10,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
+import java.sql.Time;
 import java.util.HashMap;
 import java.awt.*;
 import java.util.*;
@@ -1155,6 +1156,22 @@ public class RockPaperScissorGame extends JFrame {
             if(dotStep[0] <totalDots){
 
                 resultLabel.setText(dotFrames[dotStep[0]%dotFrames.length]);
+            }
+
+            else{
+                dotTimer.stop();
+
+                resultLabel.setText("");
+                final int[] charIndex = {0};
+
+                Timer typeTimer = new Timer(30, null);
+                typeTimer.addActionListener(typeEvent -> {
+
+                    if(charIndex[0] < message.length()){
+                        resultLabel.setText(message.substring(0, charIndex[0]+1));
+                        charIndex[0]++;
+                    }
+                });
             }
         });
 
