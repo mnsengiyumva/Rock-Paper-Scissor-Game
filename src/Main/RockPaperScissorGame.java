@@ -786,8 +786,6 @@ public class RockPaperScissorGame extends JFrame {
     public void playRound(String playerChoice){
         String[] choices = {"Rock", "Paper", "Scissors"};
 
-
-
         String computerChoice = choices[new Random().nextInt(3)];
 
         String result = determineWinner(playerChoice, computerChoice);
