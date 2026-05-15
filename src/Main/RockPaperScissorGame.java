@@ -881,11 +881,12 @@ public class RockPaperScissorGame extends JFrame {
                             scores.put(nextMatch.player1, 0);
                             scores.put(nextMatch.player2, 0);
                             resultLabel.setText(" ");
-                            resultLabel.setBackground(new Color(255, 255, 255, 110));
+                            resultLabel.setBackground(new Color(250, 250, 250, 110));
                             countdownLabel.setText(" ");
                             enableButtons();
                             updateGamePanel();
                             startCountdown();
+
                         }
                     }
                 } else {
