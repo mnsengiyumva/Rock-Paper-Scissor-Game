@@ -1139,7 +1139,8 @@ public class RockPaperScissorGame extends JFrame {
 
     private void showResultWithAnimation(String message, Color color) {
 
-        final String[] dotFrames = ""
+        final String[] dotFrames = {"🙂", "🙂 .", "🙂 . .", "🙂 . . ."};
+
         resultLabel.setBackground(color);
         resultLabel.setText("");
 
