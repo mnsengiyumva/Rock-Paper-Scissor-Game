@@ -1183,21 +1183,21 @@ public class RockPaperScissorGame extends JFrame {
 
         dotTimer.start();
 
-        resultLabel.setBackground(color);
-        resultLabel.setText("");
-
-        Timer fadeIn = new Timer(30, null);
-        final int[] charIndex = {0};
-
-        fadeIn.addActionListener(e -> {
-            if (charIndex[0] < message.length()) {
-                resultLabel.setText(message.substring(0, charIndex[0] + 1));
-                charIndex[0]++;
-            } else {
-                ((Timer) e.getSource()).stop();
-            }
-        });
-        fadeIn.start();
+//        resultLabel.setBackground(color);
+//        resultLabel.setText("");
+//
+//        Timer fadeIn = new Timer(30, null);
+//        final int[] charIndex = {0};
+//
+//        fadeIn.addActionListener(e -> {
+//            if (charIndex[0] < message.length()) {
+//                resultLabel.setText(message.substring(0, charIndex[0] + 1));
+//                charIndex[0]++;
+//            } else {
+//                ((Timer) e.getSource()).stop();
+//            }
+//        });
+//        fadeIn.start();
     }
 
     private void showAchievementUnlock(String player, String achievementId) {
