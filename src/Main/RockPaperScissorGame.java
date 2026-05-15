@@ -861,7 +861,7 @@ public class RockPaperScissorGame extends JFrame {
 
         currentTries--;
 
-        if (currentTries <= 0) {
+        if (currentTries == 0) {
             disableButton();
             
 
