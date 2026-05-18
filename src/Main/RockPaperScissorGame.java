@@ -784,9 +784,13 @@ public class RockPaperScissorGame extends JFrame {
 
 
     public void playRound(String playerChoice){
-        String[] choices = {"Rock", "Paper", "Scissors"};
 
-        String computerChoice = choices[new Random().nextInt(3)];
+
+        String[] choices = extendedMode ? new String[]{"Rock", "Paper", "Scissors", "Lizard", "Spock"}
+                : new String[]{"Rock", "Paper", "scissors"};
+
+
+        String computerChoice = choices[new Random().nextInt(choices.length)];
 
         String result = determineWinner(playerChoice, computerChoice);
         String currentPlayer = players.get(currentPlayerIndex);
@@ -858,6 +862,7 @@ public class RockPaperScissorGame extends JFrame {
         playerChoiceHistory.add(playerChoice);
 
         currentTries--;
+        updateGamePanel();
 
         if (currentTries == 0) {
             disableButton();
@@ -908,8 +913,6 @@ public class RockPaperScissorGame extends JFrame {
 
             timer.setRepeats(false);
             timer.start();
-        } else {
-            updateGamePanel();
         }
 
 //
