@@ -887,6 +887,15 @@ public class RockPaperScissorGame extends JFrame {
 
                             scores.put(nextMatch.player1, 0);
                             scores.put(nextMatch.player2, 0);
+
+                            if (animDotTimer != null){
+                                animDotTimer.stop(); animDotTimer = null;
+                            }
+
+                            if(animTypeTimer != null){
+                                animTypeTimer.stop();
+                                animTypeTimer = null;
+                            }
                             resultLabel.setText(" ");
                             resultLabel.setBackground(new Color(250, 250, 250, 110));
                             countdownLabel.setText(" ");
@@ -1169,9 +1178,33 @@ public class RockPaperScissorGame extends JFrame {
             if(dotStep[0] < totalDots){
                 resultLabel.setText(dotFrames[dotStep[0]%dotFrames.length]);
 
+            } else{
+                animDotTimer.stop();
+                animDotTimer = null;
+
+                resultLabel.setText("");
+
+                final int[] charIndex = {0};
+
+                animTypeTimer = new Timer(30, null);
+
+                animTypeTimer.addActionListener(typeEvent -> {
+                    if(charIndex[0] < message.length()){
+                        resultLabel.setText(message.substring(0, charIndex[0]+1));
+                        charIndex[0]++;
+                    } else{
+
+                        animTypeTimer.stop();
+                        animTypeTimer = null;
+                    }
+                });
+                animTypeTimer.start();
+
             }
 
         });
+
+        animDotTimer.start();
 
 
 
