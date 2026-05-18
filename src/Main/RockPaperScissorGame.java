@@ -69,6 +69,8 @@ public class RockPaperScissorGame extends JFrame {
     private JLabel playerLabel;
     private JLabel triesLabel;
     private JLabel resultLabel;
+    private Timer animDotTimer;
+    private Timer animTypeTimer;
     private JTextArea scoreboardArea;
     private JLabel avatarLabel;
     private JLabel countdownLabel;
@@ -1141,6 +1143,15 @@ public class RockPaperScissorGame extends JFrame {
     }
 
     private void showResultWithAnimation(String message, Color color) {
+
+        if(animDotTimer != null){
+            animDotTimer.stop(); animDotTimer = null;
+        }
+
+        if(animTypeTimer != null){
+            animTypeTimer.stop(); animTypeTimer = null;
+        }
+
         resultLabel.setBackground(color);
 
         final String[] dotFrames = {"🙂", "🙂 .", "🙂 . .", "🙂 . . ."};
@@ -1151,40 +1162,63 @@ public class RockPaperScissorGame extends JFrame {
 
         resultLabel.setText(dotFrames[0]);
 
-        Timer dotTimer = new Timer(200, null);
-
-        dotTimer.addActionListener(dotEvent -> {
+        animDotTimer = new Timer(200, null);
+        animDotTimer.addActionListener(dotEvent -> {
             dotStep[0]++;
 
-            if(dotStep[0] <totalDots){
-
+            if(dotStep[0] < totalDots){
                 resultLabel.setText(dotFrames[dotStep[0]%dotFrames.length]);
+
             }
 
-            else{
-                dotTimer.stop();
-
-                resultLabel.setText("");
-                final int[] charIndex = {0};
-
-                Timer typeTimer = new Timer(30, null);
-                typeTimer.addActionListener(typeEvent -> {
-
-                    if(charIndex[0] < message.length()){
-                        resultLabel.setText(message.substring(0, charIndex[0]+1));
-                        charIndex[0]++;
-                    }
-
-                    else{
-                        ((javax.swing.Timer) typeEvent.getSource()).stop();
-                    }
-                });
-
-                typeTimer.start();
-            }
         });
 
-        dotTimer.start();
+
+
+//        resultLabel.setBackground(color);
+//
+//        final String[] dotFrames = {"🙂", "🙂 .", "🙂 . .", "🙂 . . ."};
+//
+//        final int[] dotStep = {0};
+//
+//        final int totalDots = dotFrames.length*3;
+//
+//        resultLabel.setText(dotFrames[0]);
+//
+//        Timer dotTimer = new Timer(200, null);
+//
+//        dotTimer.addActionListener(dotEvent -> {
+//            dotStep[0]++;
+//
+//            if(dotStep[0] <totalDots){
+//
+//                resultLabel.setText(dotFrames[dotStep[0]%dotFrames.length]);
+//            }
+//
+//            else{
+//                dotTimer.stop();
+//
+//                resultLabel.setText("");
+//                final int[] charIndex = {0};
+//
+//                Timer typeTimer = new Timer(30, null);
+//                typeTimer.addActionListener(typeEvent -> {
+//
+//                    if(charIndex[0] < message.length()){
+//                        resultLabel.setText(message.substring(0, charIndex[0]+1));
+//                        charIndex[0]++;
+//                    }
+//
+//                    else{
+//                        ((javax.swing.Timer) typeEvent.getSource()).stop();
+//                    }
+//                });
+//
+//                typeTimer.start();
+//            }
+//        });
+//
+//        dotTimer.start();
 
 //        resultLabel.setBackground(color);
 //        resultLabel.setText("");
