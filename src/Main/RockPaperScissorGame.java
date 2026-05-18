@@ -787,7 +787,7 @@ public class RockPaperScissorGame extends JFrame {
 
 
         String[] choices = extendedMode ? new String[]{"Rock", "Paper", "Scissors", "Lizard", "Spock"}
-                : new String[]{"Rock", "Paper", "scissors"};
+                : new String[]{"Rock", "Paper", "Scissors"};
 
 
         String computerChoice = choices[new Random().nextInt(choices.length)];
@@ -864,7 +864,7 @@ public class RockPaperScissorGame extends JFrame {
         currentTries--;
         updateGamePanel();
 
-        if (currentTries == 0) {
+        if (currentTries <= 0) {
             disableButton();
             
 
