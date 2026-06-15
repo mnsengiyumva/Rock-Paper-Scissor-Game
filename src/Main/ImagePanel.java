@@ -10,7 +10,6 @@ import java.util.Objects;
  * Image can be changed depending on user preferences
  */
 
-
 public class ImagePanel extends JPanel {
 
     private Image backgroundImage;
