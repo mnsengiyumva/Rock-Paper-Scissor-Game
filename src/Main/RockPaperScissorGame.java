@@ -74,7 +74,7 @@ public class RockPaperScissorGame extends JFrame {
     private JTextArea scoreboardArea;
     private JLabel avatarLabel;
     private JLabel countdownLabel;
-    private JLabel wish;
+    //private JLabel wish;
 
 
     private JButton rockButton, paperButton, scissorsButton;
