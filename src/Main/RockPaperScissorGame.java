@@ -95,8 +95,10 @@ public class RockPaperScissorGame extends JFrame {
     private final ArrayList<String> playerChoiceHistory = new ArrayList<>();
 
 
-
-
+    /**
+     *
+     * constructor
+     */
     public RockPaperScissorGame(){
         setTitle("Rock Paper Scissor Game");
         setSize(600, 700);
@@ -487,19 +489,19 @@ public class RockPaperScissorGame extends JFrame {
         button.add(textLabel, gbc);
 
         // Hover effect
-        button.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) {
-                button.setBackground(new Color(240, 240, 255));
-                button.setBorder(new RoundedBorder(15, new Color(79, 82, 221)));
-                button.setCursor(new Cursor(Cursor.HAND_CURSOR));
-            }
-
-            public void mouseExited(MouseEvent e) {
-                button.setBackground(Color.WHITE);
-                button.setBorder(new RoundedBorder(15, new Color(99, 102, 241)));
-                button.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-            }
-        });
+//        button.addMouseListener(new MouseAdapter() {
+////            public void mouseEntered(MouseEvent e) {
+////                button.setBackground(new Color(240, 240, 255));
+////                button.setBorder(new RoundedBorder(15, new Color(79, 82, 221)));
+////                button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+////            }
+//
+////            public void mouseExited(MouseEvent e) {
+////                button.setBackground(Color.WHITE);
+////                button.setBorder(new RoundedBorder(15, new Color(99, 102, 241)));
+////                button.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+////            }
+//        });
 
         return button;
     }
