@@ -249,14 +249,14 @@ public class RockPaperScissorGame extends JFrame {
         formPanel.add(Box.createVerticalStrut(20));
 
 
-        tournamentCheckbox = new JCheckBox("Tournament Bracket Mode (4+ players)");
-        tournamentCheckbox.setForeground(Color.WHITE);
-        tournamentCheckbox.setFont(new Font("Arial", Font.PLAIN, 16));
-        tournamentCheckbox.setOpaque(false);
-        tournamentCheckbox.setAlignmentX(Component.CENTER_ALIGNMENT);
+//        tournamentCheckbox = new JCheckBox("Tournament Bracket Mode (4+ players)");
+//        tournamentCheckbox.setForeground(Color.WHITE);
+//        tournamentCheckbox.setFont(new Font("Arial", Font.PLAIN, 16));
+//        tournamentCheckbox.setOpaque(false);
+//        tournamentCheckbox.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         formPanel.add(Box.createVerticalStrut(10));
-        formPanel.add(tournamentCheckbox);
+//        formPanel.add(tournamentCheckbox);
         formPanel.add(Box.createVerticalStrut(20));
 
         JButton startButton = new JButton("Start Game");
