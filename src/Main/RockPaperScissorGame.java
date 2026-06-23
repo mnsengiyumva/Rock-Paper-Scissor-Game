@@ -629,15 +629,15 @@ public class RockPaperScissorGame extends JFrame {
                 return;
             }
 
-            tournamentMode = tournamentCheckbox.isSelected();
-
-            if (tournamentMode && numPlayers < 4) {
-                JOptionPane.showMessageDialog(this,
-                        "Tournament mode requires at least 4 players!",
-                        "Invalid Setup",
-                        JOptionPane.WARNING_MESSAGE);
-                return;
-            }
+//            tournamentMode = tournamentCheckbox.isSelected();
+//
+//            if (tournamentMode && numPlayers < 4) {
+//                JOptionPane.showMessageDialog(this,
+//                        "Tournament mode requires at least 4 players!",
+//                        "Invalid Setup",
+//                        JOptionPane.WARNING_MESSAGE);
+//                return;
+//            }
 
             // Set difficulty
             String diff = (String) difficultyBox.getSelectedItem();
