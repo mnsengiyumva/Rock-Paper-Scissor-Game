@@ -113,11 +113,11 @@ java -cp . Main.Main
 
 ## Difficulty Levels
 
-| Level  | AI Behaviour                                      |
-|--------|---------------------------------------------------|
-| Easy   | AI picks randomly                                 |
-| Medium | AI uses mild counter-strategy based on history    |
-| Hard   | AI actively predicts and counters your patterns   |
+| Level  |   | AI Behaviour                                      |   |
+|--------|---|---------------------------------------------------|---|
+| Easy   |   | AI picks randomly                                 |   |
+| Medium |   | AI uses mild counter-strategy based on history    |   |
+| Hard   |   | AI actively predicts and counters your patterns   |   |
 
 ---
 
