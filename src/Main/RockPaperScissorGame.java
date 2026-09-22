@@ -146,7 +146,7 @@ public class RockPaperScissorGame extends JFrame {
         logo.setForeground(Color.WHITE);
         playSound("/sounds/start.wav");
 
-        JLabel subtitle = new JLabel("Pro Edition", SwingConstants.CENTER);
+        JLabel subtitle = new JLabel("Pro Edition. Developed By Mico Nsengiyumva", SwingConstants.CENTER);
         subtitle.setFont(new Font("Arial", Font.ITALIC, 20));
         subtitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -248,12 +248,6 @@ public class RockPaperScissorGame extends JFrame {
         formPanel.add(gameModeBox);
         formPanel.add(Box.createVerticalStrut(20));
 
-
-//        tournamentCheckbox = new JCheckBox("Tournament Bracket Mode (4+ players)");
-//        tournamentCheckbox.setForeground(Color.WHITE);
-//        tournamentCheckbox.setFont(new Font("Arial", Font.PLAIN, 16));
-//        tournamentCheckbox.setOpaque(false);
-//        tournamentCheckbox.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         formPanel.add(Box.createVerticalStrut(10));
 //        formPanel.add(tournamentCheckbox);
@@ -395,7 +389,7 @@ public class RockPaperScissorGame extends JFrame {
         bottomPanel.setBackground(new Color(255, 255, 255, 220));
         bottomPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 20, 20));
 
-        JLabel scoreLabel = new JLabel("🏆 Scoreboard");
+        JLabel scoreLabel = new JLabel("Scoreboard");
         scoreLabel.setFont(new Font("Arial", Font.BOLD, 18));
 
         scoreboardArea = new JTextArea(6, 40);
@@ -488,20 +482,6 @@ public class RockPaperScissorGame extends JFrame {
         textLabel.setForeground(Color.WHITE);
         button.add(textLabel, gbc);
 
-        // Hover effect
-//        button.addMouseListener(new MouseAdapter() {
-////            public void mouseEntered(MouseEvent e) {
-////                button.setBackground(new Color(240, 240, 255));
-////                button.setBorder(new RoundedBorder(15, new Color(79, 82, 221)));
-////                button.setCursor(new Cursor(Cursor.HAND_CURSOR));
-////            }
-//
-////            public void mouseExited(MouseEvent e) {
-////                button.setBackground(Color.WHITE);
-////                button.setBorder(new RoundedBorder(15, new Color(99, 102, 241)));
-////                button.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-////            }
-//        });
 
         return button;
     }
@@ -629,15 +609,7 @@ public class RockPaperScissorGame extends JFrame {
                 return;
             }
 
-//            tournamentMode = tournamentCheckbox.isSelected();
-//
-//            if (tournamentMode && numPlayers < 4) {
-//                JOptionPane.showMessageDialog(this,
-//                        "Tournament mode requires at least 4 players!",
-//                        "Invalid Setup",
-//                        JOptionPane.WARNING_MESSAGE);
-//                return;
-//            }
+
 
             // Set difficulty
             String diff = (String) difficultyBox.getSelectedItem();
