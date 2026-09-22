@@ -1,14 +1,15 @@
 # Rock Paper Scissors — Ultimate Edition
 
-A feature-rich desktop Rock Paper Scissors game built in Java Swing, complete with multiple difficulty levels, extended gameplay (Lizard & Spock), a tournament bracket system, player profiles, achievements, and particle effects.
+This is a desktop Rock Paper Scissors game I built in Java Swing, complete with multiple difficulty levels, 
+extended gameplay (Lizard & Spock), a tournament bracket system, player profiles, achievements, and particle effects.
 
 ---
 
 ## Features
 
 ### Core Gameplay
-- Classic **Rock, Paper, Scissors** — plus the **Lizard & Spock** extension (as popularized by *The Big Bang Theory*)
-- Three AI difficulty levels: **Easy**, **Medium**, and **Hard**
+- Classic Rock, Paper, Scissors**  plus the Lizard & Spock extension (as popularized by The Big Bang Theory)
+- Three AI difficulty levels: Easy, Medium, and Hard
 - Animated UI with custom hover effects and rounded borders
 
 ### Player Profiles
@@ -21,7 +22,7 @@ A feature-rich desktop Rock Paper Scissors game built in Java Swing, complete wi
     - Largest comeback deficit recovered
 
 ### Tournament Mode
-- Multi-player **tournament bracket** supporting 2–N participants
+- Multi-player tournament bracket supporting 2–N participants
 - Automatic bracket generation and round advancement
 - Match-by-match play with a live bracket display
 
@@ -31,8 +32,8 @@ A feature-rich desktop Rock Paper Scissors game built in Java Swing, complete wi
 - Visual summary of earned badges with emoji icons
 
 ### Visual Polish
-- **Particle explosion effects** on win/loss events
-- Custom **image background panel**
+- Particle explosion effects on win/loss events
+- Custom image background panel
 - Smooth component resize handling
 - Consistent themed color palette with hover animations
 
@@ -43,7 +44,7 @@ A feature-rich desktop Rock Paper Scissors game built in Java Swing, complete wi
 ```
 Main.java                  — Entry point
 RockPaperScissorGame.java  — Main game window (JFrame) and round logic
-  └── Difficulty            — Enum: EASY | MEDIUM | HARD
+Difficulty                  — Enum: EASY | MEDIUM | HARD
 PlayerStats.java           — Per-player statistics model
 Achievement.java           — Achievement data model
 AchievementManager.java    — Achievement unlock logic and registry
@@ -121,6 +122,6 @@ java -cp . Main.Main
 
 ---
 
-## License
+# License
 
-This project is for personal/educational use. Feel free to fork and extend it.
+I created this project for educational use. any one can fork and extend it.
